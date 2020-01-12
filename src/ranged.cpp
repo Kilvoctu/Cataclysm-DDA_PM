@@ -1650,6 +1650,14 @@ item::sound_data item::gun_noise( const bool burst ) const
             return { noise, burst ? _( "Kaboom!" ) : _( "kerblam!" ) };
         }
     }
+    
+    int aimX = TERMX;
+    std::string position = get_option<std::string>( "AIM_WINDOW_POSITION" );
+    if( position == "left" ) {
+        aimX = width;
+    }
+
+    catacurses::window w_target = catacurses::newwin( height, width, point( aimX - width, top ) );
 
     return { 0, "" }; // silent weapons
 }
