@@ -6731,6 +6731,39 @@ look_around_result game::look_around( const bool show_window, tripoint &center,
             draw_border( w_info );
 
             center_print( w_info, 0, c_white, string_format( _( "< <color_green>Look Around</color> >" ) ) );
+    // FIXME: temporarily disable redrawing of lower UIs before this UI is migrated to `ui_adaptor`
+    ui_adaptor ui( ui_adaptor::disable_uis_below {} );
+
+    do {
+        if( redraw ) {
+            if( bNewWindow ) {
+                werase( w_info );
+                draw_border( w_info );
+
+                center_print( w_info, 0, c_white, string_format( _( "< <color_green>Look Around</color> >" ) ) );
+
+                std::string fast_scroll_text = string_format( _( "%s - %s" ),
+                                               ctxt.get_desc( "TOGGLE_FAST_SCROLL" ),
+                                               ctxt.get_action_name( "TOGGLE_FAST_SCROLL" ) );
+                std::string pixel_minimap_text = string_format( _( "%s - %s" ),
+                                                 ctxt.get_desc( "toggle_pixel_minimap" ),
+                                                 ctxt.get_action_name( "toggle_pixel_minimap" ) );
+                mvwprintz( w_info, point( 1, getmaxy( w_info ) - 1 ), fast_scroll ? c_light_green : c_green,
+                           fast_scroll_text );
+
+                right_print( w_info, getmaxy( w_info ) - 1, 1, pixel_minimap_option ? c_light_green : c_green,
+                             pixel_minimap_text );
+
+                mvwprintz( w_info, point( 1, getmaxy( w_info ) - 2 ),
+                           pixel_minimap_option ? c_light_green : c_green, pixel_minimap_text );
+
+
+                int first_line = 1;
+                const int last_line = getmaxy( w_info ) - 2;
+                pre_print_all_tile_info( lp, w_info, first_line, last_line, cache );
+            }
+
+            draw_ter( center, true );
 
             std::string fast_scroll_text = string_format( _( "%s - %s" ),
                                            ctxt.get_desc( "TOGGLE_FAST_SCROLL" ),
