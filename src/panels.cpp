@@ -2028,7 +2028,8 @@ static std::vector<window_panel> initialize_default_compact_panels()
                                     spell_panel ) );
     ret.emplace_back( window_panel( draw_time, translate_marker( "Time" ), 1, 32, true ) );
     ret.emplace_back( window_panel( draw_needs_compact, translate_marker( "Needs" ), 3, 32, true ) );
-    ret.emplace_back( window_panel( draw_env_compact, translate_marker( "Env" ), 6, 32, true ) );
+    ret.emplace_back( window_panel( draw_env_compact, translate_marker( "Env Map" ), 6, 32, true ) );
+	ret.emplace_back( window_panel( draw_env_compact_nomap, translate_marker( "Env" ), 7, 32, true ) );
     ret.emplace_back( window_panel( draw_veh_compact, translate_marker( "Vehicle" ), 1, 32, true ) );
     ret.emplace_back( window_panel( draw_armor, translate_marker( "Armor" ), 5, 32, false ) );
     ret.emplace_back( window_panel( draw_messages_classic, translate_marker( "Log" ), -2, 32, true ) );
