@@ -11,6 +11,16 @@
     "count": 100
   },
   {
+    "id": "rifle_huge_drum",
+    "copy-from": "8x40_100_mag",
+    "type": "MAGAZINE",
+    "material": "steel",
+    "name": "heavy drum magazine",
+    "description": "A 100 round drum magazine for heavy machine guns.  This is made out of steel and is sturdy enough to handle continuous usage.",
+    "delete": { "ammo_type": "8x40mm" },
+    "ammo_type": "ammo_rifle_huge"
+  },
+  {
     "id": "rifle_huge_amr_mag",
     "type": "MAGAZINE",
     "copy-from": "m107a1mag",

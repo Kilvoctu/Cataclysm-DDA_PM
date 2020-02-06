@@ -23,6 +23,16 @@
     "ammo_type": "ammo_rifle"
   },
   {
+    "id": "rifle_box_mag",
+    "copy-from": "8x40_50_mag",
+    "type": "MAGAZINE",
+    "material": "aluminum",
+    "name": "box rifle magazine",
+    "description": "A high-capacity 50 round box magazine for light machine guns, designed for longer engagements out in the field.",
+    "delete": { "ammo_type": "8x40mm" },
+    "ammo_type": "ammo_rifle"
+  },
+  {
     "id": "rifle_sniper_mag",
     "copy-from": "m2010mag",
     "type": "MAGAZINE",
