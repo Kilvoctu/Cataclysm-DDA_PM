@@ -3,8 +3,8 @@
     "id": "pistol_tiny_casing",
     "copy-from": "32_casing",
     "type": "GENERIC",
-    "name": "tiny pistol casing",
-    "description": "An empty casing from a tiny pistol round."
+    "name": "tiny gun casing",
+    "description": "An empty casing from a tiny gun round."
   },
   {
     "id": "pistol_casing",
@@ -39,7 +39,7 @@
     "copy-from": "shot_hull",
     "type": "GENERIC",
     "name": "shotshell hull",
-    "description": "A shotshell's casing, a plastic tube with a brass casehead, commonly referred to as a hull."
+    "description": "A shotgun shell's casing, a plastic tube with a brass casehead, commonly referred to as a hull."
   },
   {
     "id": "grenade_casing",

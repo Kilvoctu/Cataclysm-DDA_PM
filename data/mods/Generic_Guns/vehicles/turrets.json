@@ -63,5 +63,13 @@
     "name": { "str": "mounted automatic grenade launcher" },
     "item": "grenade_hmg",
     "breaks_into": [ { "item": "grenade_hmg", "prob": 50 } ]
+  },
+  {
+    "id": "rifle_huge_double",
+    "copy-from": "mounted_browning",
+    "type": "vehicle_part",
+    "name": "mounted elephant rifle",
+    "item": "rifle_huge_double",
+    "breaks_into": [ { "item": "rifle_huge_double", "prob": 50 } ]
   }
 ]

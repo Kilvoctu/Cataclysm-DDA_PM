@@ -10,21 +10,21 @@
     "type": "ammunition_type",
     "id": "ammo_pistol_tiny",
     "//": "ammo smaller than .380ACP",
-    "name": "tiny pistol ammo",
+    "name": "tiny gun ammo",
     "default": "tiny_pistol_jhp"
   },
   {
     "type": "ammunition_type",
     "id": "ammo_pistol",
     "//": ".380 to .357sig",
-    "name": "standard pistol ammo",
+    "name": "pistol ammo",
     "default": "pistol_ball"
   },
   {
     "type": "ammunition_type",
     "id": "ammo_pistol_magnum",
     "//": ".357mag and up.",
-    "name": "magnum pistol ammo",
+    "name": "magnum ammo",
     "default": "pistol_magnum_ball"
   },
   {
@@ -38,7 +38,7 @@
     "type": "ammunition_type",
     "id": "ammo_rifle_huge",
     "//": "ammo from .375 H&H to .50BMG. Migrate anything stronger to as-yet unimplemented light cannon ammo",
-    "name": "huge rifle ammo",
+    "name": "high caliber ammo",
     "default": "rifle_huge_ball"
   },
   {
