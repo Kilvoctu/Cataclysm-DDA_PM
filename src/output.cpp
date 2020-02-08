@@ -1810,6 +1810,52 @@ void display_table( const catacurses::window &w, const std::string &title, int c
     }
 }
 
+/**
+ * Inserts a table into a window, with data right-aligned.
+ * @param pad Reduce table width by padding left side.
+ * @param line Line to insert table.
+ * @param columns Number of columns. Can be 1.
+ * @param nc_color &FG Default color of table text.
+ * @param divider To insert a character separating table entries. Can be blank.
+ * @param data Text data to fill.
+ * Make sure each entry of the data vector fits into one cell, including divider if any.
+ */
+void insert_right_table( const catacurses::window &w, int pad, int line, int columns,
+                         const nc_color &FG, const std::string &divider, const std::vector<std::string> &data )
+{
+    const int width = getmaxx( w );
+    const int rows = getmaxy( w );
+    const int col_width = ( ( width - pad ) / columns ) + utf8_width( divider ) ;
+    int indent = ( col_width * columns ) + 1; // 1 for right window border
+    int div = columns - 1;
+    int offset = 0;
+
+#if defined(__ANDROID__)
+    input_context ctxt( "INSERT_RIGHT_TABLE" );
+#endif
+    wattron( w, FG );
+    for( int i = 0; i < rows * columns; i++ ) {
+        if( i + offset * columns >= static_cast<int>( data.size() ) ) {
+            break;
+        }
+        int y = line + ( i / columns );
+        indent -= col_width;
+        if( div != 0 ) {
+            right_print( w, y, indent - utf8_width( divider ), FG, divider );
+			//fold_and_print_from( w, point( indent - utf8_width( divider ), y ), utf8_width( divider ), 0, FG, divider );
+            div--;
+        } else {
+            div = columns - 1;
+        }
+        right_print( w, y, indent, c_white, data[i + offset * columns] );
+		//fold_and_print_from( w, point( indent, y ), col_width, 0, c_white, data[i + offset * columns] );
+        if( indent == 1 ) {
+            indent = ( col_width * columns ) + 1;
+        }
+    }
+    wattroff( w, FG );
+}
+
 scrollingcombattext::cSCT::cSCT( const point &p_pos, const direction p_oDir,
                                  const std::string &p_sText, const game_message_type p_gmt,
                                  const std::string &p_sText2, const game_message_type p_gmt2,

@@ -785,9 +785,7 @@ static int draw_targeting_window( const catacurses::window &w_target, const std:
     trim_and_print( w_target, point( 4, 0 ), getmaxx( w_target ) - 7, c_red, title );
     wprintz( w_target, c_white, " >" );
 
-    // Call accuracy display type to exclude "Numbers" style
-    std::string display_type = get_option<std::string>( "ACCURACY_DISPLAY" );
-    if( ( panel_type == "compact" || panel_type == "labels-narrow" ) && display_type != "numbers" ) {
+    if( panel_type == "compact" || panel_type == "labels-narrow" ) {
         int text_y = getmaxy( w_target ) - 1;
         int lines_used = getmaxy( w_target ) - 1 - text_y;
         const std::string aimhelp = _( "< [?] show help >" );
@@ -992,12 +990,13 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
     if( display_type != "numbers" ) {
         int column_number = 1;
         if( !( panel_type == "compact" || panel_type == "labels-narrow" ) ) {
-            auto label = gettext( "Symbols:" );
+            std::string label = _( "Symbols:" );
             mvwprintw( w, point( column_number, line_number ), label );
-            column_number += strlen( label ) + 1; // 1 for whitespace after 'Symbols:'
+            column_number += utf8_width( label ) + 1; // 1 for whitespace after 'Symbols:'
         }
+        std::string symbols;
         for( const confidence_rating &cr : confidence_config ) {
-            auto label = pgettext( "aim_confidence", cr.label.c_str() );
+            std::string label = pgettext( "aim_confidence", cr.label.c_str() );
             std::string symbols = string_format( "<color_%s>%s</color> = %s", cr.color, cr.symbol,
                                                  label );
             int line_len = utf8_width( label ) + 5; // 5 for '# = ' and whitespace at end
@@ -1038,11 +1037,15 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
         }
 
         auto hotkey = front_or( type.action.empty() ? "FIRE" : type.action, ' ' );
-        if( ( panel_type == "compact" || panel_type == "labels-narrow" ) && display_type != "numbers" ) {
+        if( panel_type == "compact" || panel_type == "labels-narrow" ) {
+			if( display_type == "numbers" ) {
+				// Will be handled outside the for loop.
+			} else {
             print_colored_text( w, point( 1, line_number ), col, col, string_format( _( "%s %s:" ), label,
                                 aim_l ) );
             right_print( w, line_number++, 1, c_light_blue, _( "Moves" ) );
-            right_print( w, line_number, 1, c_light_blue, string_format( ( "%d" ), moves_to_fire ) );
+            right_print( w, line_number, 1, c_light_blue, string_format( "%d", moves_to_fire ) );
+			}
         } else {
             print_colored_text( w, point( 1, line_number++ ), col, col,
                                 string_format( _( "<color_white>[%s]</color> %s %s: Moves to fire: "
@@ -1053,6 +1056,10 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
         double confidence = confidence_estimate( range, target_size, current_dispersion );
 
         if( display_type == "numbers" ) {
+			if( panel_type == "compact" || panel_type == "labels-narrow" )
+			{   
+				// Will be handled outside the for loop.
+			} else {
             int last_chance = 0;
             std::string confidence_s = enumerate_as_string( confidence_config.begin(), confidence_config.end(),
             [&]( const confidence_rating & config ) {
@@ -1064,6 +1071,7 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
             }, enumeration_conjunction::none );
             line_number += fold_and_print_from( w, point( 1, line_number ), window_width, 0,
                                                 c_dark_gray, confidence_s );
+			}
         } else {
             std::vector<std::tuple<double, char, std::string>> confidence_ratings;
             std::transform( confidence_config.begin(), confidence_config.end(),
@@ -1079,7 +1087,57 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
             print_colored_text( w, point( 1, line_number++ ), col, col, confidence_bar );
         }
     }
-
+		//test stuff below
+	if( ( panel_type == "compact" || panel_type == "labels-narrow" ) 
+		&& display_type == "numbers" )
+	{
+		int lpad = 12;
+		//int lpad = 0;
+		const std::string divider = "|";
+		std::string test_title = "test title";
+		int tcolumns = 4;
+		std::string test1 = "<color_green>4%</color>";
+		std::string test2 = "<color_light_gray>42%</color>";
+		std::string test3 = "<color_magenta>420%</color>";
+		std::string test4 = "<color_light_blue>42000</color>";
+		std::vector<std::string> tdata(16);
+		for (int i = 0; i < 16; i+=4)
+		{
+			tdata[i] = test1;
+		}
+		for (int i = 1; i < 16; i+=4)
+		{
+			tdata[i] = test2;
+		}
+		for (int i = 2; i < 16; i+=4)
+		{
+			tdata[i] = test3;
+		}
+		for (int i = 3; i < 16; i+=4)
+		{
+			tdata[i] = test4;
+		}
+		right_print( w, line_number++, 1, col,
+		string_format( _( "<color_green>Great</color> - <color_light_gray>Normal</color>"
+					 " - <color_magenta>Graze</color> - <color_light_blue>Moves</color>" ) ) );
+		for( int i = 0; i < window_width; i++ ) {
+			mvwprintw( w, point( i + 1, line_number ), "-" );
+		}
+		insert_right_table( w, lpad, ++line_number, tcolumns, c_light_gray, divider, tdata );
+		std::string label = _( "Current:" );
+		std::string label2 = _( "Regular:" );
+		std::string label3 = _( "Careful:" );
+		std::string label4 = _( "Precise:" );
+		mvwprintw( w, point( 1, line_number++ ), "%s", label );
+		mvwprintw( w, point( 1, line_number++ ), "%s", label2 );
+		mvwprintw( w, point( 1, line_number++ ), "%s", label3 );
+		mvwprintw( w, point( 1, line_number++ ), "%s", label4 );
+		/*line_number += 
+		for( int i = 0; i < window_width; i++ ) {
+			mvwprintw( w, point( i + 1, line_number ), "1" );
+		}*/
+		//end test stuff
+	}
     return line_number;
 }
 
@@ -1321,9 +1379,7 @@ std::vector<tripoint> target_handler::target_ui( player &pc, target_mode mode,
         // Cover up more low-value ui elements if we're tight on space.
         height = 25;
     }
-    // Call accuracy display type to exclude "Numbers" style
-    std::string display_type = get_option<std::string>( "ACCURACY_DISPLAY" );
-    if( ( panel_type == "compact" || panel_type == "labels-narrow" ) && display_type != "numbers" ) {
+    if( panel_type == "compact" || panel_type == "labels-narrow" ) {
         width = 34;
     }
     catacurses::window w_target = catacurses::newwin( height, width, point( TERMX - width, top ) );
@@ -1465,8 +1521,7 @@ std::vector<tripoint> target_handler::target_ui( player &pc, target_mode mode,
                 g->draw_line( dst, center, ret_this_zlevel );
 
                 // Print to target window
-                if( ( panel_type == "compact" || panel_type == "labels-narrow" )
-                    && display_type != "numbers" ) {
+                if( panel_type == "compact" || panel_type == "labels-narrow" ) {
                     mvwprintw( w_target, point( 1, line_number++ ), _( "Range: %d/%d Elevation: %d" ),
                                rl_dist( src, dst ), range, relative_elevation );
                     mvwprintw( w_target, point( 1, line_number++ ), _( "Targets: %d" ), t.size() );
@@ -1475,8 +1530,7 @@ std::vector<tripoint> target_handler::target_ui( player &pc, target_mode mode,
                                "Targets: %d" ), range, relative_elevation, t.size() );
                 }
             } else {
-                if( ( panel_type == "compact" || panel_type == "labels-narrow" )
-                    && display_type != "numbers" ) {
+                if( panel_type == "compact" || panel_type == "labels-narrow" ) {
                     mvwprintw( w_target, point( 1, line_number++ ), _( "Range: %d/%d Elevation: %d" ),
                                rl_dist( src, dst ), range, relative_elevation );
                     mvwprintw( w_target, point( 1, line_number++ ), _( "Targets: %d" ), t.size() );
