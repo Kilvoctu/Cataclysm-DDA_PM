@@ -19,6 +19,7 @@
 #include "debug.h"
 #include "filesystem.h"
 #include "game.h"
+#include "gpkey.h"
 #include "help.h"
 #include "ime.h"
 #include "json.h"
@@ -623,6 +624,7 @@ void input_context::clear_conflicting_keybindings( const input_event &event )
 const std::string CATA_ERROR = "ERROR";
 const std::string ANY_INPUT = "ANY_INPUT";
 const std::string HELP_KEYBINDINGS = "HELP_KEYBINDINGS";
+const std::string HELP_GAMEPAD = "HELP_GAMEPAD";
 const std::string COORDINATE = "COORDINATE";
 const std::string TIMEOUT = "TIMEOUT";
 
@@ -876,6 +878,14 @@ const std::string &input_context::handle_input( const int timeout )
             result = &HELP_KEYBINDINGS;
             break;
         }
+		// Gamepad keybinds
+        if( action == "HELP_GAMEPAD" ) {
+            inp_mngr.reset_timeout();
+            display_gamepad_menu();
+            inp_mngr.set_timeout( timeout );
+            result = &HELP_GAMEPAD;
+            break;
+        }
 
         if( next_action.type == CATA_INPUT_MOUSE ) {
             if( !handling_coordinate_input && action == CATA_ERROR ) {
@@ -905,6 +915,23 @@ const std::string &input_context::handle_input( const int timeout )
     }
     inp_mngr.set_timeout( old_timeout );
     return *result;
+}
+
+std::vector<tripoint> display_gamepad_menu( )
+{
+    std::vector<tripoint> ret;
+
+    int maxwidth = max( FULL_SCREEN_WIDTH, TERMX );
+    int width = min( 80, maxwidth );
+    int maxheight = max( FULL_SCREEN_HEIGHT, TERMY );
+	int top = 1;
+
+    catacurses::window w = catacurses::newwin( maxheight - 2, width - 2,
+                                point( maxwidth / 2 - width / 2, top ) );
+
+    std::vector<std::string> filtered_registered_actions( registered_buttons );		
+	display_table( w, _("Gamepad Controls"), 3, filtered_registered_actions );
+	return ret;
 }
 
 void input_context::register_directions()

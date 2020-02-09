@@ -509,6 +509,12 @@
   },
   {
     "type": "keybinding",
+    "id": "HELP_GAMEPAD",
+    "name": "Display PS3 buttonbinds",
+    "bindings": [ { "input_method": "keyboard", "key": "]" } ]
+  },
+  {
+    "type": "keybinding",
     "id": "FILTER",
     "name": "Filter",
     "bindings": [
