@@ -878,7 +878,7 @@ const std::string &input_context::handle_input( const int timeout )
             result = &HELP_KEYBINDINGS;
             break;
         }
-		// Gamepad keybinds
+        // Gamepad keybinds
         if( action == "HELP_GAMEPAD" ) {
             inp_mngr.reset_timeout();
             display_gamepad_menu();
@@ -924,14 +924,14 @@ std::vector<tripoint> display_gamepad_menu( )
     int maxwidth = max( FULL_SCREEN_WIDTH, TERMX );
     int width = min( 80, maxwidth );
     int maxheight = max( FULL_SCREEN_HEIGHT, TERMY );
-	int top = 1;
+    int top = 1;
 
     catacurses::window w = catacurses::newwin( maxheight - 2, width - 2,
-                                point( maxwidth / 2 - width / 2, top ) );
+                           point( maxwidth / 2 - width / 2, top ) );
 
-    std::vector<std::string> filtered_registered_actions( registered_buttons );		
-	display_table( w, _("Gamepad Controls"), 3, filtered_registered_actions );
-	return ret;
+    std::vector<std::string> filtered_registered_actions( registered_buttons );
+    display_table( w, _( "Gamepad Controls" ), 2, filtered_registered_actions );
+    return ret;
 }
 
 void input_context::register_directions()
