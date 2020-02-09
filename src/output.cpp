@@ -1817,16 +1817,21 @@ void display_table( const catacurses::window &w, const std::string &title, int c
  * @param columns Number of columns. Can be 1.
  * @param nc_color &FG Default color of table text.
  * @param divider To insert a character separating table entries. Can be blank.
+ * @param r_align true for right aligned, false for left aligned.
  * @param data Text data to fill.
  * Make sure each entry of the data vector fits into one cell, including divider if any.
  */
-void insert_right_table( const catacurses::window &w, int pad, int line, int columns,
-                         const nc_color &FG, const std::string &divider, const std::vector<std::string> &data )
+void insert_table( const catacurses::window &w, int pad, int line, int columns,
+                         const nc_color &FG, const std::string &divider, bool r_align, 
+						 const std::vector<std::string> &data )
 {
     const int width = getmaxx( w );
     const int rows = getmaxy( w );
-    const int col_width = ( ( width - pad ) / columns ) + utf8_width( divider ) ;
-    int indent = ( col_width * columns ) + 1; // 1 for right window border
+    const int col_width = ( ( width - pad ) / columns );// + utf8_width( divider ) ;
+	int indent = 1;  // 1 for right window border
+	if (r_align) {
+		indent = ( col_width * columns ) + 1;
+	} 
     int div = columns - 1;
     int offset = 0;
 
@@ -1839,19 +1844,32 @@ void insert_right_table( const catacurses::window &w, int pad, int line, int col
             break;
         }
         int y = line + ( i / columns );
-        indent -= col_width;
+		if (r_align) {
+		indent -= col_width;
+		}
         if( div != 0 ) {
-            right_print( w, y, indent - utf8_width( divider ), FG, divider );
-			//fold_and_print_from( w, point( indent - utf8_width( divider ), y ), utf8_width( divider ), 0, FG, divider );
+			if (r_align) {
+				right_print( w, y, indent - utf8_width( divider ), FG, divider );
+			} else {
+				fold_and_print_from( w, point( indent - utf8_width( divider ), y ), utf8_width( divider ), 0, FG, divider );
+			}
             div--;
         } else {
             div = columns - 1;
         }
-        right_print( w, y, indent, c_white, data[i + offset * columns] );
-		//fold_and_print_from( w, point( indent, y ), col_width, 0, c_white, data[i + offset * columns] );
-        if( indent == 1 ) {
-            indent = ( col_width * columns ) + 1;
-        }
+		
+		if (r_align) {
+			right_print( w, y, indent, c_white, data[i + offset * columns] );
+			if( indent == 1 ) {
+				indent = ( col_width * columns ) + 1;
+			}
+		} else {
+			fold_and_print_from( w, point( indent, y ), col_width, 0, c_white, data[i + offset * columns] );	
+			indent += col_width;
+			if( indent == ( col_width * columns ) + 1 ) {
+				indent = 1;
+			}
+		}
     }
     wattroff( w, FG );
 }

@@ -1091,8 +1091,8 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
 	if( ( panel_type == "compact" || panel_type == "labels-narrow" ) 
 		&& display_type == "numbers" )
 	{
-		int lpad = 12;
-		//int lpad = 0;
+		//int lpad = 12;
+		int lpad = 0;
 		const std::string divider = "|";
 		std::string test_title = "test title";
 		int tcolumns = 4;
@@ -1123,15 +1123,19 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
 		for( int i = 0; i < window_width; i++ ) {
 			mvwprintw( w, point( i + 1, line_number ), "-" );
 		}
-		insert_right_table( w, lpad, ++line_number, tcolumns, c_light_gray, divider, tdata );
-		std::string label = _( "Current:" );
+		insert_table( w, lpad, ++line_number, tcolumns, c_light_gray, divider, true, tdata );
+		line_number = line_number + 4;
+		insert_table( w, lpad, line_number, tcolumns, c_light_gray, divider, false, tdata );
+		line_number = line_number + 4;
+		mvwprintw( w, point( 1, line_number ), "alignment test" );
+		/*std::string label = _( "Current:" );
 		std::string label2 = _( "Regular:" );
 		std::string label3 = _( "Careful:" );
 		std::string label4 = _( "Precise:" );
 		mvwprintw( w, point( 1, line_number++ ), "%s", label );
 		mvwprintw( w, point( 1, line_number++ ), "%s", label2 );
 		mvwprintw( w, point( 1, line_number++ ), "%s", label3 );
-		mvwprintw( w, point( 1, line_number++ ), "%s", label4 );
+		mvwprintw( w, point( 1, line_number++ ), "%s", label4 );*/
 		/*line_number += 
 		for( int i = 0; i < window_width; i++ ) {
 			mvwprintw( w, point( i + 1, line_number ), "1" );
