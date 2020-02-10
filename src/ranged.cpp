@@ -978,6 +978,9 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
         window_width -= bars_pad;
     }
 
+    std::string label_m = _( "Moves" );
+    std::vector<std::string> t_aims( 4 ), t_confidence( 16 );
+    int aim_iter = 0, test_iter = 0;
     nc_color col = c_dark_gray;
 
     std::vector<aim_type> aim_types;
@@ -1009,19 +1012,29 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
         }
         line_number++;
     }
+    if( ( panel_type == "compact" || panel_type == "labels-narrow" ) && display_type == "numbers" ) {
+        std::string symbols;
+        for( const confidence_rating &cr : confidence_config ) {
+            std::string label = pgettext( "aim_confidence", cr.label.c_str() );
+            symbols += string_format( "<color_%s>%s</color> - ", cr.color, label );
+        }
+        symbols += string_format( "<color_light_blue>%s</color>", label_m );
+        print_colored_text( w, point( 1, line_number ), col, col, symbols );
+        line_number++;
+        for( int i = 0; i < window_width; i++ ) {
+            mvwprintw( w, point( i + 1, line_number ), "-" );
+        }
+    }
 
     const auto front_or = [&]( const std::string & s, const char fallback ) {
         const auto keys = ctxt.keys_bound_to( s );
         return keys.empty() ? fallback : keys.front();
     };
 
-    std::vector<std::string> t_aims( 4 ), t_labels( 4 );
-    int aim_iter = 0;
     for( const aim_type &type : aim_types ) {
         dispersion_sources current_dispersion = dispersion;
         int threshold = MAX_RECOIL;
         std::string label = _( "Current" );
-        std::string label_m = _( "Moves" );
         std::string label_a = _( "Aim" );
         if( type.has_threshold ) {
             label = type.name;
@@ -1042,8 +1055,8 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
         auto hotkey = front_or( type.action.empty() ? "FIRE" : type.action, ' ' );
         if( panel_type == "compact" || panel_type == "labels-narrow" ) {
             if( display_type == "numbers" ) {
-                // Populates aim types.
                 t_aims[aim_iter] = string_format( "<color_dark_gray>%s:</color>", label );
+                t_confidence[( aim_iter * 4 ) + 3] = string_format( "<color_light_blue>%d</color>", moves_to_fire );
             } else {
                 print_colored_text( w, point( 1, line_number ), col, col, string_format( _( "%s %s:" ), label,
                                     label_a ) );
@@ -1061,14 +1074,16 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
 
         if( display_type == "numbers" ) {
             if( panel_type == "compact" || panel_type == "labels-narrow" ) {
-                // aim confidence and calculate numbers
-                std::string color_test = ( confidence_config[aim_iter] ).color;
-                std::string label_test = ( confidence_config[aim_iter] ).label;
-
-                if( aim_iter < 3 ) {
-                    t_labels[aim_iter] = string_format( "<color_%s>%s</color>", color_test, label_test );
+                int last_chance = 0;
+                for( const confidence_rating &cr : confidence_config ) {
+                    int chance = std::min<int>( 100, 100.0 * ( cr.aim_level ) * confidence ) - last_chance;
+                    last_chance += chance;
+                    t_confidence[test_iter] = string_format( "<color_%s>%3d%%</color>", cr.color, chance );
+                    test_iter++;
+                    if( test_iter == ( aim_iter * 4 ) + 3 ) {
+                        test_iter++;
+                    }
                 }
-                t_labels[3] = string_format( "<color_light_blue>%s</color>", label_m );
                 aim_iter++;
             } else {
                 int last_chance = 0;
@@ -1098,39 +1113,12 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
             print_colored_text( w, point( 1, line_number++ ), col, col, confidence_bar );
         }
     }
-
     // Draw tables for compact Numbers display
     if( ( panel_type == "compact" || panel_type == "labels-narrow" )
         && display_type == "numbers" ) {
-        int lpad = 10;
-        const std::string divider = " - ";
-        int tcolumns = 4;
-
-        // temp filler
-        std::string test1 = "<color_green>4%</color>";
-        std::string test2 = "<color_light_gray>42%</color>";
-        std::string test3 = "<color_magenta>420%</color>";
-        std::string test4 = "<color_light_blue>420</color>";
-        std::vector<std::string> t_confidence( 16 );
-        for( int i = 0; i < 16; i += 4 ) {
-            t_confidence[i] = test1;
-        }
-        for( int i = 1; i < 16; i += 4 ) {
-            t_confidence[i] = test2;
-        }
-        for( int i = 2; i < 16; i += 4 ) {
-            t_confidence[i] = test3;
-        }
-        for( int i = 3; i < 16; i += 4 ) {
-            t_confidence[i] = test4;
-        }
-        //end temp filler
-
-        insert_table( w, 0, line_number++, tcolumns, c_light_gray, divider, true, t_labels );
-        for( int i = 0; i < window_width; i++ ) {
-            mvwprintw( w, point( i + 1, line_number ), "-" );
-        }
-        insert_table( w, lpad, ++line_number, tcolumns, c_light_gray, "|", true, t_confidence );
+        const std::string divider = "|";
+        int left_pad = 10, columns = 4;
+        insert_table( w, left_pad, ++line_number, columns, c_light_gray, divider, true, t_confidence );
         insert_table( w, 0, line_number, 1, c_light_gray, "", false, t_aims );
         line_number = line_number + 4; // 4 to account for the tables
     }
