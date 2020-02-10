@@ -1015,11 +1015,14 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
         return keys.empty() ? fallback : keys.front();
     };
 
+    std::vector<std::string> t_aims( 4 ), t_labels( 4 );
+    int aim_iter = 0;
     for( const aim_type &type : aim_types ) {
         dispersion_sources current_dispersion = dispersion;
         int threshold = MAX_RECOIL;
         std::string label = _( "Current" );
-        std::string aim_l = _( "Aim" );
+        std::string label_m = _( "Moves" );
+        std::string label_a = _( "Aim" );
         if( type.has_threshold ) {
             label = type.name;
             threshold = type.threshold;
@@ -1038,40 +1041,48 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
 
         auto hotkey = front_or( type.action.empty() ? "FIRE" : type.action, ' ' );
         if( panel_type == "compact" || panel_type == "labels-narrow" ) {
-			if( display_type == "numbers" ) {
-				// Will be handled outside the for loop.
-			} else {
-            print_colored_text( w, point( 1, line_number ), col, col, string_format( _( "%s %s:" ), label,
-                                aim_l ) );
-            right_print( w, line_number++, 1, c_light_blue, _( "Moves" ) );
-            right_print( w, line_number, 1, c_light_blue, string_format( "%d", moves_to_fire ) );
-			}
+            if( display_type == "numbers" ) {
+                // Populates aim types.
+                t_aims[aim_iter] = string_format( "<color_dark_gray>%s:</color>", label );
+            } else {
+                print_colored_text( w, point( 1, line_number ), col, col, string_format( _( "%s %s:" ), label,
+                                    label_a ) );
+                right_print( w, line_number++, 1, c_light_blue, label_m );
+                right_print( w, line_number, 1, c_light_blue, string_format( "%d", moves_to_fire ) );
+            }
         } else {
             print_colored_text( w, point( 1, line_number++ ), col, col,
                                 string_format( _( "<color_white>[%s]</color> %s %s: Moves to fire: "
                                                   "<color_light_blue>%d</color>" ),
-                                               hotkey, label, aim_l, moves_to_fire ) );
+                                               hotkey, label, label_a, moves_to_fire ) );
         }
 
         double confidence = confidence_estimate( range, target_size, current_dispersion );
 
         if( display_type == "numbers" ) {
-			if( panel_type == "compact" || panel_type == "labels-narrow" )
-			{   
-				// Will be handled outside the for loop.
-			} else {
-            int last_chance = 0;
-            std::string confidence_s = enumerate_as_string( confidence_config.begin(), confidence_config.end(),
-            [&]( const confidence_rating & config ) {
-                // TODO: Consider not printing 0 chances, but only if you can print something (at least miss 100% or so)
-                int chance = std::min<int>( 100, 100.0 * ( config.aim_level * confidence ) ) - last_chance;
-                last_chance += chance;
-                return string_format( "%s: <color_%s>%3d%%</color>", pgettext( "aim_confidence",
-                                      config.label.c_str() ), config.color, chance );
-            }, enumeration_conjunction::none );
-            line_number += fold_and_print_from( w, point( 1, line_number ), window_width, 0,
-                                                c_dark_gray, confidence_s );
-			}
+            if( panel_type == "compact" || panel_type == "labels-narrow" ) {
+                // aim confidence and calculate numbers
+                std::string color_test = ( confidence_config[aim_iter] ).color;
+                std::string label_test = ( confidence_config[aim_iter] ).label;
+
+                if( aim_iter < 3 ) {
+                    t_labels[aim_iter] = string_format( "<color_%s>%s</color>", color_test, label_test );
+                }
+                t_labels[3] = string_format( "<color_light_blue>%s</color>", label_m );
+                aim_iter++;
+            } else {
+                int last_chance = 0;
+                std::string confidence_s = enumerate_as_string( confidence_config.begin(), confidence_config.end(),
+                [&]( const confidence_rating & config ) {
+                    // TODO: Consider not printing 0 chances, but only if you can print something (at least miss 100% or so)
+                    int chance = std::min<int>( 100, 100.0 * ( config.aim_level * confidence ) ) - last_chance;
+                    last_chance += chance;
+                    return string_format( "%s: <color_%s>%3d%%</color>", pgettext( "aim_confidence",
+                                          config.label.c_str() ), config.color, chance );
+                }, enumeration_conjunction::none );
+                line_number += fold_and_print_from( w, point( 1, line_number ), window_width, 0,
+                                                    c_dark_gray, confidence_s );
+            }
         } else {
             std::vector<std::tuple<double, char, std::string>> confidence_ratings;
             std::transform( confidence_config.begin(), confidence_config.end(),
@@ -1087,61 +1098,42 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
             print_colored_text( w, point( 1, line_number++ ), col, col, confidence_bar );
         }
     }
-		//test stuff below
-	if( ( panel_type == "compact" || panel_type == "labels-narrow" ) 
-		&& display_type == "numbers" )
-	{
-		//int lpad = 12;
-		int lpad = 0;
-		const std::string divider = "|";
-		std::string test_title = "test title";
-		int tcolumns = 4;
-		std::string test1 = "<color_green>4%</color>";
-		std::string test2 = "<color_light_gray>42%</color>";
-		std::string test3 = "<color_magenta>420%</color>";
-		std::string test4 = "<color_light_blue>42000</color>";
-		std::vector<std::string> tdata(16);
-		for (int i = 0; i < 16; i+=4)
-		{
-			tdata[i] = test1;
-		}
-		for (int i = 1; i < 16; i+=4)
-		{
-			tdata[i] = test2;
-		}
-		for (int i = 2; i < 16; i+=4)
-		{
-			tdata[i] = test3;
-		}
-		for (int i = 3; i < 16; i+=4)
-		{
-			tdata[i] = test4;
-		}
-		right_print( w, line_number++, 1, col,
-		string_format( _( "<color_green>Great</color> - <color_light_gray>Normal</color>"
-					 " - <color_magenta>Graze</color> - <color_light_blue>Moves</color>" ) ) );
-		for( int i = 0; i < window_width; i++ ) {
-			mvwprintw( w, point( i + 1, line_number ), "-" );
-		}
-		insert_table( w, lpad, ++line_number, tcolumns, c_light_gray, divider, true, tdata );
-		line_number = line_number + 4;
-		insert_table( w, lpad, line_number, tcolumns, c_light_gray, divider, false, tdata );
-		line_number = line_number + 4;
-		mvwprintw( w, point( 1, line_number ), "alignment test" );
-		/*std::string label = _( "Current:" );
-		std::string label2 = _( "Regular:" );
-		std::string label3 = _( "Careful:" );
-		std::string label4 = _( "Precise:" );
-		mvwprintw( w, point( 1, line_number++ ), "%s", label );
-		mvwprintw( w, point( 1, line_number++ ), "%s", label2 );
-		mvwprintw( w, point( 1, line_number++ ), "%s", label3 );
-		mvwprintw( w, point( 1, line_number++ ), "%s", label4 );*/
-		/*line_number += 
-		for( int i = 0; i < window_width; i++ ) {
-			mvwprintw( w, point( i + 1, line_number ), "1" );
-		}*/
-		//end test stuff
-	}
+
+    // Draw tables for compact Numbers display
+    if( ( panel_type == "compact" || panel_type == "labels-narrow" )
+        && display_type == "numbers" ) {
+        int lpad = 10;
+        const std::string divider = " - ";
+        int tcolumns = 4;
+
+        // temp filler
+        std::string test1 = "<color_green>4%</color>";
+        std::string test2 = "<color_light_gray>42%</color>";
+        std::string test3 = "<color_magenta>420%</color>";
+        std::string test4 = "<color_light_blue>420</color>";
+        std::vector<std::string> t_confidence( 16 );
+        for( int i = 0; i < 16; i += 4 ) {
+            t_confidence[i] = test1;
+        }
+        for( int i = 1; i < 16; i += 4 ) {
+            t_confidence[i] = test2;
+        }
+        for( int i = 2; i < 16; i += 4 ) {
+            t_confidence[i] = test3;
+        }
+        for( int i = 3; i < 16; i += 4 ) {
+            t_confidence[i] = test4;
+        }
+        //end temp filler
+
+        insert_table( w, 0, line_number++, tcolumns, c_light_gray, divider, true, t_labels );
+        for( int i = 0; i < window_width; i++ ) {
+            mvwprintw( w, point( i + 1, line_number ), "-" );
+        }
+        insert_table( w, lpad, ++line_number, tcolumns, c_light_gray, "|", true, t_confidence );
+        insert_table( w, 0, line_number, 1, c_light_gray, "", false, t_aims );
+        line_number = line_number + 4; // 4 to account for the tables
+    }
     return line_number;
 }
 
