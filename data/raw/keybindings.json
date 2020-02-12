@@ -504,14 +504,8 @@
   {
     "type": "keybinding",
     "id": "HELP_KEYBINDINGS",
-    "name": "Display keybindings menu",
+    "name": "Display keybindings",
     "bindings": [ { "input_method": "keyboard", "key": "?" } ]
-  },
-  {
-    "type": "keybinding",
-    "id": "HELP_GAMEPAD",
-    "name": "Display PS3 buttonbinds",
-    "bindings": [ { "input_method": "keyboard", "key": "]" } ]
   },
   {
     "type": "keybinding",
@@ -783,7 +777,7 @@
     "type": "keybinding",
     "id": "TOGGLE_LAND_USE_CODES",
     "category": "OVERMAP",
-    "name": "Toggle Land Use Codes",
+    "name": "Toggle Land Use",
     "bindings": [ { "input_method": "keyboard", "key": "A" } ]
   },
   {

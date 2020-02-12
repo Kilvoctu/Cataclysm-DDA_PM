@@ -1069,7 +1069,7 @@ action_id input_context::display_menu( const bool permit_execute_action )
     legend += colorize( _( "Unbound keys" ), unbound_key ) + "\n";
     legend += colorize( _( "Keybinding active only on this screen" ), local_key ) + "\n";
     legend += colorize( _( "Keybinding active globally" ), global_key ) + "\n";
-    legend += _( "Press L1 + L2 to add global keybinding\nPress L2 + \u21D3 to add local keybinding\nHold L2 + \u21D3 to remove keybinding\n" );
+    legend += _( "Press L1+L2 to add global keybinding\nPress L2+\u2193 to add local keybinding\nHold L2+\u2193 to remove keybinding\n" );
     if( permit_execute_action ) {
         legend += _( "Press R2 to execute action\n" );
     }

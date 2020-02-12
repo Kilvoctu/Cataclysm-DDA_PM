@@ -1004,9 +1004,9 @@ void draw( const catacurses::window &w, const catacurses::window &wbar, const tr
         }
     }
 
-    mvwprintz( wbar, point( 1, 12 ), c_magenta, _( "Use movement keys to pan." ) );
-    mvwprintz( wbar, point( 1, 13 ), c_magenta, _( "Press W to preview route." ) );
-    mvwprintz( wbar, point( 1, 14 ), c_magenta, _( "Press again to confirm." ) );
+    mvwprintz( wbar, point( 1, 12 ), c_magenta, _( "Use d-pad to pan." ) );
+    mvwprintz( wbar, point( 1, 13 ), c_magenta, _( "Hold \u00D7 to preview route." ) );
+    mvwprintz( wbar, point( 1, 14 ), c_magenta, _( "Hold again to confirm." ) );
     if( inp_ctxt != nullptr ) {
         int y = 16;
 
