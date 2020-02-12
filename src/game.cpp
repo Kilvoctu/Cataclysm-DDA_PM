@@ -2524,7 +2524,6 @@ input_context get_default_mode_input_context()
     ctxt.register_action( "messages" );
     ctxt.register_action( "help" );
     ctxt.register_action( "HELP_KEYBINDINGS" );
-    ctxt.register_action( "HELP_GAMEPAD" );
     ctxt.register_action( "open_options" );
     ctxt.register_action( "open_autopickup" );
     ctxt.register_action( "open_autonotes" );

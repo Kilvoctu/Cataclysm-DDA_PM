@@ -118,10 +118,10 @@ bool dialogue_window::print_responses( const int yoffset, const std::vector<talk
         }
     }
     // Those are always available, their key bindings are fixed as well.
-    mvwprintz( d_win, point( xoffset, curline + 1 ), c_magenta, _( "Shift+L: Look at" ) );
-    mvwprintz( d_win, point( xoffset, curline + 2 ), c_magenta, _( "Shift+S: Size up stats" ) );
-    mvwprintz( d_win, point( xoffset, curline + 3 ), c_magenta, _( "Shift+Y: Yell" ) );
-    mvwprintz( d_win, point( xoffset, curline + 4 ), c_magenta, _( "Shift+O: Check opinion" ) );
+    mvwprintz( d_win, point( xoffset, curline + 1 ), c_magenta, _( "L2+\u00D7: Look at" ) );
+    mvwprintz( d_win, point( xoffset, curline + 2 ), c_magenta, _( "L2+\u25A1: Size up stats" ) );
+    mvwprintz( d_win, point( xoffset, curline + 3 ), c_magenta, _( "L2+\u25B3: Yell" ) );
+    mvwprintz( d_win, point( xoffset, curline + 4 ), c_magenta, _( "L2+\u25CB: Check opinion" ) );
     return curline > max_line; // whether there is more to print.
 }
 

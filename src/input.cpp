@@ -624,7 +624,6 @@ void input_context::clear_conflicting_keybindings( const input_event &event )
 const std::string CATA_ERROR = "ERROR";
 const std::string ANY_INPUT = "ANY_INPUT";
 const std::string HELP_KEYBINDINGS = "HELP_KEYBINDINGS";
-const std::string HELP_GAMEPAD = "HELP_GAMEPAD";
 const std::string COORDINATE = "COORDINATE";
 const std::string TIMEOUT = "TIMEOUT";
 
@@ -789,7 +788,8 @@ std::string input_context::get_desc( const std::string &action_descriptor,
     std::string rval;
     for( size_t i = 0; i < inputs_to_show.size(); ++i ) {
         for( size_t j = 0; j < inputs_to_show[i].sequence.size(); ++j ) {
-            rval += inp_mngr.get_keyname( inputs_to_show[i].sequence[j], inputs_to_show[i].type );
+            rval += convert_to_gamepad( inp_mngr.get_keyname( inputs_to_show[i].sequence[j],
+                                        inputs_to_show[i].type ) );
         }
 
         // We're generating a list separated by "," and "or"
@@ -878,14 +878,6 @@ const std::string &input_context::handle_input( const int timeout )
             result = &HELP_KEYBINDINGS;
             break;
         }
-        // Gamepad keybinds
-        if( action == "HELP_GAMEPAD" ) {
-            inp_mngr.reset_timeout();
-            display_gamepad_menu();
-            inp_mngr.set_timeout( timeout );
-            result = &HELP_GAMEPAD;
-            break;
-        }
 
         if( next_action.type == CATA_INPUT_MOUSE ) {
             if( !handling_coordinate_input && action == CATA_ERROR ) {
@@ -915,23 +907,6 @@ const std::string &input_context::handle_input( const int timeout )
     }
     inp_mngr.set_timeout( old_timeout );
     return *result;
-}
-
-std::vector<tripoint> display_gamepad_menu( )
-{
-    std::vector<tripoint> ret;
-
-    int maxwidth = max( FULL_SCREEN_WIDTH, TERMX );
-    int width = min( 80, maxwidth );
-    int maxheight = max( FULL_SCREEN_HEIGHT, TERMY );
-    int top = 1;
-
-    catacurses::window w = catacurses::newwin( maxheight - 2, width - 2,
-                           point( maxwidth / 2 - width / 2, top ) );
-
-    std::vector<std::string> filtered_registered_actions( registered_buttons );
-    display_table( w, _( "Gamepad Controls" ), 2, filtered_registered_actions );
-    return ret;
 }
 
 void input_context::register_directions()
@@ -1016,7 +991,7 @@ cata::optional<tripoint> input_context::get_direction( const std::string &action
 // alternative hotkeys, which mustn't be included so that the hardcoded
 // hotkeys do not show up beside entries within the window.
 const std::string display_help_hotkeys =
-    "abcdefghijkpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:;'\",/<>?!@#$%^&*()_[]\\{}|`~";
+    "0123456789abcdefghijkpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ:;'\",/<>?!@#$%^&*()_[]\\{}|`~";
 
 action_id input_context::display_menu( const bool permit_execute_action )
 {
@@ -1094,9 +1069,9 @@ action_id input_context::display_menu( const bool permit_execute_action )
     legend += colorize( _( "Unbound keys" ), unbound_key ) + "\n";
     legend += colorize( _( "Keybinding active only on this screen" ), local_key ) + "\n";
     legend += colorize( _( "Keybinding active globally" ), global_key ) + "\n";
-    legend += _( "Press - to remove keybinding\nPress + to add local keybinding\nPress = to add global keybinding\n" );
+    legend += _( "Press L1 + L2 to add global keybinding\nPress L2 + \u21D3 to add local keybinding\nHold L2 + \u21D3 to remove keybinding\n" );
     if( permit_execute_action ) {
-        legend += _( "Press . to execute action\n" );
+        legend += _( "Press R2 to execute action\n" );
     }
 
     std::vector<std::string> filtered_registered_actions = org_registered_actions;
@@ -1110,6 +1085,7 @@ action_id input_context::display_menu( const bool permit_execute_action )
         draw_scrollbar( w_help, scroll_offset, display_height,
                         filtered_registered_actions.size(), point( 0, 10 ), c_white, true );
         fold_and_print( w_help, point( 2, 1 ), legwidth, c_white, legend );
+        right_print( w_help, 1, 2, c_light_gray, "{ } = Hold" );
 
         for( size_t i = 0; i + scroll_offset < filtered_registered_actions.size() &&
              i < display_height; i++ ) {
@@ -1147,8 +1123,10 @@ action_id input_context::display_menu( const bool permit_execute_action )
             } else {
                 col = global_key;
             }
+            //Convert keyboard buttonbind to my gamepad equivalent
+            std::string to_button = convert_to_gamepad( get_desc( action_id ) );
             mvwprintz( w_help, point( 4, i + 10 ), col, "%s:", get_action_name( action_id ) );
-            mvwprintz( w_help, point( 52, i + 10 ), col, "%s", get_desc( action_id ) );
+            mvwprintz( w_help, point( 52, i + 10 ), col, "%s", to_button );
         }
 
         // spopup.query_string() will call wrefresh( w_help )
