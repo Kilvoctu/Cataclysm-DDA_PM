@@ -46,7 +46,7 @@ std::string convert_to_gamepad( const std::string keybind_in )
     } else if( keybind_in == "i" ) {
         keybind_out = gp_triangle;
     } else if( keybind_in == "j" ) {
-        keybind_out = string_format( "L2+%s", gp_left );
+        keybind_out = string_format( "{L2+%s}", gp_left );
     } else if( keybind_in == "k" ) {
         keybind_out = "{L2+R2}";
     } else if( keybind_in == "l" ) {
