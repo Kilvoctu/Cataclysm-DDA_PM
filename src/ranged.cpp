@@ -1013,14 +1013,14 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
         line_number++;
     }
     if( ( panel_type == "compact" || panel_type == "labels-narrow" ) && display_type == "numbers" ) {
-        std::string symbols;
-        for( const confidence_rating &cr : confidence_config ) {
-            std::string label = pgettext( "aim_confidence", cr.label.c_str() );
-            symbols += string_format( "<color_%s>%s</color> - ", cr.color, label );
+        std::string symbols = _( "<color_green>Great</color> - <color_light_gray>Normal</color>"
+                                 " - <color_magenta>Graze</color> - <color_light_blue>Moves</color>" );
+        fold_and_print( w, point( 1, line_number++ ), window_width + bars_pad,
+                        c_dark_gray, symbols );
+        int len = utf8_width( symbols ) - 96; // 96 to subtract color codes
+        if( len > window_width + bars_pad ) {
+            line_number++;
         }
-        symbols += string_format( "<color_light_blue>%s</color>", label_m );
-        print_colored_text( w, point( 1, line_number ), col, col, symbols );
-        line_number++;
         for( int i = 0; i < window_width; i++ ) {
             mvwprintw( w, point( i + 1, line_number ), "-" );
         }
