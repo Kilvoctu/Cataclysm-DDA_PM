@@ -980,7 +980,7 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
 
     std::string label_m = _( "Moves" );
     std::vector<std::string> t_aims( 4 ), t_confidence( 16 );
-    int aim_iter = 0, test_iter = 0;
+    int aim_iter = 0, conf_iter = 0;
     nc_color col = c_dark_gray;
 
     std::vector<aim_type> aim_types;
@@ -1078,10 +1078,10 @@ static int print_ranged_chance( const player &p, const catacurses::window &w, in
                 for( const confidence_rating &cr : confidence_config ) {
                     int chance = std::min<int>( 100, 100.0 * ( cr.aim_level ) * confidence ) - last_chance;
                     last_chance += chance;
-                    t_confidence[test_iter] = string_format( "<color_%s>%3d%%</color>", cr.color, chance );
-                    test_iter++;
-                    if( test_iter == ( aim_iter * 4 ) + 3 ) {
-                        test_iter++;
+                    t_confidence[conf_iter] = string_format( "<color_%s>%3d%%</color>", cr.color, chance );
+                    conf_iter++;
+                    if( conf_iter == ( aim_iter * 4 ) + 3 ) {
+                        conf_iter++;
                     }
                 }
                 aim_iter++;
