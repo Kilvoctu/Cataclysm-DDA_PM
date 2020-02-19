@@ -1418,7 +1418,7 @@ std::string input_context::press_x( const std::string &action_id, const std::str
     std::string keyed = key_bound_pre;
     for( size_t j = 0; j < events.size(); j++ ) {
         for( size_t k = 0; k < events[j].sequence.size(); ++k ) {
-            keyed += inp_mngr.get_keyname( events[j].sequence[k], events[j].type );
+            keyed += convert_to_gamepad( inp_mngr.get_keyname( events[j].sequence[k], events[j].type ) );
         }
         if( j + 1 < events.size() ) {
             keyed += _( " or " );
