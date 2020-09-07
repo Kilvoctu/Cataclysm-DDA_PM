@@ -2143,7 +2143,7 @@ void target_ui::init_window_and_input()
         }
     }
 
-    w_target = catacurses::newwin( height, width, point( TERMX - width, top ) );
+    w_target = catacurses::newwin( height, width, point( TERMX - TERMX, top ) );
 
     ctxt = input_context( "TARGET" );
     ctxt.set_iso( true );
