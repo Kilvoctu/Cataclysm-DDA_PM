@@ -6971,6 +6971,7 @@ static void zones_manager_shortcuts( const catacurses::window &w_info, faction_i
                                      bool show_all_zones, const input_context &ctxt, const int width )
 {
     werase( w_info );
+	show_all_zones = false;
 
     std::vector<std::string> keybinding_tips;
     std::vector<std::string> act_descs;
@@ -8453,7 +8454,7 @@ void game::reset_item_list_state( const catacurses::window &window, int height,
     mvwaddch( window, point( width - 1, TERMY - height - 1 ), LINE_XOXX ); // -|
     wattroff( window, c_light_gray );
 
-    mvwprintz( window, point( 2, 0 ), c_light_green, "<Tab> " );
+    mvwprintz( window, point( 2, 0 ), c_light_green, "R\u2B8A " );
     wprintz( window, c_white, _( "Items" ) );
 
     std::string sSort;
@@ -8461,19 +8462,19 @@ void game::reset_item_list_state( const catacurses::window &window, int height,
         // Sort by distance only
         case list_item_sort_mode::count:
         case list_item_sort_mode::DISTANCE:
-            sSort = _( "<s>ort: dist" );
+            sSort = _( "L3: Distance" );
             break;
         // Sort by name only
         case list_item_sort_mode::NAME:
-            sSort = _( "<s>ort: name" );
+            sSort = _( "L3: Name" );
             break;
         // Group by category, sort by distance
         case list_item_sort_mode::CATEGORY_DISTANCE:
-            sSort = _( "<s>ort: cat-dist" );
+            sSort = _( "L3: Category-Distance" );
             break;
         // Group by category, sort by item name
         case list_item_sort_mode::CATEGORY_NAME:
-            sSort = _( "<s>ort: cat-name" );
+            sSort = _( "L3: Category-Name" );
             break;
     }
 
@@ -8484,14 +8485,12 @@ void game::reset_item_list_state( const catacurses::window &window, int height,
     std::vector<std::string> tokens;
     tokens.reserve( 5 + ( !sFilter.empty() ? 1 : 0 ) );
     if( !sFilter.empty() ) {
-        tokens.emplace_back( _( "<R>eset" ) );
+        tokens.emplace_back( _( "<R3>-Reset" ) );
     }
 
-    tokens.emplace_back( _( "<E>xamine" ) );
-    tokens.emplace_back( _( "<C>ompare" ) );
-    tokens.emplace_back( _( "<F>ilter" ) );
-    tokens.emplace_back( _( "<+/->Priority" ) );
-    tokens.emplace_back( _( "<T>ravel to" ) );
+    tokens.emplace_back( _( "<X>-Examine" ) );
+    tokens.emplace_back( _( "<Y>-Compare" ) );
+    tokens.emplace_back( _( "<A>-Travel to" ) );
 
     int gaps = tokens.size() + 1;
     letters = 0;
@@ -9242,7 +9241,7 @@ game::vmenu_ret game::list_monsters( const std::vector<Creature *> &monster_list
             draw_custom_border( w_monsters_border, 1, 1, 1, 1, 1, 1, LINE_XOXO, LINE_XOXO );
             draw_custom_border( w_monster_info_border, 1, 1, 1, 1, LINE_XXXO, LINE_XOXX, 1, 1 );
 
-            mvwprintz( w_monsters_border, point( 2, 0 ), c_light_green, "<Tab> " );
+            mvwprintz( w_monsters_border, point( 2, 0 ), c_light_green, "R\u2B8A " );
             wprintz( w_monsters_border, c_white, _( "Monsters" ) );
 
             if( monster_list.empty() ) {
@@ -9325,9 +9324,9 @@ game::vmenu_ret game::list_monsters( const std::vector<Creature *> &monster_list
                         monNameSelected = is_npc ? get_safemode().npc_type_name() : m->name();
 
                         if( get_safemode().has_rule( monNameSelected, Creature::Attitude::ANY ) ) {
-                            sSafemode = _( "<R>emove from safe mode blacklist" );
+                            sSafemode = _( "<Y>-Remove from safe mode blacklist" );
                         } else {
-                            sSafemode = _( "<A>dd to safe mode blacklist" );
+                            sSafemode = _( "<A>-Add to safe mode blacklist" );
                         }
                     }
 
@@ -9402,9 +9401,9 @@ game::vmenu_ret game::list_monsters( const std::vector<Creature *> &monster_list
 
                 if( !get_safemode().empty() ) {
                     if( get_safemode().has_rule( monNameSelected, Creature::Attitude::ANY ) ) {
-                        sSafemode = _( "<R>emove from safe mode blacklist" );
+                        sSafemode = _( "<Y>-Remove from safe mode blacklist" );
                     } else {
-                        sSafemode = _( "<A>dd to safe mode blacklist" );
+                        sSafemode = _( "<A>-Add to safe mode blacklist" );
                     }
 
                     shortcut_print( w_monsters, point( 2, getmaxy( w_monsters ) - 1 ),
