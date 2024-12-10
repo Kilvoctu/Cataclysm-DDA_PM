@@ -341,16 +341,24 @@ std::wstring utf8_to_wstr( const std::string &str )
 {
 #if defined(_WIN32)
     int sz = MultiByteToWideChar( CP_UTF8, 0, str.c_str(), -1, nullptr, 0 ) + 1;
+    if ( sz == 0 ) {
+        debugmsg( "Failed to convert string to wide string (UTF-8 to wchar). Input: %s", str.c_str() );
+        return L""; // Return an empty string on failure
+    }
     std::wstring wstr( sz, '\0' );
     MultiByteToWideChar( CP_UTF8, 0, str.c_str(), -1, wstr.data(), sz );
     strip_trailing_nulls( wstr );
     return wstr;
 #else
-    std::size_t sz = std::mbstowcs( nullptr, str.c_str(), 0 );
-    cata_assert( sz != static_cast<size_t>( -1 ) );
-    std::wstring wstr( sz + 1, '\0' );
-    [[maybe_unused]] const size_t converted = std::mbstowcs( wstr.data(), str.c_str(), sz );
-    cata_assert( converted == sz );
+    std::mbstate_t state = std::mbstate_t(); // Initialize to zero
+    const char *src = str.c_str();
+    std::size_t len = std::mbsrtowcs( nullptr, &src, 0, &state );
+    if ( len == static_cast<size_t>( -1 ) ) {
+        debugmsg( "Invalid UTF-8 sequence encountered. Input: %s", str.c_str() );
+        return L""; // Return an empty string on invalid input
+    }
+    std::wstring wstr( len, L'\0' );
+    std::mbsrtowcs( &wstr[0], &src, len, &state );
     strip_trailing_nulls( wstr );
     return wstr;
 #endif
