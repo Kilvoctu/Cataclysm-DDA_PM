@@ -2891,6 +2891,13 @@ void options_manager::add_options_debug()
 
         get_option( "FOV_3D_Z_RANGE" ).setPrerequisite( "FOV_3D" );
     } );
+	
+    add_empty_line();
+
+    add( "SKIP_VERIFICATION", "debug", to_translation( "Skip verification step during loading" ),
+         to_translation( "If enabled, this skips the JSON verification step during loading.  This may give a faster loading time, but risks JSON errors not being caught until runtime." ),
+         false
+       );
 }
 
 void options_manager::add_options_android()

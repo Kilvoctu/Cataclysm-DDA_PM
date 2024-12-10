@@ -647,8 +647,8 @@ void recipe_dictionary::finalize()
 
 void recipe_dictionary::check_consistency()
 {
-    for( auto &e : recipe_dict.recipes ) {
-        recipe &r = e.second;
+    for( const auto &e : recipe_dict.recipes ) {
+        const recipe &r = e.second;
 
         if( r.category.empty() ) {
             if( !r.subcategory.empty() ) {
@@ -674,8 +674,8 @@ void recipe_dictionary::check_consistency()
         }
     }
 
-    for( auto &e : recipe_dict.recipes ) {
-        recipe &r = e.second;
+    for( const auto &e : recipe_dict.recipes ) {
+        const recipe &r = e.second;
 
         if( !r.blueprint.is_empty() && !has_update_mapgen_for( r.blueprint ) ) {
             debugmsg( "recipe %s specifies invalid construction_blueprint %s; that should be a "

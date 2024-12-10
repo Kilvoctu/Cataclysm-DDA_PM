@@ -41,7 +41,7 @@ static class json_item_substitution
     public:
         void reset();
         void load( const JsonObject &jo );
-        void check_consistency();
+        void check_consistency() const;
 
     private:
         struct trait_requirements {
@@ -734,7 +734,7 @@ void json_item_substitution::load( const JsonObject &jo )
     }
 }
 
-void json_item_substitution::check_consistency()
+void json_item_substitution::check_consistency() const
 {
     auto check_if_trait = []( const trait_id & t ) {
         if( !t.is_valid() ) {
