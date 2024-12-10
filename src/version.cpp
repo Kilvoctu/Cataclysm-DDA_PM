@@ -14,5 +14,6 @@
 
 const char *getVersionString()
 {
-    return VERSION;
+    //return VERSION;
+    return "0.H (Herbert) Stable Release PortMaster";
 }

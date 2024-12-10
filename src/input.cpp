@@ -27,6 +27,7 @@
 #include "debug.h"
 #include "filesystem.h"
 #include "game.h"
+#include "gpkey.h"
 #include "help.h"
 #include "json.h"
 #include "json_loader.h"
@@ -1106,7 +1107,7 @@ std::string input_context::get_desc( const std::string &action_descriptor,
     const std::string separator = inputs_to_show.size() > 2 ? _( ", or " ) : _( " or " );
     std::string rval;
     for( size_t i = 0; i < inputs_to_show.size(); ++i ) {
-        rval += inputs_to_show[i].long_description();
+        rval += convert_to_gamepad( inputs_to_show[i].long_description() );
 
         // We're generating a list separated by "," and "or"
         if( i + 2 == inputs_to_show.size() ) {
@@ -1129,6 +1130,9 @@ std::string input_context::get_desc(
         //~ keybinding description for anykey
         return string_format( separate_fmt, pgettext( "keybinding", "any" ), text );
     }
+	if( action_descriptor == "NO_INPUT" ) {
+        return string_format( inline_fmt, pgettext( "keybinding", "any" ), text );
+    }
 
     const auto &events = inp_mngr.get_input_for_action( action_descriptor, category );
 
@@ -1143,8 +1147,7 @@ std::string input_context::get_desc(
                     const std::string key = utf32_to_utf8( ch );
                     const int pos = ci_find_substr( text, key );
                     if( pos >= 0 ) {
-                        return string_format( inline_fmt, text.substr( 0, pos ),
-                                              key, text.substr( pos + key.size() ) );
+                        return string_format( separate_fmt, get_desc( action_descriptor, 1, evt_filter ), text );
                     }
                 }
             }
@@ -1346,7 +1349,7 @@ std::optional<tripoint> input_context::get_direction( const std::string &action 
 // alternative hotkeys, which mustn't be included so that the hardcoded
 // hotkeys do not show up beside entries within the window.
 static const std::string display_help_hotkeys =
-    "abcdefghijkpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:;'\",/<>?!@#$%^&*()_[]\\{}|`~";
+    "defguvwxyzlpmi";
 
 namespace
 {
@@ -1489,15 +1492,15 @@ action_id input_context::display_menu( const bool permit_execute_action )
         };
         right_print( w_help, 4, 2, item_color( static_cast<int>( kb_btn_idx::remove ),
                                                int( highlighted_btn_index ) ),
-                     string_format( _( "<[<color_yellow>%c</color>] Remove keybinding>" ),
+                     string_format( _( "<[<color_yellow>\u23F4+R1</color>] Remove keybinding>" ),
                                     fallback_keys.at( fallback_action::remove ) ) );
         right_print( w_help, 4, 26, item_color( static_cast<int>( kb_btn_idx::add_local ),
                                                 int( highlighted_btn_index ) ),
-                     string_format( _( "<[<color_yellow>%c</color>] Add local keybinding>" ),
+                     string_format( _( "<[<color_yellow>\u23F4+R2</color>] Add local keybinding>" ),
                                     fallback_keys.at( fallback_action::add_local ) ) );
         right_print( w_help, 4, 54, item_color( static_cast<int>( kb_btn_idx::add_global ),
                                                 int( highlighted_btn_index ) ),
-                     string_format( _( "<[<color_yellow>%c</color>] Add global keybinding>" ),
+                     string_format( _( "<[<color_yellow>\u23F4+L1</color>] Add global keybinding>" ),
                                     fallback_keys.at( fallback_action::add_global ) ) );
 
         for( size_t i = 0; i + scroll_offset < filtered_registered_actions.size() &&
@@ -1931,7 +1934,7 @@ std::string input_context::press_x( const std::string &action_id,
     const std::string separator = _( " or " );
     std::string keyed = key_bound_pre;
     for( size_t j = 0; j < events.size(); j++ ) {
-        keyed += events[j].long_description();
+        keyed += convert_to_gamepad( events[j].long_description() );
 
         if( j + 1 < events.size() ) {
             keyed += separator;

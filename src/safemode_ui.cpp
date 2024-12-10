@@ -147,24 +147,23 @@ void safemode::show( const std::string &custom_name_in, bool is_safemode_in )
         wnoutrefresh( w_border );
 
         static const std::vector<std::string> hotkeys = {{
-                translate_marker( "<A>dd" ), translate_marker( "<R>emove" ),
-                translate_marker( "<C>opy" ), translate_marker( "<M>ove" ),
-                translate_marker( "<E>nable" ), translate_marker( "<D>isable" ),
-                translate_marker( "<T>est" )
+                translate_marker( "<R1>-Add" ), translate_marker( "<\u23F4>-Remove" ),
+                translate_marker( "<\u23F5>-Copy" ), translate_marker( "<M>ove" ),
+                translate_marker( "<X>-Enable" ), translate_marker( "<Y>-Disable" ),
+                translate_marker( "<R3>-Test" )
             }
         };
 
         int tmpx = 0;
         for( const std::string &hotkey : hotkeys ) {
-            tmpx += shortcut_print( w_header, point( tmpx, 0 ), c_white, c_light_green, _( hotkey ) ) + 2;
+            tmpx += shortcut_print( w_header, point( tmpx, 0 ), c_white, c_light_green, _( hotkey ) ) + 1;
         }
 
         tmpx = 0;
-        tmpx += shortcut_print( w_header, point( tmpx, 1 ), c_white, c_light_green,
-                                _( "<+-> Move up/down" ) ) + 2;
-        tmpx += shortcut_print( w_header, point( tmpx, 1 ), c_white, c_light_green,
-                                _( "<Enter>-Edit" ) ) + 2;
-        shortcut_print( w_header, point( tmpx, 1 ), c_white, c_light_green, _( "<Tab>-Switch Page" ) );
+        tmpx += shortcut_print( w_header, point( tmpx, 1 ), c_white, c_light_green, _( "<A>-Edit" ) ) + 1;
+        tmpx += shortcut_print( w_header, point( tmpx, 1 ), c_white, c_light_green, _( "<R\u2B89/\u2B8B> Move Up/Down" ) ) + 1;
+        tmpx += shortcut_print( w_header, point( tmpx, 1 ), c_white, c_light_green, _( "<L\u2B8A>-Move" ) ) + 1;
+        shortcut_print( w_header, point( tmpx, 1 ), c_white, c_light_green, _( "<R\u2B8A>-Page" ) );
 
         for( int i = 0; i < getmaxx( w_header ); i++ ) {
             mvwputch( w_header, point( i, 3 ), c_light_gray, LINE_OXOX ); // Draw line under header
@@ -178,7 +177,7 @@ void safemode::show( const std::string &custom_name_in, bool is_safemode_in )
                                 ( get_option<bool>( "SAFEMODE" ) ? c_light_green : c_light_red ), c_white,
                                 ( get_option<bool>( "SAFEMODE" ) ? _( "True" ) : _( "False" ) ) );
         locx += shortcut_print( w_header, point( locx + 1, 2 ), c_white, c_light_green, "  " );
-        locx += shortcut_print( w_header, point( locx, 2 ), c_white, c_light_green, _( "<S>witch" ) );
+        locx += shortcut_print( w_header, point( locx, 2 ), c_white, c_light_green, _( "<R2>-Switch" ) );
 
         for( auto &pos : column_pos ) {
             mvwputch( w_header, point( pos.second, 3 ), c_light_gray, LINE_OXXX ); // ^|^

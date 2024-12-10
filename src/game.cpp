@@ -6776,27 +6776,24 @@ static void zones_manager_shortcuts( const catacurses::window &w_info, faction_i
     werase( w_info );
 
     int tmpx = 1;
-    tmpx += shortcut_print( w_info, point( tmpx, 1 ), c_white, c_light_green, _( "<A>dd" ) ) + 2;
-    tmpx += shortcut_print( w_info, point( tmpx, 1 ), c_white, c_light_green, _( "<P>ersonal" ) ) + 2;
-    tmpx += shortcut_print( w_info, point( tmpx, 1 ), c_white, c_light_green, _( "<R>emove" ) ) + 2;
-    tmpx += shortcut_print( w_info, point( tmpx, 1 ), c_white, c_light_green, _( "<E>nable" ) ) + 2;
-    shortcut_print( w_info, point( tmpx, 1 ), c_white, c_light_green, _( "<D>isable" ) );
+    tmpx += shortcut_print( w_info, point( tmpx, 1 ), c_white, c_light_green, _( "<R1>-Add" ) ) + 2;
+    tmpx += shortcut_print( w_info, point( tmpx, 1 ), c_white, c_light_green, _( "<R2>-Personal" ) ) + 2;
+    tmpx += shortcut_print( w_info, point( tmpx, 1 ), c_white, c_light_green, _( "<\u23F4>-Remove" ) ) + 2;
 
-    tmpx = 1;
-    tmpx += shortcut_print( w_info, point( tmpx, 2 ), c_white, c_light_green,
-                            _( "<Z>-Enable personal" ) ) + 2;
-    shortcut_print( w_info, point( tmpx, 2 ), c_white, c_light_green,
-                    _( "<X>-Disable personal" ) );
+	tmpx = 1;
+    tmpx += shortcut_print( w_info, point( tmpx, 2 ), c_white, c_light_green, _( "<X>-Enable" ) ) + 2;
+    shortcut_print( w_info, point( tmpx, 2 ), c_white, c_light_green, _( "<Y>-Disable" ) );
 
     tmpx = 1;
     tmpx += shortcut_print( w_info, point( tmpx, 3 ), c_white, c_light_green,
-                            _( "<+-> Move up/down" ) ) + 2;
-    shortcut_print( w_info, point( tmpx, 3 ), c_white, c_light_green, _( "<Enter>-Edit" ) );
+                            _( "<L1+X>-Enable Personal" ) ) + 1;
+    shortcut_print( w_info, point( tmpx, 3 ), c_white, c_light_green,
+                            _( "<L1+Y>-Disable Personal" ) );
 
     tmpx = 1;
-    tmpx += shortcut_print( w_info, point( tmpx, 4 ), c_white, c_light_green,
-                            _( "<S>how all / hide distant" ) ) + 2;
-    shortcut_print( w_info, point( tmpx, 4 ), c_white, c_light_green, _( "<M>ap" ) );
+    tmpx += shortcut_print( w_info, point( tmpx, 4 ), c_white, c_light_green, 
+	                        _( "<R3>-Toggle Zone Display" ) ) + 2;
+	shortcut_print( w_info, point( tmpx, 4 ), c_white, c_light_green, _( "<L3>-Show all" ) );
 
     if( debug_mode ) {
         shortcut_print( w_info, point( 1, 5 ), c_light_red, c_light_green,
@@ -8179,16 +8176,16 @@ void game::reset_item_list_state( const catacurses::window &window, int height, 
     mvwputch( window, point( width - 1, TERMY - height - 1 ), c_light_gray,
               LINE_XOXX ); // -|
 
-    mvwprintz( window, point( 2, 0 ), c_light_green, "<Tab> " );
+    mvwprintz( window, point( 2, 0 ), c_light_green, "R\u2B8A " );
     wprintz( window, c_white, _( "Items" ) );
 
     std::string sSort;
     if( bRadiusSort ) {
         //~ Sort type: distance.
-        sSort = _( "<s>ort: dist" );
+        sSort = _( "L3: Distance" );
     } else {
         //~ Sort type: category.
-        sSort = _( "<s>ort: cat" );
+        sSort = _( "L3: Category" );
     }
 
     int letters = utf8_width( sSort );
@@ -8197,13 +8194,12 @@ void game::reset_item_list_state( const catacurses::window &window, int height, 
 
     std::vector<std::string> tokens;
     if( !sFilter.empty() ) {
-        tokens.emplace_back( _( "<R>eset" ) );
+        tokens.emplace_back( _( "<R3>-Reset" ) );
     }
 
-    tokens.emplace_back( _( "<E>xamine" ) );
-    tokens.emplace_back( _( "<C>ompare" ) );
-    tokens.emplace_back( _( "<F>ilter" ) );
-    tokens.emplace_back( _( "<+/->Priority" ) );
+    tokens.emplace_back( _( "<X>-Examine" ) );
+    tokens.emplace_back( _( "<Y>-Compare" ) );
+    tokens.emplace_back( _( "<A>-Travel to" ) );
 
     int gaps = tokens.size() + 1;
     letters = 0;
@@ -8276,7 +8272,7 @@ void game::list_items_monsters()
 
 static std::string list_items_filter_history_help()
 {
-    return colorize( _( "UP: history, CTRL-U: clear line, ESC: abort, ENTER: save" ), c_green );
+    return colorize( _( "\u2191: History, B: Abort, A: Save" ), c_green );
 }
 
 game::vmenu_ret game::list_items( const std::vector<map_item_stack> &item_list )
@@ -8844,7 +8840,7 @@ game::vmenu_ret game::list_monsters( const std::vector<Creature *> &monster_list
             draw_custom_border( w_monsters_border, 1, 1, 1, 1, 1, 1, LINE_XOXO, LINE_XOXO );
             draw_custom_border( w_monster_info_border, 1, 1, 1, 1, LINE_XXXO, LINE_XOXX, 1, 1 );
 
-            mvwprintz( w_monsters_border, point( 2, 0 ), c_light_green, "<Tab> " );
+            mvwprintz( w_monsters_border, point( 2, 0 ), c_light_green, "R\u2B8A " );
             wprintz( w_monsters_border, c_white, _( "Monsters" ) );
 
             if( monster_list.empty() ) {
@@ -8927,9 +8923,9 @@ game::vmenu_ret game::list_monsters( const std::vector<Creature *> &monster_list
                         monNameSelected = is_npc ? get_safemode().npc_type_name() : m->name();
 
                         if( get_safemode().has_rule( monNameSelected, Creature::Attitude::ANY ) ) {
-                            sSafemode = _( "<R>emove from safe mode blacklist" );
+                            sSafemode = _( "<Y>-Remove from safe mode blacklist" );
                         } else {
-                            sSafemode = _( "<A>dd to safe mode blacklist" );
+                            sSafemode = _( "<A>-Add to safe mode blacklist" );
                         }
                     }
 
@@ -9002,9 +8998,9 @@ game::vmenu_ret game::list_monsters( const std::vector<Creature *> &monster_list
 
                 if( !get_safemode().empty() ) {
                     if( get_safemode().has_rule( monNameSelected, Creature::Attitude::ANY ) ) {
-                        sSafemode = _( "<R>emove from safe mode blacklist" );
+                        sSafemode = _( "<Y>-Remove from safe mode blacklist" );
                     } else {
-                        sSafemode = _( "<A>dd to safe mode blacklist" );
+                        sSafemode = _( "<A>-Add to safe mode blacklist" );
                     }
 
                     shortcut_print( w_monsters, point( 2, getmaxy( w_monsters ) - 1 ),
