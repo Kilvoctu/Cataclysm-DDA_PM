@@ -67,6 +67,7 @@
 #include "generic_factory.h"
 #include "global_vars.h"
 #include "gun_mode.h"
+#include "gpkey.h"
 #include "help.h"
 #include "input_context.h"
 #include "input_enums.h"
@@ -2534,7 +2535,7 @@ void parse_tags( std::string &phrase, const_talker const &u, const_talker const 
                 }
             } else {
                 keybind_desc = enumerate_as_string( keys.begin(), keys.end(), []( const input_event & k ) {
-                    return colorize( '\'' + k.long_description() + '\'', c_yellow );
+                    return colorize( '\'' + convert_to_gamepad ( k.long_description() ) + '\'', c_yellow );
                 }, enumeration_conjunction::or_ );
             }
 
