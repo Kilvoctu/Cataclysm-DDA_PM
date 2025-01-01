@@ -627,7 +627,7 @@ const
 // alternative hotkeys, which mustn't be included so that the hardcoded
 // hotkeys do not show up beside entries within the window.
 static const std::string display_help_hotkeys =
-    "[]uvwxyzlpmDEFG{}UVWXYZLPM";
+    "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
 namespace
 {
@@ -675,7 +675,7 @@ keybindings_ui::keybindings_ui( bool permit_execute_action,
                                          fallback_keys.at( fallback_action::add_global ) )
         },
         {
-            "RESET", string_format( _( "[<color_yellow>X</color>] Reset keybinding" ),
+            "RESET", string_format( _( "[<color_yellow>\u23F8</color>] Reset keybinding" ),
                                     fallback_keys.at( fallback_action::reset ) )
         } } );
 }
@@ -776,11 +776,12 @@ void keybindings_ui::draw_controls()
             }
             key_text += string_format( "%s:", ctxt->get_action_name( action_id ) );
             bool is_selected = false;
+            bool is_focused = false;
             bool is_hovered = false;
             cataimgui::draw_colored_text( key_text, col, 0.0f,
                                           status == kb_menu_status::show ? nullptr : &is_selected,
-                                          nullptr, &is_hovered );
-            if( ( is_selected || is_hovered ) && invlet != ' ' ) {
+                                          &is_focused, &is_hovered );
+            if( ( is_selected || is_focused || is_hovered ) && invlet != ' ' ) {
                 highlight_row_index = i;
             }
             //ImGui::SameLine();
@@ -968,6 +969,7 @@ action_id input_context::display_menu( bool permit_execute_action )
     ctxt.register_action( "COORDINATE" );
     ctxt.register_action( "MOUSE_MOVE" );
     ctxt.register_action( "SELECT" );
+    ctxt.register_action( "KEYBIND_CONFIRM" );
     ctxt.register_action( "REMOVE" );
     ctxt.register_action( "RESET" );
     ctxt.register_action( "ADD_LOCAL" );
@@ -985,7 +987,6 @@ action_id input_context::display_menu( bool permit_execute_action )
         ctxt.register_action( "EXECUTE" );
     }
     ctxt.register_action( "QUIT" );
-    ctxt.register_action( "ANY_INPUT" );
 
     if( category != "HELP_KEYBINDINGS" ) {
         // avoiding inception!
@@ -1097,6 +1098,8 @@ action_id input_context::display_menu( bool permit_execute_action )
                    kb_menu.status != kb_menu_status::show ) {
             size_t action_index = SIZE_MAX;
             if( action == "SELECT" && kb_menu.highlight_row_index != -1 ) {
+                action_index = kb_menu.highlight_row_index;
+            } else if( action == "KEYBIND_CONFIRM" && kb_menu.highlight_row_index != -1 ) {
                 action_index = kb_menu.highlight_row_index;
             } else {
                 size_t hotkey_index = kb_menu.hotkeys.find_first_of( raw_input_char );

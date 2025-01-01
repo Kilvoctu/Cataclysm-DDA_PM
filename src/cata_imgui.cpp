@@ -1113,7 +1113,7 @@ static void inherit_base_colors()
     style.Colors[ImGuiCol_Button] = c_dark_gray;
     style.Colors[ImGuiCol_ButtonHovered] = c_dark_gray;
     style.Colors[ImGuiCol_ButtonActive] = c_blue;
-    style.Colors[ImGuiCol_Header] = h_blue;
+    style.Colors[ImGuiCol_Header] = c_blue;
     style.Colors[ImGuiCol_HeaderHovered] = c_black;
     style.Colors[ImGuiCol_HeaderActive] = c_dark_gray;
     style.Colors[ImGuiCol_Separator] = c_dark_gray;
