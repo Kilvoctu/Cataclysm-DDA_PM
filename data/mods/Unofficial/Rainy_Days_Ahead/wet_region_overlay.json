@@ -1,0 +1,14 @@
+[
+  {
+    "type": "region_overlay",
+    "regions": [ "all" ],
+    "weather": {
+      "base_temperature": 7.5,
+      "base_humidity": 480.0,
+      "base_pressure": 998.0,
+      "base_wind": 5.7,
+      "base_wind_distrib_peaks": 50,
+      "base_wind_season_variation": 20
+    }
+  }
+]

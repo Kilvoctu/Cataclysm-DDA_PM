@@ -315,7 +315,8 @@
     "type": "keybinding",
     "id": "SWITCH_AUTO_PICKUP_OPTION",
     "category": "AUTO_PICKUP",
-    "name": "Enable auto pickup option"
+    "name": "Enable auto pickup option",
+    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -2993,7 +2994,7 @@
     "id": "RESET",
     "category": "HELP_KEYBINDINGS",
     "name": "Reset keybinding",
-    "bindings": [ { "input_method": "keyboard_char", "key": "e" } ]
+    "bindings": [ { "input_method": "keyboard_char", "key": "p" } ]
   },
   {
     "type": "keybinding",
@@ -3008,6 +3009,13 @@
     "category": "HELP_KEYBINDINGS",
     "name": "Add global keybinding",
     "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+  },
+  {
+    "type": "keybinding",
+    "id": "KEYBIND_CONFIRM",
+    "category": "HELP_KEYBINDINGS",
+    "name": "Confirm entry",
+    "bindings": [ { "input_method": "keyboard_char", "key": "e" } ]
   },
   {
     "type": "keybinding",
