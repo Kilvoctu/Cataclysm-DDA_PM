@@ -1658,7 +1658,7 @@ void inventory_column::draw( const catacurses::window &win, const point &p,
         const inventory_entry::entry_cell_cache_t &entry_cell_cache = entry.get_entry_cell_cache( preset );
 
         int x1 = p.x + get_entry_indent( entry );
-        int x2 = p.x + std::max( static_cast<int>( reserved_width - get_cells_width() ), 0 ) - 2;
+        int x2 = p.x + std::max( static_cast<int>( reserved_width - get_cells_width() ), 0 );
         int yy = p.y + line;
 
         const bool selected = active && is_highlighted( entry );
