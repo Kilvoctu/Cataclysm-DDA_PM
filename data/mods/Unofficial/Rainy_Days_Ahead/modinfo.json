@@ -1,0 +1,12 @@
+[
+  {
+    "type": "MOD_INFO",
+    "id": "rainy_days_ahead",
+    "name": "Rainy Days Ahead",
+    "authors": [ "Kilvoctu" ],
+    "maintainers": [ "Kilvoctu" ],
+    "description": "Significantly increases rainy weather. Clear skies will be rare.",
+    "category": "rebalance",
+    "dependencies": [ "dda" ]
+  }
+]
