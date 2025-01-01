@@ -299,7 +299,8 @@
     "type": "keybinding",
     "id": "SWITCH_AUTO_PICKUP_OPTION",
     "category": "AUTO_PICKUP",
-    "name": "Enable auto pickup option"
+    "name": "Enable auto pickup option",
+    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
