@@ -162,10 +162,10 @@ void uilist_impl::draw_controls()
 
                         // Force the spacing to be set to the padding value.
                         ImGui::SameLine( 0, style.CellPadding.x );
-                        if( entry.hotkey.has_value() ) {
-                            cataimgui::draw_colored_text( entry.hotkey.value().short_description(),
-                                                          is_selected ? parent.hilight_color : parent.hotkey_color );
-                        }
+                        //if( entry.hotkey.has_value() ) {
+                        //    cataimgui::draw_colored_text( entry.hotkey.value().short_description(),
+                        //                                  is_selected ? parent.hilight_color : parent.hotkey_color );
+                        //}
 
                         std::string &str1 = entry.txt;
                         std::string &str2 = entry.ctxt;
