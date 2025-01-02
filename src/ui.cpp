@@ -745,8 +745,8 @@ void uilist::calc_data()
 
     if( longest_line_width > calculated_menu_size.x ) {
         calculated_menu_size.x = longest_line_width;
-        calculated_label_width = calculated_menu_size.x - calculated_hotkey_width - padding -
-                                 calculated_secondary_width - padding - padding;
+        calculated_label_width = calculated_menu_size.x - calculated_hotkey_width -
+                                 calculated_secondary_width - ( padding * 3 );
     }
 }
 
