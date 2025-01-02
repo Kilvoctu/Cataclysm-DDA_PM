@@ -640,12 +640,14 @@ void uilist::calc_data()
     }
 
     vmax = entries.size();
+    const float max_x = ImGui::GetMainViewport()->Size.x * 0.9;
 
     ImVec2 title_size = ImVec2();
     bool has_titlebar = !title.empty();
     if( has_titlebar ) {
         title_size = calc_size( title );
         float expected_num_lines = title_size.y / ImGui::GetTextLineHeight();
+        title_size.x = ( title_size.x > max_x ) ? max_x : title_size.x;
         title_size.y += ( s.ItemSpacing.y * expected_num_lines ) + ( s.ItemSpacing.y * 2.0 );
     }
 
@@ -653,6 +655,7 @@ void uilist::calc_data()
     if( !text.empty() ) {
         text_size = calc_size( text );
         float expected_num_lines = text_size.y / ImGui::GetTextLineHeight();
+        text_size.x = ( text_size.x > max_x ) ? max_x : text_size.x;
         text_size.y += ( s.ItemSpacing.y * expected_num_lines ) + ( s.ItemSpacing.y * 2.0 );
     }
 
@@ -667,6 +670,7 @@ void uilist::calc_data()
         for( const uilist_entry &ent : entries ) {
             ImVec2 entry_size = calc_size( ent.desc );
             desc_size.x = std::max( desc_size.x, entry_size.x );
+            desc_size.x = ( desc_size.x > max_x ) ? max_x : desc_size.x;
             desc_size.y = std::max( desc_size.y, entry_size.y );
         }
         if( desc_size.y <= 0.0 ) {
@@ -698,6 +702,8 @@ void uilist::calc_data()
     calculated_menu_size.x += calculated_hotkey_width + padding;
     calculated_menu_size.x += calculated_label_width + padding;
     calculated_menu_size.x += calculated_secondary_width + padding;
+    calculated_menu_size.x = ( calculated_menu_size.x > max_x ) ? max_x : calculated_menu_size.x;
+
     float max_avail_height = 0.9 * ImGui::GetMainViewport()->Size.y;
     if( desired_bounds.has_value() ) {
         float desired_height = desired_bounds.value().h;
