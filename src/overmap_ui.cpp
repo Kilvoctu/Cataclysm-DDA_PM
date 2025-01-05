@@ -1147,8 +1147,6 @@ static void draw_om_sidebar( ui_adaptor &ui,
     }
     wattroff( wbar, c_white );
 
-    int y = 7;
-
     const auto print_hint = [&]( const std::string & action, nc_color color = c_magenta ) {
         lines += fold_and_print( wbar, point( 1, lines ), getmaxx( wbar ) - 1, color,
                                  string_format( _( "%s - %s" ),  inp_ctxt.get_desc( action ), inp_ctxt.get_action_name( action ) ) );
@@ -1164,16 +1162,8 @@ static void draw_om_sidebar( ui_adaptor &ui,
         print_hint( "MODIFY_HORDE", c_light_blue );
         lines--;
     } else {
-        lines = 11;
+        lines = 7;
     }
-
-    wattron( wbar, c_magenta );
-    mvwprintw( wbar, point( 1, ++lines ), _( "Use movement keys to pan." ) );
-    mvwprintw( wbar, point( 1, ++lines ), _( string_format( "Press %s to preview route.",
-               inp_ctxt.get_desc( "CHOOSE_DESTINATION" ) ) ) );
-    mvwprintw( wbar, point( 1, ++lines ), _( "Press again to confirm." ) );
-    lines += 2;
-    wattroff( wbar, c_magenta );
 
     const bool show_overlays = uistate.overmap_show_overlays || uistate.overmap_blinking;
     const bool is_explored = overmap_buffer.is_explored( cursor_pos );
