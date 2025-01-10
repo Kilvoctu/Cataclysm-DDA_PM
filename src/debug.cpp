@@ -356,10 +356,10 @@ static void debug_error_prompt(
 #if defined(BACKTRACE)
                                     backtrace_instructions,
 #endif
-                                    _( "Press <color_white>space bar</color> to continue the game." ),
-                                    _( "Press <color_white>I</color> (or <color_white>i</color>) to also ignore this particular message in the future." )
+                                    _( "<color_white>X</color> - continue game." ),
+                                    _( "<color_white>Y</color> - ignore error." )
 #if defined(TILES)
-                                    , _( "Press <color_white>C</color> (or <color_white>c</color>) to copy this message to the clipboard." )
+                                    , _( "" )
 #endif // TILES
                                 );
     ui.on_redraw( [&]( const ui_adaptor & ) {
@@ -371,24 +371,18 @@ static void debug_error_prompt(
 
 #if defined(__ANDROID__)
     input_context ctxt( "DEBUG_MSG", keyboard_mode::keycode );
-    ctxt.register_manual_key( 'C' );
     ctxt.register_manual_key( 'I' );
     ctxt.register_manual_key( ' ' );
 #endif
     for( bool stop = false; !stop; ) {
         ui_manager::redraw();
         switch( inp_mngr.get_input_event().get_first_input() ) {
-#if defined(TILES)
-            case 'c':
-            case 'C':
-                SDL_SetClipboardText( formatted_report.c_str() );
-                break;
-#endif // TILES
-            case 'i':
-            case 'I':
+            case 'd':
+            case 'D':
                 ignored_messages.insert( msg_key );
             /* fallthrough */
-            case ' ':
+            case 'e':
+            case 'E':
                 stop = true;
                 break;
         }

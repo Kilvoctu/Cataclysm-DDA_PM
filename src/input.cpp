@@ -1492,15 +1492,15 @@ action_id input_context::display_menu( const bool permit_execute_action )
         };
         right_print( w_help, 4, 2, item_color( static_cast<int>( kb_btn_idx::remove ),
                                                int( highlighted_btn_index ) ),
-                     string_format( _( "<[<color_yellow>\u23F8+R1</color>] Remove keybinding>" ),
+                     string_format( _( "<[<color_yellow>Y</color>] Remove keybinding>" ),
                                     fallback_keys.at( fallback_action::remove ) ) );
         right_print( w_help, 4, 26, item_color( static_cast<int>( kb_btn_idx::add_local ),
                                                 int( highlighted_btn_index ) ),
-                     string_format( _( "<[<color_yellow>\u23F8+R2</color>] Add local keybinding>" ),
+                     string_format( _( "<[<color_yellow>R1</color>] Add local keybinding>" ),
                                     fallback_keys.at( fallback_action::add_local ) ) );
         right_print( w_help, 4, 54, item_color( static_cast<int>( kb_btn_idx::add_global ),
                                                 int( highlighted_btn_index ) ),
-                     string_format( _( "<[<color_yellow>\u23F8+L1</color>] Add global keybinding>" ),
+                     string_format( _( "<[<color_yellow>R2</color>] Add global keybinding>" ),
                                     fallback_keys.at( fallback_action::add_global ) ) );
 
         for( size_t i = 0; i + scroll_offset < filtered_registered_actions.size() &&
