@@ -625,7 +625,11 @@ static void set_up_butchery( player_activity &act, Character &you, butcher_type 
                           corpse.in_species( species_HUMAN ) ||
                           corpse.in_species( species_FERAL );
 
-    // applies to all butchery actions except for dissections or dismemberment
+    const double progress = butcher_get_progress( corpse_item, action );
+    act.moves_total = butcher_time_to_cut( you, corpse_item, action ) * butchery_requirements.first;
+    act.moves_left = act.moves_total - static_cast<int>( act.moves_total * progress );
+
+    // applies to all butchery actions except for dissections
     if( is_human && action != butcher_type::DISSECT && !you.okay_with_eating_humans() &&
         action != butcher_type::DISMEMBER ) {
         //first determine if the butcherer has the dissect_humans proficiency.
@@ -728,6 +732,7 @@ static void set_up_butchery( player_activity &act, Character &you, butcher_type 
                             break;
                     }
                     get_player_character().add_morale( morale_butcher, -40, 0, 1_days, 2_hours );
+                    you.practice_proficiency( proficiency_prof_dissect_humans, time_duration::from_moves<int>( act.moves_total ) );
                 } else {
                     //standard refusal to butcher
                     you.add_msg_if_player( m_good, _( "It needs a coffin, not a knife." ) );
@@ -740,9 +745,6 @@ static void set_up_butchery( player_activity &act, Character &you, butcher_type 
             }
         }
     }
-    const double progress = butcher_get_progress( corpse_item, action );
-    act.moves_total = butcher_time_to_cut( you, corpse_item, action ) * butchery_requirements.first;
-    act.moves_left = act.moves_total - static_cast<int>( act.moves_total * progress );
 
     // We have a valid target, so preform the full finish function
     // instead of just selecting the next valid target
