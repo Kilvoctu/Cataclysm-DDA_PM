@@ -6956,10 +6956,10 @@ static void zones_manager_shortcuts( const catacurses::window &w_info, faction_i
         add_action_desc( "CHANGE_FACTION", pgettext( "zones manager", zone_faction.c_str() ) );
     }
     keybinding_tips = foldstring( enumerate_as_string( act_descs, enumeration_conjunction::none ),
-                                  width - 2 );
+                                  width - 4 );
     for( size_t i = 0; i < keybinding_tips.size(); ++i ) {
         nc_color dummy = c_white;
-        print_colored_text( w_info, point( 1, 1 + i ), dummy, c_white, keybinding_tips[i] );
+        print_colored_text( w_info, point( 1, i ), dummy, c_white, keybinding_tips[i] );
     }
 
     wnoutrefresh( w_info );
