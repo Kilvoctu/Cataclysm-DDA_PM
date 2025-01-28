@@ -3390,7 +3390,7 @@
     "id": "UNLOAD_CONTAINER",
     "category": "ADVANCED_INVENTORY",
     "name": "Unload item from container",
-    "bindings": [ { "input_method": "keyboard_any", "key": "u" }, { "input_method": "keyboard_any", "key": "U" } ]
+    "bindings": [ { "input_method": "keyboard_any", "key": "u" } ]
   },
   {
     "type": "keybinding",
