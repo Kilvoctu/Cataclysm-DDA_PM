@@ -406,6 +406,7 @@
     "connects_to": "WALL",
     "rotates_to": "INDOORFLOOR",
     "flags": [ "TRANSPARENT", "FLAMMABLE", "ALARMED", "NOITEM", "BARRICADABLE_WINDOW", "BLOCK_WIND", "WINDOW", "SUPPORTS_ROOF" ],
+    "deconstruct": { "ter_set": "t_window_empty", "items": [ { "item": "glass_sheet", "count": 1 } ] },
     "bash": {
       "str_min": 3,
       "str_max": 6,
