@@ -2388,7 +2388,7 @@
     "name": "Save and quit",
     "category": "DEFAULTMODE",
     "id": "save",
-	"bindings": [ { "input_method": "keyboard_char", "key": "S" } ]
+    "bindings": [ { "input_method": "keyboard_char", "key": "S" } ]
   },
   {
     "type": "keybinding",
