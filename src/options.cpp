@@ -1894,7 +1894,7 @@ void options_manager::add_options_interface()
              to_translation( "Force capital/modified letters in prompts" ),
              to_translation( "If true, prompts such as Y/N queries only accepts capital or modified letters, while "
                              "lower case and unmodified letters only snap the cursor to the corresponding option." ),
-             true
+             false
            );
 
         add( "SNAP_TO_TARGET", page_id, to_translation( "Snap to target" ),
@@ -2030,7 +2030,7 @@ void options_manager::add_options_interface()
 
          */
     to_translation( "Allows diagonal movement with cursor keys using CTRL and SHIFT modifiers.  Diagonal movement action keys are taken from keybindings, so you need these to be configured." ), { { "none", to_translation( "None" ) }, { "mode1", to_translation( "Mode 1: Numpad Emulation" ) }, { "mode2", to_translation( "Mode 2: CW/CCW" ) }, { "mode3", to_translation( "Mode 3: L/R Tilt" ) }, { "mode4", to_translation( "Mode 4: Diagonal Lock" ) } },
-    "none", COPT_CURSES_HIDE );
+    "mode4", COPT_CURSES_HIDE );
 
     add_empty_line();
 
@@ -2170,7 +2170,7 @@ void options_manager::add_options_interface()
             { "enabled", to_translation( "Enabled" ) },
             { "favorites", to_translation( "Favorites" ) }
         },
-        "favorites" );
+        "disabled" );
 
         add( "ITEM_HEALTH", "interface", to_translation( "Show item health" ),
              // NOLINTNEXTLINE(cata-text-style): one space after "etc."
@@ -2204,7 +2204,7 @@ void options_manager::add_options_interface()
     [&]( const std::string & page_id ) {
         add( "ENABLE_JOYSTICK", page_id, to_translation( "Enable joystick" ),
              to_translation( "If true, enable input from joystick." ),
-             true, COPT_CURSES_HIDE
+             false, COPT_CURSES_HIDE
            );
 
         add( "HIDE_CURSOR", page_id, to_translation( "Hide mouse cursor" ),
