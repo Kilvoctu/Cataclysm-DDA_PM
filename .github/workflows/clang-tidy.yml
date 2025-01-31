@@ -3,11 +3,10 @@ name: Clang-tidy 18
 on:
   push:
     branches:
-    - master
-
+    - Experimental
   pull_request:
     branches:
-    - master
+    - Experimental
     types: [opened, reopened, synchronize, ready_for_review]
 
 # We only care about the latest revision of a PR, so cancel all previous instances.
