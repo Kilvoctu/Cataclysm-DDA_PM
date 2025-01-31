@@ -2,10 +2,10 @@ name: IWYU (include-what-you-use)
 on:
   push:
     branches:
-    - master
+    - Experimental
   pull_request:
     branches:
-    - master
+    - Experimental
     types: [opened, reopened, synchronize, ready_for_review]
     paths:
       - 'src/**'
