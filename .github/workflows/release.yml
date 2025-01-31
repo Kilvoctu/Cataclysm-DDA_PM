@@ -1,23 +1,6 @@
-name: "Experimental Release"
+name: "Release the game"
 concurrency: release
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - '.github/workflows/release.yml'
-      - 'android/**'
-      - 'build-data/**'
-      - 'build-scripts/generate-release-notes.js'
-      - 'cataclysm-launcher'
-      - 'data/**'
-      - 'doc/**'
-      - 'gfx/**'
-      - 'lang/po/*.po'
-      - 'LICENSE*'
-      - 'Makefile'
-      - 'README*'
-      - 'src/**'
   workflow_dispatch:
 
 env:
@@ -92,24 +75,6 @@ jobs:
             artifact: linux-with-graphics-and-sounds-x64
             ext: tar.gz
             content: application/gzip
-          - name: Linux Curses x64
-            os: ubuntu-20.04
-            mxe: none
-            android: none
-            libbacktrace: 1
-            tiles: 0
-            sound: 0
-            artifact: linux-terminal-only-x64
-            ext: tar.gz
-            content: application/gzip
-          - name: macOS Curses Universal Binary (x64 and arm64)
-            os: macos-13
-            mxe: none
-            tiles: 0
-            sound: 0
-            artifact: osx-terminal-only-universal
-            ext: dmg
-            content: application/x-apple-diskimage
           - name: macOS Tiles Universal Binary (x64 and arm64)
             os: macos-13
             mxe: none
@@ -118,35 +83,14 @@ jobs:
             artifact: osx-with-graphics-universal
             ext: dmg
             content: application/x-apple-diskimage
-          - name: Android x64
-            os: ubuntu-latest
-            mxe: none
-            android: arm64
-            artifact: android-x64
-            ext: apk
-            content: application/apk
-          - name: Android x32
-            os: ubuntu-latest
-            mxe: none
-            android: arm32
-            artifact: android-x32
-            ext: apk
-            content: application/apk 
-          - name: Android Bundle
-            os: ubuntu-latest
-            mxe: none
-            android: bundle
-            artifact: android-bundle
-            ext: aab
-            content: application/aap
-          - name: WebAssembly Bundle
-            os: ubuntu-latest
-            mxe: none
-            artifact: wasm
-            ext: zip
-            content: application/zip
-            sound: 0
-            wasm: true
+          #- name: WebAssembly Bundle
+          #  os: ubuntu-latest
+          #  mxe: none
+          #  artifact: wasm
+          #  ext: zip
+          #  content: application/zip
+          #  sound: 0
+          #  wasm: true
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     permissions: write-all
@@ -294,39 +238,5 @@ jobs:
         run: |
           make -j3 TILES=${{ matrix.tiles }} SOUND=${{ matrix.tiles }} RELEASE=1 LOCALIZE=1 LANGUAGES=all BACKTRACE=0 PCH=0 USE_HOME_DIR=1 FRAMEWORK=1 UNIVERSAL_BINARY=1 dmgdist
           mv Cataclysm.dmg cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.dmg
-      - name: Set up JDK 8 (android)
-        if: runner.os == 'Linux' && matrix.android != 'none' && matrix.mxe == 'none'
-        uses: actions/setup-java@v4
-        with:
-          java-version: '11'
-          distribution: 'adopt'   
-      - name: Setup Build and Dependencies (android)
-        if: runner.os == 'Linux' && matrix.android != 'none' && matrix.mxe == 'none'
-        run: |
-          sudo apt-get update
-          sudo apt-get install gettext          
-      - name: Build CDDA (android)
-        if: runner.os == 'Linux' && matrix.android != 'none' && matrix.mxe == 'none'
-        working-directory: ./android
-        run: |
-          echo "${{ secrets.KEYSTORE }}" > release.keystore.asc   
-          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch release.keystore.asc > app/release.keystore 
-          echo "${{ secrets.KEYSTORE_PROPERTIES }}" > keystore.properties.asc   
-          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD }}" --batch keystore.properties.asc > keystore.properties
-          export UPSTREAM_BUILD_NUMBER="$((11581 + ${{ github.run_number }}))"
-          chmod +x gradlew
-          if [ ${{ matrix.android }} = arm64 ]
-          then
-               ./gradlew -Pj=$((`nproc`+0)) -Pabi_arm_32=false assembleExperimentalRelease
-               mv ./app/build/outputs/apk/experimental/release/*.apk ../cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.apk
-          elif [ ${{ matrix.android }} = arm32 ]
-          then
-               ./gradlew -Pj=$((`nproc`+0)) -Pabi_arm_64=false assembleExperimentalRelease
-               mv ./app/build/outputs/apk/experimental/release/*.apk ../cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.apk 
-          elif [ ${{ matrix.android }} = bundle ]
-          then
-               ./gradlew -Pj=$((`nproc`+0)) bundleExperimentalRelease
-               mv ./app/build/outputs/bundle/experimentalRelease/*.aab ../cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.aab     
-          fi
       - run: |
           gh release upload cdda-experimental-${{ needs.release.outputs.timestamp }} cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.${{ matrix.ext }}
