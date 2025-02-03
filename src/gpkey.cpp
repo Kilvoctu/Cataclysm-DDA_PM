@@ -9,51 +9,53 @@
 
 #include "string_formatter.h"
 
+//define unicode
+// PS Prompts
+//std::string gp_cross = "\u00D7";
+//std::string gp_square = "\u25A1";
+//std::string gp_triangle = "\u25B3";
+//std::string gp_circle = "\u25CB";
+// Eckbok Prompts
+std::string gp_cross = "A";
+std::string gp_circle = "B";
+std::string gp_square = "X";
+std::string gp_triangle = "Y";
+std::string gp_l1 = "L1";
+std::string gp_l2 = "L2";
+std::string gp_r1 = "R1";
+std::string gp_r2 = "R2";
+std::string gp_lstick = "L3";
+std::string gp_rstick = "R3";
+
+std::string gp_select = "\u23F8";
+std::string gp_start = "\u23F5";
+std::string gp_hotkey = "\u25CD";
+std::string gp_hotkey_mod = "\u23F8+";
+
+std::string gp_up = "\u2191";
+std::string gp_down = "\u2193";
+std::string gp_left = "\u2190";
+std::string gp_right = "\u2192";
+std::string gp_up_left = "\u2196";
+std::string gp_up_right = "\u2197";
+std::string gp_down_left = "\u2199";
+std::string gp_down_right = "\u2198";
+
+std::string gp_lstick_up = "L\u2B89";
+std::string gp_lstick_down = "L\u2B8B";
+std::string gp_lstick_left = "L\u2B88";
+std::string gp_lstick_right = "L\u2B8A";
+std::string gp_rstick_up = "R\u2B89";
+std::string gp_rstick_down = "R\u2B8B";
+std::string gp_rstick_left = "R\u2B88";
+std::string gp_rstick_right = "R\u2B8A";
+
+std::string l_mod = "L1+";
+
 std::string convert_to_gamepad( const std::string keybind_in_pre )
 {
     std::string keybind_out;
-    //define unicode
-	// PS Prompts
-    //std::string gp_cross = "\u00D7";
-    //std::string gp_square = "\u25A1";
-    //std::string gp_triangle = "\u25B3";
-    //std::string gp_circle = "\u25CB";
-	// Eckbok Prompts
-    std::string gp_cross = "A";
-    std::string gp_circle = "B";
-    std::string gp_square = "X";
-    std::string gp_triangle = "Y";
-    std::string gp_l1 = "L1";
-    std::string gp_l2 = "L2";
-    std::string gp_r1 = "R1";
-    std::string gp_r2 = "R2";
-    std::string gp_lstick = "L3";
-    std::string gp_rstick = "R3";
 
-	std::string gp_select = "\u23F8";
-    std::string gp_start = "\u23F5";
-	std::string gp_hotkey = "\u25CD";
-	std::string gp_hotkey_mod = "\u23F8+";
-	
-    std::string gp_up = "\u2191";
-    std::string gp_down = "\u2193";
-    std::string gp_left = "\u2190";
-    std::string gp_right = "\u2192";
-    std::string gp_up_left = "\u2196";
-    std::string gp_up_right = "\u2197";
-    std::string gp_down_left = "\u2199";
-    std::string gp_down_right = "\u2198";
-	
-    std::string gp_lstick_up = "L\u2B89";
-	std::string gp_lstick_down = "L\u2B8B";
-	std::string gp_lstick_left = "L\u2B88";
-	std::string gp_lstick_right = "L\u2B8A";
-    std::string gp_rstick_up = "R\u2B89";
-	std::string gp_rstick_down = "R\u2B8B";
-	std::string gp_rstick_left = "R\u2B88";
-	std::string gp_rstick_right = "R\u2B8A";
-
-    std::string l_mod = "L1+";
 	std::string keybind_in = keybind_in_pre;
 	if( ( keybind_in_pre.rfind("CTRL+", 0 ) == 0 ) || ( keybind_in_pre.rfind("Ctrl+", 0 ) == 0 ) ) {
 		keybind_in.erase(0, 5);
@@ -175,4 +177,10 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
         keybind_out = keybind_in;
     }
     return keybind_out;
+}
+
+std::string convert_joy_string( const std::string joy_in ) {
+	std::string joy_out;
+	joy_out = '1';
+	return joy_out;
 }

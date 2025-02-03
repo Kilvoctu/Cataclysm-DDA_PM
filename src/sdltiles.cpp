@@ -2965,9 +2965,9 @@ static void CheckMessages()
     bool render_target_reset = false;
 
     if ( gamepad_hold_lt == true ) {
-        gamepad_hold_inc = ( gamepad_hold_lb == true ) ? 600 : 500;
+        gamepad_hold_inc = ( gamepad_hold_lb == true ) ? 500 : 400;
     } else {
-        gamepad_hold_inc = ( gamepad_hold_lb == true ) ? 400 : 0;
+        gamepad_hold_inc = ( gamepad_hold_lb == true ) ? 300 : 0;
     }
 
     while( SDL_PollEvent( &ev ) ) {
