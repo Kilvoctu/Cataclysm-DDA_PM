@@ -74,8 +74,7 @@ static Uint32 timer_func( Uint32 interval, void * )
 
 void init()
 {
-    // FIXME maybe stick/trigger "buttons" need their own names?
-    /*sticks_map[0][0b0001] = JOY_UP;
+    sticks_map[0][0b0001] = JOY_UP;
     sticks_map[0][0b0010] = JOY_RIGHT;
     sticks_map[0][0b0100] = JOY_DOWN;
     sticks_map[0][0b1000] = JOY_LEFT;
@@ -98,7 +97,7 @@ void init()
 
     for( int i = 0; i < max_buttons; ++i ) {
         buttons_map[i] = JOY_0 + i;
-    }*/
+    }
 
     for( gamepad::task_t &task : all_tasks ) {
         task.counter = 0;
@@ -236,7 +235,7 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
         task_t &task = all_tasks[triggers_task_index + idx];
         if( !state && value > triggers_threshold + error_margin ) {
             if ( one_of_two( triggers_axis, axis ) != 0 ) { // Right trigger only
-                send_input( button + increment_keystate );
+                send_input( 30 + increment_keystate );
             }
             triggers_state[idx] = 1;
         }
