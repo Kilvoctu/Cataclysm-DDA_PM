@@ -75,7 +75,7 @@ static Uint32 timer_func( Uint32 interval, void * )
 void init()
 {
     // FIXME maybe stick/trigger "buttons" need their own names?
-    sticks_map[0][0b0001] = JOY_UP;
+    /*sticks_map[0][0b0001] = JOY_UP;
     sticks_map[0][0b0010] = JOY_RIGHT;
     sticks_map[0][0b0100] = JOY_DOWN;
     sticks_map[0][0b1000] = JOY_LEFT;
@@ -98,7 +98,7 @@ void init()
 
     for( int i = 0; i < max_buttons; ++i ) {
         buttons_map[i] = JOY_0 + i;
-    }
+    }*/
 
     for( gamepad::task_t &task : all_tasks ) {
         task.counter = 0;
@@ -227,7 +227,6 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
 
     int axis = event.caxis.axis;
     int value = event.caxis.value;
-    Uint32 now = event.caxis.timestamp;
 
     // check triggers
     int idx = one_of_two( triggers_axis, axis );
@@ -240,7 +239,6 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
                 send_input( button + increment_keystate );
             }
             triggers_state[idx] = 1;
-            //schedule_task( task, now + repeat_delay, button, 1 );
         }
         if( state && value < triggers_threshold - error_margin ) {
             triggers_state[idx] = 0;
@@ -326,7 +324,6 @@ void handle_button_event( SDL_Event &event, int increment_keystate )
                         break;
                     default:
                         send_input( button + increment_keystate );
-                        schedule_task( task, now + repeat_delay, buttons_map[button], state );
                 }
             } else {
                 cancel_task( task );
