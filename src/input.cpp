@@ -634,6 +634,8 @@ void input_manager::init_keycode_mapping()
     add_gamepad_keycode_pair( JOY_29,        translate_marker_context( "key name", "JOY_29" ) );
     add_gamepad_keycode_pair( JOY_30,        translate_marker_context( "key name", "JOY_30" ) );
 
+    add_gamepad_keycode_pair( JOY_UP_2,        translate_marker_context( "key name", "JOY_UP_2" ) );
+
     add_mouse_keycode_pair( MouseInput::LeftButtonPressed,
                             translate_marker_context( "key name", "MOUSE_LEFT_PRESSED" ) );
     add_mouse_keycode_pair( MouseInput::LeftButtonReleased,

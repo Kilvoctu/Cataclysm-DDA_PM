@@ -49,7 +49,7 @@ static std::array<task_t, max_tasks> all_tasks;
 
 static int repeat_delay = 400;
 static int repeat_interval = 200;
-static int diagonal_detect_delay = 250;
+static int diagonal_detect_delay = 0;
 
 // SDL related stuff
 static SDL_TimerID timer_id;
@@ -177,7 +177,7 @@ static void send_input( int ibtn, input_event_t itype = input_event_t::gamepad )
 }
 
 static void dpad_changes( task_t &task, const std::array<int, 16> &m, Uint32 now, int old_state,
-                          int new_state )
+                          int new_state, int inc_state )
 {
     // get rid of unneeded bits
     old_state &= 0b1111;
@@ -203,7 +203,7 @@ static void dpad_changes( task_t &task, const std::array<int, 16> &m, Uint32 now
                     case SDL_HAT_DOWN:
                     case SDL_HAT_RIGHT:
                     case SDL_HAT_LEFT:
-                        send_input( task.button );
+                        send_input( task.button + inc_state );
                 }
             }
             cancel_task( task );
@@ -219,7 +219,7 @@ static void dpad_changes( task_t &task, const std::array<int, 16> &m, Uint32 now
     }
 }
 
-void handle_axis_event( SDL_Event &event )
+void handle_axis_event( SDL_Event &event, int increment_keystate )
 {
     if( event.type != SDL_CONTROLLERAXISMOTION ) {
         return;
@@ -236,9 +236,11 @@ void handle_axis_event( SDL_Event &event )
         int button = triggers_map[idx];
         task_t &task = all_tasks[triggers_task_index + idx];
         if( !state && value > triggers_threshold + error_margin ) {
-            send_input( button );
+            if ( one_of_two( triggers_axis, axis ) != 0 ) { // Right trigger only
+                send_input( button + increment_keystate );
+            }
             triggers_state[idx] = 1;
-            schedule_task( task, now + repeat_delay, button, 1 );
+            //schedule_task( task, now + repeat_delay, button, 1 );
         }
         if( state && value < triggers_threshold - error_margin ) {
             triggers_state[idx] = 0;
@@ -251,6 +253,7 @@ void handle_axis_event( SDL_Event &event )
     for( int i = 0; i < max_sticks; ++i ) {
         int idx = one_of_two( sticks_axis[i], axis );
         if( idx >= 0 ) {
+            int stick_state;
             int old_state = sticks_state[i];
             int new_state = old_state;
             task_t &task = all_tasks[sticks_task_index + i];
@@ -259,62 +262,70 @@ void handle_axis_event( SDL_Event &event )
             if( idx ) { // vertical stick movement
                 if( !( old_state & 0b0100 ) && value > sticks_threshold + error_margin ) {
                     new_state |= 0b0100;    // turn on bit _x__
+                    stick_state = ( ( i > 0 ) ? 23 : 259 ) + increment_keystate; // stick down R/L
+                    send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0100 ) && value < sticks_threshold - error_margin ) {
                     new_state &= 0b1011;    // turn off bit _x__
                 } else if( !( old_state & 0b0001 ) && value < -sticks_threshold - error_margin ) {
                     new_state |= 0b0001;    // turn on bit ___x
+                    stick_state = ( ( i > 0 ) ? 21 : 257 ) + increment_keystate; // stick up R/L
+                    send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0001 ) && value > -sticks_threshold + error_margin ) {
                     new_state &= 0b1110;    // turn off bit ___x
                 }
             } else { // horizontal stick movement
                 if( !( old_state & 0b0010 ) && value > sticks_threshold + error_margin ) {
                     new_state |= 0b0010;    // turn on bit __x_
+                    stick_state = ( ( i > 0 ) ? 22 : 258 ) + increment_keystate; // stick right R/L
+                    send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0010 ) && value < sticks_threshold - error_margin ) {
                     new_state &= 0b1101;    // turn off bit __x_
                 } else if( !( old_state & 0b1000 ) && value < -sticks_threshold - error_margin ) {
                     new_state |= 0b1000;    // turn on bit x___
+                    stick_state = ( ( i > 0 ) ? 24 : 260 ) + increment_keystate; // stick left R/L
+                    send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b1000 ) && value > -sticks_threshold + error_margin ) {
                     new_state &= 0b0111;    // turn off bit x___
                 }
             }
 
             sticks_state[i] = new_state;
-            dpad_changes( task, sticks_map[i], now, old_state, new_state );
+            // Don't do dpad_changes because we only cardinals
+            // dpad_changes( task, sticks_map[i], now, old_state, new_state, increment_keystate );
         }
     }
 }
 
-void handle_button_event( SDL_Event &event )
+void handle_button_event( SDL_Event &event, int increment_keystate )
 {
+    
+    int button = event.cbutton.button;
+    int state = event.cbutton.state;
+    Uint32 now = event.cbutton.timestamp;
+    task_t &task = all_tasks[button];
+
     switch( event.type ) {
         case SDL_CONTROLLERBUTTONDOWN:
+            if ( state ) {
+                switch( button ) {
+                    case SDL_CONTROLLER_BUTTON_DPAD_UP:
+                    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+                    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+                    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+                        send_input( button ); // DPAD should be only buttons that can't be modified
+                        schedule_task( task, now + repeat_delay, buttons_map[button], state );
+                }
+            } else {
+                cancel_task( task );
+            }
         case SDL_CONTROLLERBUTTONUP: {
-            int button = event.cbutton.button;
-            int state = event.cbutton.state;
-            Uint32 now = event.cbutton.timestamp;
-            task_t &task = all_tasks[button];
             if( state ) {
                 switch( button ) {
-                    case SDL_CONTROLLER_BUTTON_BACK:    // BACK -> Escape
-                        send_input( KEY_ESCAPE, input_event_t::keyboard_code );
-                        break;
-                    case SDL_CONTROLLER_BUTTON_START:   // START -> Enter
-                        send_input( '\n', input_event_t::keyboard_char );
-                        break;
-                    case SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        send_input( KEY_UP, input_event_t::keyboard_char );
-                        break;
-                    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        send_input( KEY_DOWN, input_event_t::keyboard_char );
-                        break;
-                    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-                        send_input( KEY_LEFT, input_event_t::keyboard_char );
-                        break;
-                    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        send_input( KEY_RIGHT, input_event_t::keyboard_char );
+                    case SDL_CONTROLLER_BUTTON_GUIDE:
+                        send_input( KEY_F( 1 ), input_event_t::keyboard_char );
                         break;
                     default:
-                        send_input( button );
+                        send_input( button + increment_keystate );
                         schedule_task( task, now + repeat_delay, buttons_map[button], state );
                 }
             } else {
