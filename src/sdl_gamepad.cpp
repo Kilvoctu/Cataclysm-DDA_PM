@@ -321,6 +321,16 @@ void handle_button_event( SDL_Event &event, int increment_keystate )
                     case SDL_CONTROLLER_BUTTON_GUIDE:
                         send_input( KEY_F( 1 ), input_event_t::keyboard_char );
                         break;
+                    case SDL_CONTROLLER_BUTTON_A:
+                        if ( increment_keystate == 0 ) {
+                            send_input( '\n', input_event_t::keyboard_char );
+                        }
+                        break;
+                    case SDL_CONTROLLER_BUTTON_B:
+                        if ( increment_keystate == 0 ) {
+                            send_input( '\033', input_event_t::keyboard_char );
+                        }
+                        break;
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
                         send_input( KEY_UP, input_event_t::keyboard_char );
                         break;
