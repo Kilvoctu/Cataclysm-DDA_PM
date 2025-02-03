@@ -15,8 +15,8 @@ namespace gamepad
 
 void init();
 void quit();
-void handle_axis_event( SDL_Event &event );
-void handle_button_event( SDL_Event &event );
+void handle_axis_event( SDL_Event &event, int increment );
+void handle_button_event( SDL_Event &event, int increment );
 void handle_scheduler_event( SDL_Event &event );
 SDL_GameController *get_controller();
 
