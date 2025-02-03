@@ -21,6 +21,7 @@
 #include "filesystem.h"
 #include "flexbuffer_json-inl.h"
 #include "flexbuffer_json.h"
+#include "gpkey.h"
 #include "input_context.h" // IWYU pragma: keep
 #include "json.h"
 #include "json_error.h"
@@ -593,7 +594,7 @@ void input_manager::init_keycode_mapping()
         add_keyboard_code_keycode_pair( v.first, v.second );
     }
 
-    for (int i = 0; i < 900; ++i) {
+    for (int i = 0; i < 800; ++i) {
 		std::string joyCode = "JOY_" + std::to_string(i);
 		add_gamepad_keycode_pair( i, translate_marker_context("key name", joyCode ) );
 	}
