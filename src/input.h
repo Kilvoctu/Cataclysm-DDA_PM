@@ -148,7 +148,7 @@ struct action_attributes {
 // On the joystick there's a maximum of 256 key states.
 // So for joy axis events, we simply use a number larger
 // than that.
-/*constexpr int JOY_0  = 0;
+constexpr int JOY_0  = 0;
 constexpr int JOY_1  = 1;
 constexpr int JOY_2  = 2;
 constexpr int JOY_3  = 3;
@@ -306,7 +306,7 @@ constexpr int JOY_LEFT_3      = 256 + 4 + 600;
 constexpr int JOY_RIGHTUP_3   = 256 + 5 + 600;
 constexpr int JOY_RIGHTDOWN_3 = 256 + 6 + 600;
 constexpr int JOY_LEFTUP_3    = 256 + 7 + 600;
-constexpr int JOY_LEFTDOWN_3  = 256 + 8 + 600;*/
+constexpr int JOY_LEFTDOWN_3  = 256 + 8 + 600;
 
 /**
  * Manages the translation from action IDs to associated input.
