@@ -321,6 +321,18 @@ void handle_button_event( SDL_Event &event, int increment_keystate )
                     case SDL_CONTROLLER_BUTTON_GUIDE:
                         send_input( KEY_F( 1 ), input_event_t::keyboard_char );
                         break;
+                    case SDL_CONTROLLER_BUTTON_DPAD_UP:
+                        send_input( KEY_UP, input_event_t::keyboard_char );
+                        break;
+                    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+                        send_input( KEY_DOWN, input_event_t::keyboard_char );
+                        break;
+                    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+                        send_input( KEY_LEFT, input_event_t::keyboard_char );
+                        break;
+                    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+                        send_input( KEY_RIGHT, input_event_t::keyboard_char );
+                        break;
                     default:
                         send_input( button + increment_keystate );
                 }
@@ -336,7 +348,17 @@ void handle_scheduler_event( SDL_Event &event )
     Uint32 now = event.user.timestamp;
     for( gamepad::task_t &task : all_tasks ) {
         if( task.counter && task.when <= now ) {
-            send_input( task.button );
+            if ( task.button == 11 ) {
+                send_input( KEY_UP, input_event_t::keyboard_char );
+            } else if ( task.button == 12 ) {
+                send_input( KEY_DOWN, input_event_t::keyboard_char );
+            } else if ( task.button == 13 ) {
+                send_input( KEY_LEFT, input_event_t::keyboard_char );
+            } else if ( task.button == 14 ) {
+                send_input( KEY_RIGHT, input_event_t::keyboard_char );
+            } else {
+                send_input( task.button );
+            }
             task.counter += 1;
             task.when = now + repeat_interval;
         }
