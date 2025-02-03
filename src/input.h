@@ -180,15 +180,16 @@ constexpr int JOY_28 = 28;
 constexpr int JOY_29 = 29;
 constexpr int JOY_30 = 30;
 
-constexpr int JOY_LEFT      = 256 + 1;
+constexpr int JOY_UP        = 256 + 1;
 constexpr int JOY_RIGHT     = 256 + 2;
-constexpr int JOY_UP        = 256 + 3;
-constexpr int JOY_DOWN      = 256 + 4;
+constexpr int JOY_DOWN      = 256 + 3;
+constexpr int JOY_LEFT      = 256 + 4;
 constexpr int JOY_RIGHTUP   = 256 + 5;
 constexpr int JOY_RIGHTDOWN = 256 + 6;
 constexpr int JOY_LEFTUP    = 256 + 7;
 constexpr int JOY_LEFTDOWN  = 256 + 8;
 
+constexpr int JOY_UP_2      = 256 + 1 + 300;
 
 /**
  * Manages the translation from action IDs to associated input.
