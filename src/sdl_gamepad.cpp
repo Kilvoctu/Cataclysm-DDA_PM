@@ -235,7 +235,7 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
         task_t &task = all_tasks[triggers_task_index + idx];
         if( !state && value > triggers_threshold + error_margin ) {
             if ( one_of_two( triggers_axis, axis ) != 0 ) { // Right trigger only
-                send_input( 30 + increment_keystate );
+                send_input( button + increment_keystate );
             }
             triggers_state[idx] = 1;
         }
