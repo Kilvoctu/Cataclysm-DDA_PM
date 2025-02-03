@@ -154,8 +154,9 @@ static int TERMINAL_HEIGHT;
 static bool fullscreen;
 static int scaling_factor;
 
-bool gamepad_hold_a = false; // gamepad holding button
-int gamepad_hold_mod;        // amount to increment gamepad key state
+bool gamepad_hold_lb; // gamepad holding left shoulder
+bool gamepad_hold_lt; // gamepad holding left trigger
+int gamepad_hold_inc; // amount to increment gamepad key state
 
 using cata_cursesport::cursecell;
 
@@ -2963,17 +2964,24 @@ static void CheckMessages()
     std::optional<point> resize_dims;
     bool render_target_reset = false;
 
+    if ( gamepad_hold_lt == true ) {
+        gamepad_hold_inc = ( gamepad_hold_lb == true ) ? 600 : 500;
+    } else {
+        gamepad_hold_inc = ( gamepad_hold_lb == true ) ? 400 : 0;
+    }
+
     while( SDL_PollEvent( &ev ) ) {
         imclient->process_input( &ev );
-        switch (ev.caxis.axis) {
-            case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
-                if ( ev.caxis.value >= 16000 ) {
-                    gamepad_hold_mod = 600;
-                } else {
-                    gamepad_hold_mod = gamepad_hold_a ? 300 : 0;
+        switch( ev.type ) { // Separate switch for holding left trigger
+            case SDL_CONTROLLERAXISMOTION:
+                if( ev.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT ) {
+                    if( ev.caxis.value >= 16000 ) {
+                        gamepad_hold_lt = true;
+                    }
+                    if( ev.caxis.value < 16000 ) {
+                        gamepad_hold_lt = false;
+                    }
                 }
-                break;
-            default:
                 break;
         }
         switch( ev.type ) {
@@ -3219,22 +3227,20 @@ static void CheckMessages()
 #endif
             case SDL_CONTROLLERBUTTONDOWN:
                 if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gamepad_hold_a = true;
-                        gamepad_hold_mod = 300;
+                        gamepad_hold_lb = true;
                 } else {
-                    gamepad::handle_button_event( ev, gamepad_hold_mod );
+                    gamepad::handle_button_event( ev, gamepad_hold_inc );
                 }
                 break;
             case SDL_CONTROLLERBUTTONUP:
                 if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gamepad_hold_a = false;
-                        gamepad_hold_mod = 0;
+                        gamepad_hold_lb = false;
                 } else {
-                    gamepad::handle_button_event( ev, gamepad_hold_mod );
+                    gamepad::handle_button_event( ev, gamepad_hold_inc );
                 }
                 break;
             case SDL_CONTROLLERAXISMOTION:
-                gamepad::handle_axis_event( ev, gamepad_hold_mod );
+                gamepad::handle_axis_event( ev, gamepad_hold_inc );
                 break;
             case SDL_GAMEPAD_SCHEDULER:
                 gamepad::handle_scheduler_event( ev );
