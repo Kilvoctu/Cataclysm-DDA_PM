@@ -595,9 +595,9 @@ void input_manager::init_keycode_mapping()
     }
 
     for (int i = 0; i < 800; ++i) {
-		std::string joyCode = "JOY_" + std::to_string(i);
-		add_gamepad_keycode_pair( i, translate_marker_context("key name", convert_joy_string ( joyCode ) ) );
-	}
+        std::string joyCode = "JOY_" + std::to_string(i);
+        add_gamepad_keycode_pair( i, translate_marker_context("key name", joyCode ) );
+    }
 
 
     add_mouse_keycode_pair( MouseInput::LeftButtonPressed,
