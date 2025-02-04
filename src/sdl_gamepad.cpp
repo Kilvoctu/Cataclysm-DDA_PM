@@ -175,7 +175,7 @@ static void send_input( int ibtn, input_event_t itype = input_event_t::gamepad )
     last_input = input_event( ibtn, itype );
 }
 
-void handle_axis_event( SDL_Event &event, int increment_keystate )
+void handle_axis_event( SDL_Event &event, int inc_keystate )
 {
     if( event.type != SDL_CONTROLLERAXISMOTION ) {
         return;
@@ -192,7 +192,7 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
         task_t &task = all_tasks[triggers_task_index + idx];
         if( !state && value > triggers_threshold + error_margin ) {
             if ( one_of_two( triggers_axis, axis ) != 0 ) { // Right trigger only
-                send_input( button + increment_keystate );
+                send_input( button + inc_keystate );
             }
             triggers_state[idx] = 1;
         }
@@ -216,13 +216,13 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
             if( idx ) { // vertical stick movement
                 if( !( old_state & 0b0100 ) && value > sticks_threshold + error_margin ) {
                     new_state |= 0b0100;    // turn on bit _x__
-                    stick_state = ( ( i > 0 ) ? 23 : 259 ) + increment_keystate; // stick down R/L
+                    stick_state = ( ( i > 0 ) ? 23 : 259 ) + inc_keystate; // stick down R/L
                     send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0100 ) && value < sticks_threshold - error_margin ) {
                     new_state &= 0b1011;    // turn off bit _x__
                 } else if( !( old_state & 0b0001 ) && value < -sticks_threshold - error_margin ) {
                     new_state |= 0b0001;    // turn on bit ___x
-                    stick_state = ( ( i > 0 ) ? 21 : 257 ) + increment_keystate; // stick up R/L
+                    stick_state = ( ( i > 0 ) ? 21 : 257 ) + inc_keystate; // stick up R/L
                     send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0001 ) && value > -sticks_threshold + error_margin ) {
                     new_state &= 0b1110;    // turn off bit ___x
@@ -230,13 +230,13 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
             } else { // horizontal stick movement
                 if( !( old_state & 0b0010 ) && value > sticks_threshold + error_margin ) {
                     new_state |= 0b0010;    // turn on bit __x_
-                    stick_state = ( ( i > 0 ) ? 22 : 258 ) + increment_keystate; // stick right R/L
+                    stick_state = ( ( i > 0 ) ? 22 : 258 ) + inc_keystate; // stick right R/L
                     send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0010 ) && value < sticks_threshold - error_margin ) {
                     new_state &= 0b1101;    // turn off bit __x_
                 } else if( !( old_state & 0b1000 ) && value < -sticks_threshold - error_margin ) {
                     new_state |= 0b1000;    // turn on bit x___
-                    stick_state = ( ( i > 0 ) ? 24 : 260 ) + increment_keystate; // stick left R/L
+                    stick_state = ( ( i > 0 ) ? 24 : 260 ) + inc_keystate; // stick left R/L
                     send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b1000 ) && value > -sticks_threshold + error_margin ) {
                     new_state &= 0b0111;    // turn off bit x___
@@ -248,7 +248,7 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
     }
 }
 
-void handle_button_event( SDL_Event &event, int increment_keystate )
+void handle_button_event( SDL_Event &event, int inc_keystate )
 {
     
     int button = event.cbutton.button;
@@ -264,7 +264,7 @@ void handle_button_event( SDL_Event &event, int increment_keystate )
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        if ( increment_keystate == 0 ) {
+                        if ( inc_keystate == 0 ) {
                             send_input( button );
                             schedule_task( task, now + repeat_delay, buttons_map[button], state );
                         }
@@ -279,41 +279,41 @@ void handle_button_event( SDL_Event &event, int increment_keystate )
                         send_input( KEY_F( 1 ), input_event_t::keyboard_char );
                         break;
                     case SDL_CONTROLLER_BUTTON_A:
-                        if ( increment_keystate == 0 ) {
+                        if ( inc_keystate == 0 ) {
                             send_input( '\n', input_event_t::keyboard_char );
                         } else {
-                            send_input( button + increment_keystate );
+                            send_input( button + inc_keystate );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_B:
-                        if ( increment_keystate == 0 ) {
+                        if ( inc_keystate == 0 ) {
                             send_input( '\033', input_event_t::keyboard_char );
                         } else {
-                            send_input( button + increment_keystate );
+                            send_input( button + inc_keystate );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        if ( increment_keystate == 0 ) {
+                        if ( inc_keystate == 0 ) {
                             send_input( KEY_UP, input_event_t::keyboard_char );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        if ( increment_keystate == 0 ) {
+                        if ( inc_keystate == 0 ) {
                             send_input( KEY_DOWN, input_event_t::keyboard_char );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-                        if ( increment_keystate == 0 ) {
+                        if ( inc_keystate == 0 ) {
                             send_input( KEY_LEFT, input_event_t::keyboard_char );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        if ( increment_keystate == 0 ) {
+                        if ( inc_keystate == 0 ) {
                             send_input( KEY_RIGHT, input_event_t::keyboard_char );
                         }
                         break;
                     default:
-                        send_input( button + increment_keystate );
+                        send_input( button + inc_keystate );
                 }
             } else {
                 cancel_task( task );
