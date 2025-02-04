@@ -175,49 +175,6 @@ static void send_input( int ibtn, input_event_t itype = input_event_t::gamepad )
     last_input = input_event( ibtn, itype );
 }
 
-static void dpad_changes( task_t &task, const std::array<int, 16> &m, Uint32 now, int old_state,
-                          int new_state, int inc_state )
-{
-    // get rid of unneeded bits
-    old_state &= 0b1111;
-    new_state &= 0b1111;
-
-    if( old_state == new_state ) {
-        return;
-    }
-
-    switch( new_state ) {
-        case SDL_HAT_LEFTUP:
-        case SDL_HAT_LEFTDOWN:
-        case SDL_HAT_RIGHTUP:
-        case SDL_HAT_RIGHTDOWN:
-            send_input( m[new_state] );
-            schedule_task( task, now + repeat_delay, m[new_state], new_state );
-            break;
-        case SDL_HAT_CENTERED: {
-            if( task.counter == 1 ) {
-                switch( old_state ) {
-                    // detecting quick CENTER -> Left|Up|Right|Down -> CENTER transition
-                    case SDL_HAT_UP:
-                    case SDL_HAT_DOWN:
-                    case SDL_HAT_RIGHT:
-                    case SDL_HAT_LEFT:
-                        send_input( task.button + inc_state );
-                }
-            }
-            cancel_task( task );
-            break;
-        }
-        case SDL_HAT_UP:
-        case SDL_HAT_DOWN:
-        case SDL_HAT_RIGHT:
-        case SDL_HAT_LEFT:
-            schedule_task( task, now + diagonal_detect_delay, m[new_state], new_state );
-            task.counter += old_state;
-            break;
-    }
-}
-
 void handle_axis_event( SDL_Event &event, int increment_keystate )
 {
     if( event.type != SDL_CONTROLLERAXISMOTION ) {
@@ -287,8 +244,6 @@ void handle_axis_event( SDL_Event &event, int increment_keystate )
             }
 
             sticks_state[i] = new_state;
-            // Don't do dpad_changes because we only cardinals
-            // dpad_changes( task, sticks_map[i], now, old_state, new_state, increment_keystate );
         }
     }
 }
