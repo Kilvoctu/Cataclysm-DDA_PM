@@ -6,24 +6,32 @@
 #include <vector>
 #include <initializer_list>
 #include <iostream>
+#include <unordered_map>
 
 #include "string_formatter.h"
 
 //define unicode
 // PS Prompts
-//std::string gp_cross = "\u00D7";
-//std::string gp_square = "\u25A1";
-//std::string gp_triangle = "\u25B3";
-//std::string gp_circle = "\u25CB";
-// Eckbok Prompts
-std::string gp_cross = "A";
-std::string gp_circle = "B";
-std::string gp_square = "X";
-std::string gp_triangle = "Y";
+/*std::string gp_cross = "\u00D7";
+std::string gp_square = "\u25A1";
+std::string gp_triangle = "\u25B3";
+std::string gp_circle = "\u25CB";
 std::string gp_l1 = "L1";
 std::string gp_l2 = "L2";
 std::string gp_r1 = "R1";
 std::string gp_r2 = "R2";
+
+std::string l_mod = "L1+";*/
+
+// Eckbok Prompts
+std::string gp_cross = "\u0391";
+std::string gp_circle = "\u0392";
+std::string gp_square = "\u03A7";
+std::string gp_triangle = "\u03A5";
+std::string gp_l1 = "LB";
+std::string gp_l2 = "LT";
+std::string gp_r1 = "RB";
+std::string gp_r2 = "RT";
 std::string gp_lstick = "L3";
 std::string gp_rstick = "R3";
 
@@ -50,16 +58,16 @@ std::string gp_rstick_down = "R\u2B8B";
 std::string gp_rstick_left = "R\u2B88";
 std::string gp_rstick_right = "R\u2B8A";
 
-std::string l_mod = "L1+";
+std::string l_mod = "LB+";
 
-std::string convert_to_gamepad( const std::string keybind_in_pre )
+std::string convert_to_gamepad( const std::string keybind_in_pre ) // legacy keyboard replacements
 {
     std::string keybind_out;
 
 	std::string keybind_in = keybind_in_pre;
-	if( ( keybind_in_pre.rfind("CTRL+", 0 ) == 0 ) || ( keybind_in_pre.rfind("Ctrl+", 0 ) == 0 ) ) {
-		keybind_in.erase(0, 5);
-		l_mod = "L2+";
+	if( ( keybind_in_pre.rfind( "CTRL+", 0 ) == 0 ) || ( keybind_in_pre.rfind("Ctrl+", 0 ) == 0 ) ) {
+		keybind_in.erase( 0, 5 );
+		l_mod = "LT+";
 	}
 
     if( keybind_in == "d" ) {
@@ -179,8 +187,34 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
     return keybind_out;
 }
 
-std::string convert_joy_string( const std::string joy_in ) {
+std::string convert_joy_string( const std::string joy_in ) { // gamepad "JOY_" replacements
+
 	std::string joy_out;
-	joy_out = '1';
-	return joy_out;
+	std::unordered_map< std::string, std::string > j;
+	//j["JOY_0"] = gp_cross;
+	//j["JOY_1"] = gp_circle;
+	j["JOY_2"] = gp_square;
+	j["JOY_3"] = gp_triangle;
+	j["JOY_4"] = gp_select;
+	j["JOY_6"] = gp_start;
+	j["JOY_7"] = gp_lstick;
+	j["JOY_8"] = gp_rstick;
+	j["JOY_10"] = gp_r1;
+	j["JOY_21"] = gp_rstick_up;
+	j["JOY_22"] = gp_rstick_right;
+	j["JOY_23"] = gp_rstick_down;
+	j["JOY_24"] = gp_rstick_left;
+	j["JOY_30"] = gp_r2;
+	j["JOY_257"] = gp_lstick_up;
+	j["JOY_258"] = gp_lstick_right;
+	j["JOY_259"] = gp_lstick_down;
+	j["JOY_260"] = gp_lstick_left;
+	// to do: add modifiers mod a+300 mod b+400 mod c+500
+
+	joy_out = j[joy_in];
+	if ( joy_out != "" ) {
+		return joy_out;
+	} else {
+		return joy_in;
+	}
 }
