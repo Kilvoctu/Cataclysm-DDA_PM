@@ -2976,7 +2976,7 @@ static void CheckMessages()
 
     while( SDL_PollEvent( &ev ) ) {
         imclient->process_input( &ev );
-        switch( ev.type ) { // Separate switch for holding left trigger
+        switch( ev.type ) { // Separate switch for holds
             case SDL_CONTROLLERAXISMOTION:
                 if( ev.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT ) {
                     if( ev.caxis.value >= 16000 ) {
