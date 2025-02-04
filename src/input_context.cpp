@@ -299,6 +299,21 @@ std::string input_context::get_desc( const std::string &action_descriptor,
         }
     }
 
+    // filter display to show only or hide joystick prompts if it's enabled
+    for( size_t i = 0; i < inputs_to_show.size(); ++i ) {
+        std::string input_name = inputs_to_show[i].long_description();
+        if( get_option<bool>( "ENABLE_JOYSTICK" ) ) {
+            if( ( input_name.rfind( "JOY_", 0 ) == 0 ) || input_name == "RETURN" || input_name == "ESC" ) {
+            } else {
+                inputs_to_show.erase( inputs_to_show.begin() + i);
+            }
+        } else {
+            if( input_name.rfind( "JOY_", 0 ) == 0 ) {
+                inputs_to_show.erase( inputs_to_show.begin() + i );
+            }
+        }
+    }
+
     if( inputs_to_show.empty() ) {
         return pgettext( "keybinding", "None applicable" );
     }
