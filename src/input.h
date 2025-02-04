@@ -188,46 +188,6 @@ constexpr int JOY_RIGHTDOWN = 256 + 6;
 constexpr int JOY_LEFTUP    = 256 + 7;
 constexpr int JOY_LEFTDOWN  = 256 + 8;
 
-/*constexpr int JOY_400 = 400;
-constexpr int JOY_401 = 401;
-constexpr int JOY_402 = 402;
-constexpr int JOY_403 = 403;
-constexpr int JOY_404 = 404;
-constexpr int JOY_405 = 405;
-constexpr int JOY_406 = 406;
-constexpr int JOY_407 = 407;
-constexpr int JOY_408 = 408;
-constexpr int JOY_409 = 409;
-constexpr int JOY_410 = 410;
-constexpr int JOY_411 = 411;
-constexpr int JOY_412 = 412;
-constexpr int JOY_413 = 413;
-constexpr int JOY_414 = 414;
-constexpr int JOY_415 = 415;
-constexpr int JOY_416 = 416;
-constexpr int JOY_417 = 417;
-constexpr int JOY_418 = 418;
-constexpr int JOY_419 = 419;
-constexpr int JOY_420 = 420;
-constexpr int JOY_421 = 421;
-constexpr int JOY_422 = 422;
-constexpr int JOY_423 = 423;
-constexpr int JOY_424 = 424;
-constexpr int JOY_425 = 425;
-constexpr int JOY_426 = 426;
-constexpr int JOY_427 = 427;
-constexpr int JOY_428 = 428;
-constexpr int JOY_429 = 429;
-constexpr int JOY_430 = 430;
-constexpr int JOY_UP_1        = 256 + 1 + 400;
-constexpr int JOY_RIGHT_1     = 256 + 2 + 400;
-constexpr int JOY_DOWN_1      = 256 + 3 + 400;
-constexpr int JOY_LEFT_1      = 256 + 4 + 400;
-constexpr int JOY_RIGHTUP_1   = 256 + 5 + 400;
-constexpr int JOY_RIGHTDOWN_1 = 256 + 6 + 400;
-constexpr int JOY_LEFTUP_1    = 256 + 7 + 400;
-constexpr int JOY_LEFTDOWN_1  = 256 + 8 + 400;
-
 /**
  * Manages the translation from action IDs to associated input.
  *
