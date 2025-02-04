@@ -80,11 +80,16 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
 { // legacy keyboard replacements
     std::string keybind_out;
 
-	std::string keybind_in = keybind_in_pre;
-	if( ( keybind_in_pre.rfind( "CTRL+", 0 ) == 0 ) || ( keybind_in_pre.rfind("Ctrl+", 0 ) == 0 ) ) {
-		keybind_in.erase( 0, 5 );
-		l_mod = "LT+";
-	}
+    // intercept and return gamepad prompts if found
+    if( ( keybind_in_pre.rfind( "JOY_", 0 ) == 0 ) ) {
+        return convert_joy_string( keybind_in_pre );
+    }
+
+    std::string keybind_in = keybind_in_pre;
+    if( ( keybind_in_pre.rfind( "CTRL+", 0 ) == 0 ) || ( keybind_in_pre.rfind("Ctrl+", 0 ) == 0 ) ) {
+        keybind_in.erase( 0, 5 );
+        l_mod = "LT+";
+    }
 
     if( keybind_in == "d" ) {
         keybind_out = gp_triangle;
@@ -182,14 +187,14 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
         keybind_out = gp_left;
     } else if( keybind_in == "RIGHT" ) {
         keybind_out = gp_right;
-	//handle diagonals
+    //handle diagonals
     } else if( keybind_in == "HOME" ) { //NW
         keybind_out = string_format( "%s%s", l_mod, gp_up_left );
-	} else if( keybind_in == "PPAGE" ) { //NE
+    } else if( keybind_in == "PPAGE" ) { //NE
         keybind_out = string_format( "%s%s", l_mod, gp_up_right );
-	} else if( keybind_in == "END" ) { //SW
+    } else if( keybind_in == "END" ) { //SW
         keybind_out = string_format( "%s%s", l_mod, gp_down_left );
-	} else if( keybind_in == "NPAGE" ) { //SE
+    } else if( keybind_in == "NPAGE" ) { //SE
         keybind_out = string_format( "%s%s", l_mod, gp_down_right );
     } else if( keybind_in == "ESC" ) {
         keybind_out = gp_circle;
@@ -200,99 +205,100 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
     } else {
         keybind_out = keybind_in;
     }
-    return keybind_out;
+    // return keybind_out;
+    return keybind_in_pre; // temporarily stop converting keys during testing
 }
 
 std::string convert_joy_string( const std::string joy_in )
 { // gamepad "JOY_" replacements
-	std::string joy_out;
+    std::string joy_out;
 
-	std::unordered_map< std::string, std::string > j;
-	//j["JOY_0"] = gp_cross;
-	//j["JOY_1"] = gp_circle;
-	j["JOY_2"] = gp_square;
-	j["JOY_3"] = gp_triangle;
-	j["JOY_4"] = gp_select;
-	j["JOY_6"] = gp_start;
-	j["JOY_7"] = gp_lstick;
-	j["JOY_8"] = gp_rstick;
-	j["JOY_10"] = gp_r1;
-	j["JOY_21"] = gp_rstick_up;
-	j["JOY_22"] = gp_rstick_right;
-	j["JOY_23"] = gp_rstick_down;
-	j["JOY_24"] = gp_rstick_left;
-	j["JOY_30"] = gp_r2;
-	j["JOY_257"] = gp_lstick_up;
-	j["JOY_258"] = gp_lstick_right;
-	j["JOY_259"] = gp_lstick_down;
-	j["JOY_260"] = gp_lstick_left;
+    std::unordered_map< std::string, std::string > j;
+    //j["JOY_0"] = gp_cross;
+    //j["JOY_1"] = gp_circle;
+    j["JOY_2"] = gp_square;
+    j["JOY_3"] = gp_triangle;
+    j["JOY_4"] = gp_select;
+    j["JOY_6"] = gp_start;
+    j["JOY_7"] = gp_lstick;
+    j["JOY_8"] = gp_rstick;
+    j["JOY_10"] = gp_r1;
+    j["JOY_21"] = gp_rstick_up;
+    j["JOY_22"] = gp_rstick_right;
+    j["JOY_23"] = gp_rstick_down;
+    j["JOY_24"] = gp_rstick_left;
+    j["JOY_30"] = gp_r2;
+    j["JOY_257"] = gp_lstick_up;
+    j["JOY_258"] = gp_lstick_right;
+    j["JOY_259"] = gp_lstick_down;
+    j["JOY_260"] = gp_lstick_left;
     // L1 modifier
-	j["JOY_300"] = l_mod + gp_cross;
-	j["JOY_301"] = l_mod + gp_circle;
-	j["JOY_302"] = l_mod + gp_square;
-	j["JOY_303"] = l_mod + gp_triangle;
-	j["JOY_304"] = l_mod + gp_select;
-	j["JOY_306"] = l_mod + gp_start;
-	j["JOY_307"] = l_mod + gp_lstick;
-	j["JOY_308"] = l_mod + gp_rstick;
-	j["JOY_310"] = l_mod + gp_r1;
-	j["JOY_321"] = l_mod + gp_rstick_up;
-	j["JOY_322"] = l_mod + gp_rstick_right;
-	j["JOY_323"] = l_mod + gp_rstick_down;
-	j["JOY_324"] = l_mod + gp_rstick_left;
-	j["JOY_330"] = l_mod + gp_r2;
-	j["JOY_557"] = l_mod + gp_lstick_up;
-	j["JOY_558"] = l_mod + gp_lstick_right;
-	j["JOY_559"] = l_mod + gp_lstick_down;
-	j["JOY_560"] = l_mod + gp_lstick_left;
-	// L2 modifier
-	j["JOY_400"] = l2_mod + gp_cross;
-	j["JOY_401"] = l2_mod + gp_circle;
-	j["JOY_402"] = l2_mod + gp_square;
-	j["JOY_403"] = l2_mod + gp_triangle;
-	j["JOY_404"] = l2_mod + gp_select;
-	j["JOY_406"] = l2_mod + gp_start;
-	j["JOY_407"] = l2_mod + gp_lstick;
-	j["JOY_408"] = l2_mod + gp_rstick;
-	j["JOY_410"] = l2_mod + gp_r1;
-	j["JOY_421"] = l2_mod + gp_rstick_up;
-	j["JOY_422"] = l2_mod + gp_rstick_right;
-	j["JOY_423"] = l2_mod + gp_rstick_down;
-	j["JOY_424"] = l2_mod + gp_rstick_left;
-	j["JOY_430"] = l2_mod + gp_r2;
-	j["JOY_657"] = l2_mod + gp_lstick_up;
-	j["JOY_658"] = l2_mod + gp_lstick_right;
-	j["JOY_659"] = l2_mod + gp_lstick_down;
-	j["JOY_660"] = l2_mod + gp_lstick_left;
-	// L1+L2 modifier
-	j["JOY_500"] = l_mod + l2_mod + gp_cross;
-	j["JOY_501"] = l_mod + l2_mod + gp_circle;
-	j["JOY_502"] = l_mod + l2_mod + gp_square;
-	j["JOY_503"] = l_mod + l2_mod + gp_triangle;
-	j["JOY_504"] = l_mod + l2_mod + gp_select;
-	j["JOY_506"] = l_mod + l2_mod + gp_start;
-	j["JOY_507"] = l_mod + l2_mod + gp_lstick;
-	j["JOY_508"] = l_mod + l2_mod + gp_rstick;
-	j["JOY_510"] = l_mod + l2_mod + gp_r1;
-	j["JOY_521"] = l_mod + l2_mod + gp_rstick_up;
-	j["JOY_522"] = l_mod + l2_mod + gp_rstick_right;
-	j["JOY_523"] = l_mod + l2_mod + gp_rstick_down;
-	j["JOY_524"] = l_mod + l2_mod + gp_rstick_left;
-	j["JOY_530"] = l_mod + l2_mod + gp_r2;
-	j["JOY_757"] = l_mod + l2_mod + gp_lstick_up;
-	j["JOY_758"] = l_mod + l2_mod + gp_lstick_right;
-	j["JOY_759"] = l_mod + l2_mod + gp_lstick_down;
-	j["JOY_760"] = l_mod + l2_mod + gp_lstick_left;
-	// diagonals
-	j["JOY_797"] = l2_mod + gp_up_left;
-	j["JOY_799"] = l2_mod + gp_up_right;
-	j["JOY_791"] = l2_mod + gp_down_left;
-	j["JOY_793"] = l2_mod + gp_down_right;
+    j["JOY_300"] = l_mod + gp_cross;
+    j["JOY_301"] = l_mod + gp_circle;
+    j["JOY_302"] = l_mod + gp_square;
+    j["JOY_303"] = l_mod + gp_triangle;
+    j["JOY_304"] = l_mod + gp_select;
+    j["JOY_306"] = l_mod + gp_start;
+    j["JOY_307"] = l_mod + gp_lstick;
+    j["JOY_308"] = l_mod + gp_rstick;
+    j["JOY_310"] = l_mod + gp_r1;
+    j["JOY_321"] = l_mod + gp_rstick_up;
+    j["JOY_322"] = l_mod + gp_rstick_right;
+    j["JOY_323"] = l_mod + gp_rstick_down;
+    j["JOY_324"] = l_mod + gp_rstick_left;
+    j["JOY_330"] = l_mod + gp_r2;
+    j["JOY_557"] = l_mod + gp_lstick_up;
+    j["JOY_558"] = l_mod + gp_lstick_right;
+    j["JOY_559"] = l_mod + gp_lstick_down;
+    j["JOY_560"] = l_mod + gp_lstick_left;
+    // L2 modifier
+    j["JOY_400"] = l2_mod + gp_cross;
+    j["JOY_401"] = l2_mod + gp_circle;
+    j["JOY_402"] = l2_mod + gp_square;
+    j["JOY_403"] = l2_mod + gp_triangle;
+    j["JOY_404"] = l2_mod + gp_select;
+    j["JOY_406"] = l2_mod + gp_start;
+    j["JOY_407"] = l2_mod + gp_lstick;
+    j["JOY_408"] = l2_mod + gp_rstick;
+    j["JOY_410"] = l2_mod + gp_r1;
+    j["JOY_421"] = l2_mod + gp_rstick_up;
+    j["JOY_422"] = l2_mod + gp_rstick_right;
+    j["JOY_423"] = l2_mod + gp_rstick_down;
+    j["JOY_424"] = l2_mod + gp_rstick_left;
+    j["JOY_430"] = l2_mod + gp_r2;
+    j["JOY_657"] = l2_mod + gp_lstick_up;
+    j["JOY_658"] = l2_mod + gp_lstick_right;
+    j["JOY_659"] = l2_mod + gp_lstick_down;
+    j["JOY_660"] = l2_mod + gp_lstick_left;
+    // L1+L2 modifier
+    j["JOY_500"] = l_mod + l2_mod + gp_cross;
+    j["JOY_501"] = l_mod + l2_mod + gp_circle;
+    j["JOY_502"] = l_mod + l2_mod + gp_square;
+    j["JOY_503"] = l_mod + l2_mod + gp_triangle;
+    j["JOY_504"] = l_mod + l2_mod + gp_select;
+    j["JOY_506"] = l_mod + l2_mod + gp_start;
+    j["JOY_507"] = l_mod + l2_mod + gp_lstick;
+    j["JOY_508"] = l_mod + l2_mod + gp_rstick;
+    j["JOY_510"] = l_mod + l2_mod + gp_r1;
+    j["JOY_521"] = l_mod + l2_mod + gp_rstick_up;
+    j["JOY_522"] = l_mod + l2_mod + gp_rstick_right;
+    j["JOY_523"] = l_mod + l2_mod + gp_rstick_down;
+    j["JOY_524"] = l_mod + l2_mod + gp_rstick_left;
+    j["JOY_530"] = l_mod + l2_mod + gp_r2;
+    j["JOY_757"] = l_mod + l2_mod + gp_lstick_up;
+    j["JOY_758"] = l_mod + l2_mod + gp_lstick_right;
+    j["JOY_759"] = l_mod + l2_mod + gp_lstick_down;
+    j["JOY_760"] = l_mod + l2_mod + gp_lstick_left;
+    // diagonals
+    j["JOY_797"] = l2_mod + gp_up_left;
+    j["JOY_799"] = l2_mod + gp_up_right;
+    j["JOY_791"] = l2_mod + gp_down_left;
+    j["JOY_793"] = l2_mod + gp_down_right;
 
-	joy_out = j[joy_in];
-	if ( joy_out != "" ) {
-		return joy_out;
-	} else {
-		return joy_in;
-	}
+    joy_out = j[joy_in];
+    if ( joy_out != "" ) {
+        return joy_out;
+    } else {
+        return joy_in;
+    }
 }
