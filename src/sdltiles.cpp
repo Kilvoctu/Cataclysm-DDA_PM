@@ -154,13 +154,13 @@ static int TERMINAL_HEIGHT;
 static bool fullscreen;
 static int scaling_factor;
 
-bool gamepad_hold_lb; // gamepad holding left shoulder
-bool gamepad_hold_lt; // gamepad holding left trigger
-bool gamepad_hold_up;
-bool gamepad_hold_down;
-bool gamepad_hold_left;
-bool gamepad_hold_right;
-int gamepad_hold_inc; // amount to increment gamepad key state
+bool gp_hold_lb; // gamepad holding left shoulder
+bool gp_hold_lt; // gamepad holding left trigger
+bool gp_hold_up;
+bool gp_hold_down;
+bool gp_hold_left;
+bool gp_hold_right;
+int gp_inc_keystate; // amount to increment gamepad key state
 
 using cata_cursesport::cursecell;
 
@@ -2968,10 +2968,10 @@ static void CheckMessages()
     std::optional<point> resize_dims;
     bool render_target_reset = false;
 
-    if ( gamepad_hold_lt == true ) {
-        gamepad_hold_inc = ( gamepad_hold_lb == true ) ? 500 : 400;
+    if ( gp_hold_lt == true ) {
+        gp_inc_keystate = ( gp_hold_lb == true ) ? 500 : 400;
     } else {
-        gamepad_hold_inc = ( gamepad_hold_lb == true ) ? 300 : 0;
+        gp_inc_keystate = ( gp_hold_lb == true ) ? 300 : 0;
     }
 
     while( SDL_PollEvent( &ev ) ) {
@@ -2980,58 +2980,58 @@ static void CheckMessages()
             case SDL_CONTROLLERAXISMOTION:
                 if( ev.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT ) {
                     if( ev.caxis.value >= 16000 ) {
-                        gamepad_hold_lt = true;
+                        gp_hold_lt = true;
                     }
                     if( ev.caxis.value < 16000 ) {
-                        gamepad_hold_lt = false;
+                        gp_hold_lt = false;
                     }
                 }
                 break;
             case SDL_CONTROLLERBUTTONDOWN: // DPAD diagonals
-                if ( gamepad_hold_inc != 0 ) {
+                if ( gp_inc_keystate != 0 ) {
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
-                        gamepad_hold_up = true;
+                        gp_hold_up = true;
                     }
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) {
-                        gamepad_hold_down = true;
+                        gp_hold_down = true;
                     }
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) {
-                        gamepad_hold_left = true;
+                        gp_hold_left = true;
                     }
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
-                        gamepad_hold_right = true;
+                        gp_hold_right = true;
                     }
                 }
                 switch( ev.cbutton.button ) {
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        if ( gamepad_hold_left == true ) {
+                        if ( gp_hold_left == true ) {
                             last_input = input_event( 797, input_event_t::gamepad );
                         }
-                        if ( gamepad_hold_right == true ) {
+                        if ( gp_hold_right == true ) {
                             last_input = input_event( 799, input_event_t::gamepad );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        if ( gamepad_hold_left == true ) {
+                        if ( gp_hold_left == true ) {
                             last_input = input_event( 791, input_event_t::gamepad );
                         }
-                        if ( gamepad_hold_right == true ) {
+                        if ( gp_hold_right == true ) {
                             last_input = input_event( 793, input_event_t::gamepad );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-                        if ( gamepad_hold_up == true ) {
+                        if ( gp_hold_up == true ) {
                             last_input = input_event( 797, input_event_t::gamepad );
                         }
-                        if ( gamepad_hold_down == true ) {
+                        if ( gp_hold_down == true ) {
                             last_input = input_event( 791, input_event_t::gamepad );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        if ( gamepad_hold_up == true ) {
+                        if ( gp_hold_up == true ) {
                             last_input = input_event( 799, input_event_t::gamepad );
                         }
-                        if ( gamepad_hold_down == true ) {
+                        if ( gp_hold_down == true ) {
                             last_input = input_event( 793, input_event_t::gamepad );
                         }
                         break;
@@ -3040,16 +3040,16 @@ static void CheckMessages()
             case SDL_CONTROLLERBUTTONUP:
                 switch( ev.cbutton.button ) {
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        gamepad_hold_up = false;
+                        gp_hold_up = false;
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        gamepad_hold_down = false;
+                        gp_hold_down = false;
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-                        gamepad_hold_left = false;
+                        gp_hold_left = false;
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        gamepad_hold_right = false;
+                        gp_hold_right = false;
                         break;
                 }
         }
@@ -3296,20 +3296,20 @@ static void CheckMessages()
 #endif
             case SDL_CONTROLLERBUTTONDOWN:
                 if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gamepad_hold_lb = true;
+                        gp_hold_lb = true;
                 } else {
-                    gamepad::handle_button_event( ev, gamepad_hold_inc );
+                    gamepad::handle_button_event( ev, gp_inc_keystate );
                 }
                 break;
             case SDL_CONTROLLERBUTTONUP:
                 if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gamepad_hold_lb = false;
+                        gp_hold_lb = false;
                 } else {
-                    gamepad::handle_button_event( ev, gamepad_hold_inc );
+                    gamepad::handle_button_event( ev, gp_inc_keystate );
                 }
                 break;
             case SDL_CONTROLLERAXISMOTION:
-                gamepad::handle_axis_event( ev, gamepad_hold_inc );
+                gamepad::handle_axis_event( ev, gp_inc_keystate );
                 break;
             case SDL_GAMEPAD_SCHEDULER:
                 gamepad::handle_scheduler_event( ev );
