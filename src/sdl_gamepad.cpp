@@ -309,8 +309,10 @@ void handle_button_event( SDL_Event &event, int increment_keystate )
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        send_input( button ); // DPAD should be only buttons that can't be modified
-                        schedule_task( task, now + repeat_delay, buttons_map[button], state );
+                        if ( increment_keystate == 0 ) {
+                            send_input( button );
+                            schedule_task( task, now + repeat_delay, buttons_map[button], state );
+                        }
                 }
             } else {
                 cancel_task( task );
@@ -324,24 +326,36 @@ void handle_button_event( SDL_Event &event, int increment_keystate )
                     case SDL_CONTROLLER_BUTTON_A:
                         if ( increment_keystate == 0 ) {
                             send_input( '\n', input_event_t::keyboard_char );
+                        } else {
+                            send_input( button + increment_keystate );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_B:
                         if ( increment_keystate == 0 ) {
                             send_input( '\033', input_event_t::keyboard_char );
+                        } else {
+                            send_input( button + increment_keystate );
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        send_input( KEY_UP, input_event_t::keyboard_char );
+                        if ( increment_keystate == 0 ) {
+                            send_input( KEY_UP, input_event_t::keyboard_char );
+                        }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        send_input( KEY_DOWN, input_event_t::keyboard_char );
+                        if ( increment_keystate == 0 ) {
+                            send_input( KEY_DOWN, input_event_t::keyboard_char );
+                        }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-                        send_input( KEY_LEFT, input_event_t::keyboard_char );
+                        if ( increment_keystate == 0 ) {
+                            send_input( KEY_LEFT, input_event_t::keyboard_char );
+                        }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        send_input( KEY_RIGHT, input_event_t::keyboard_char );
+                        if ( increment_keystate == 0 ) {
+                            send_input( KEY_RIGHT, input_event_t::keyboard_char );
+                        }
                         break;
                     default:
                         send_input( button + increment_keystate );
