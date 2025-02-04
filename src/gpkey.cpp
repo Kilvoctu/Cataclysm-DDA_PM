@@ -10,8 +10,8 @@
 
 #include "string_formatter.h"
 
-//define unicode
-// PS Prompts
+// define unicode
+// PS prompts
 /*std::string gp_cross = "\u00D7";
 std::string gp_square = "\u25A1";
 std::string gp_triangle = "\u25B3";
@@ -20,21 +20,38 @@ std::string gp_l1 = "L1";
 std::string gp_l2 = "L2";
 std::string gp_r1 = "R1";
 std::string gp_r2 = "R2";
+std::string l_mod = "L1+";
+std::string l2_mod = "L2+";*/
 
-std::string l_mod = "L1+";*/
+// Big N prompts
+/*std::string gp_cross = "\u0392";
+std::string gp_circle = "\u0391";
+std::string gp_square = "\u03A5";
+std::string gp_triangle = "\u03A7";
+std::string gp_l1 = "L";
+std::string gp_l2 = "ZL";
+std::string gp_r1 = "R";
+std::string gp_r2 = "ZR";
+std::string gp_lstick = "LS";
+std::string gp_rstick = "RS";
+std::string l_mod = "L+";
+std::string l2_mod = "ZL+";*/
 
-// Eckbok Prompts
-std::string gp_cross = "\u0391";
-std::string gp_circle = "\u0392";
-std::string gp_square = "\u03A7";
-std::string gp_triangle = "\u03A5";
+// Eckbok prompts
+std::string gp_cross = "\u0391";    // A
+std::string gp_circle = "\u0392";   // B
+std::string gp_square = "\u03A7";   // X
+std::string gp_triangle = "\u03A5"; // Y
 std::string gp_l1 = "LB";
 std::string gp_l2 = "LT";
 std::string gp_r1 = "RB";
 std::string gp_r2 = "RT";
-std::string gp_lstick = "L3";
-std::string gp_rstick = "R3";
+std::string gp_lstick = "LS";
+std::string gp_rstick = "RS";
+std::string l_mod = "LB+";
+std::string l2_mod = "LT+";
 
+// shared prompts
 std::string gp_select = "\u23F8";
 std::string gp_start = "\u23F5";
 std::string gp_hotkey = "\u25CD";
@@ -58,10 +75,9 @@ std::string gp_rstick_down = "R\u2B8B";
 std::string gp_rstick_left = "R\u2B88";
 std::string gp_rstick_right = "R\u2B8A";
 
-std::string l_mod = "LB+";
 
-std::string convert_to_gamepad( const std::string keybind_in_pre ) // legacy keyboard replacements
-{
+std::string convert_to_gamepad( const std::string keybind_in_pre )
+{ // legacy keyboard replacements
     std::string keybind_out;
 
 	std::string keybind_in = keybind_in_pre;
@@ -187,9 +203,10 @@ std::string convert_to_gamepad( const std::string keybind_in_pre ) // legacy key
     return keybind_out;
 }
 
-std::string convert_joy_string( const std::string joy_in ) { // gamepad "JOY_" replacements
-
+std::string convert_joy_string( const std::string joy_in )
+{ // gamepad "JOY_" replacements
 	std::string joy_out;
+
 	std::unordered_map< std::string, std::string > j;
 	//j["JOY_0"] = gp_cross;
 	//j["JOY_1"] = gp_circle;
@@ -209,7 +226,68 @@ std::string convert_joy_string( const std::string joy_in ) { // gamepad "JOY_" r
 	j["JOY_258"] = gp_lstick_right;
 	j["JOY_259"] = gp_lstick_down;
 	j["JOY_260"] = gp_lstick_left;
-	// to do: add modifiers mod a+300 mod b+400 mod c+500
+    // L1 modifier
+	j["JOY_300"] = l_mod + gp_cross;
+	j["JOY_301"] = l_mod + gp_circle;
+	j["JOY_302"] = l_mod + gp_square;
+	j["JOY_303"] = l_mod + gp_triangle;
+	j["JOY_304"] = l_mod + gp_select;
+	j["JOY_306"] = l_mod + gp_start;
+	j["JOY_307"] = l_mod + gp_lstick;
+	j["JOY_308"] = l_mod + gp_rstick;
+	j["JOY_310"] = l_mod + gp_r1;
+	j["JOY_321"] = l_mod + gp_rstick_up;
+	j["JOY_322"] = l_mod + gp_rstick_right;
+	j["JOY_323"] = l_mod + gp_rstick_down;
+	j["JOY_324"] = l_mod + gp_rstick_left;
+	j["JOY_330"] = l_mod + gp_r2;
+	j["JOY_557"] = l_mod + gp_lstick_up;
+	j["JOY_558"] = l_mod + gp_lstick_right;
+	j["JOY_559"] = l_mod + gp_lstick_down;
+	j["JOY_560"] = l_mod + gp_lstick_left;
+	// L2 modifier
+	j["JOY_400"] = l2_mod + gp_cross;
+	j["JOY_401"] = l2_mod + gp_circle;
+	j["JOY_402"] = l2_mod + gp_square;
+	j["JOY_403"] = l2_mod + gp_triangle;
+	j["JOY_404"] = l2_mod + gp_select;
+	j["JOY_406"] = l2_mod + gp_start;
+	j["JOY_407"] = l2_mod + gp_lstick;
+	j["JOY_408"] = l2_mod + gp_rstick;
+	j["JOY_410"] = l2_mod + gp_r1;
+	j["JOY_421"] = l2_mod + gp_rstick_up;
+	j["JOY_422"] = l2_mod + gp_rstick_right;
+	j["JOY_423"] = l2_mod + gp_rstick_down;
+	j["JOY_424"] = l2_mod + gp_rstick_left;
+	j["JOY_430"] = l2_mod + gp_r2;
+	j["JOY_657"] = l2_mod + gp_lstick_up;
+	j["JOY_658"] = l2_mod + gp_lstick_right;
+	j["JOY_659"] = l2_mod + gp_lstick_down;
+	j["JOY_660"] = l2_mod + gp_lstick_left;
+	// L1+L2 modifier
+	j["JOY_500"] = l_mod + l2_mod + gp_cross;
+	j["JOY_501"] = l_mod + l2_mod + gp_circle;
+	j["JOY_502"] = l_mod + l2_mod + gp_square;
+	j["JOY_503"] = l_mod + l2_mod + gp_triangle;
+	j["JOY_504"] = l_mod + l2_mod + gp_select;
+	j["JOY_506"] = l_mod + l2_mod + gp_start;
+	j["JOY_507"] = l_mod + l2_mod + gp_lstick;
+	j["JOY_508"] = l_mod + l2_mod + gp_rstick;
+	j["JOY_510"] = l_mod + l2_mod + gp_r1;
+	j["JOY_521"] = l_mod + l2_mod + gp_rstick_up;
+	j["JOY_522"] = l_mod + l2_mod + gp_rstick_right;
+	j["JOY_523"] = l_mod + l2_mod + gp_rstick_down;
+	j["JOY_524"] = l_mod + l2_mod + gp_rstick_left;
+	j["JOY_530"] = l_mod + l2_mod + gp_r2;
+	j["JOY_757"] = l_mod + l2_mod + gp_lstick_up;
+	j["JOY_758"] = l_mod + l2_mod + gp_lstick_right;
+	j["JOY_759"] = l_mod + l2_mod + gp_lstick_down;
+	j["JOY_760"] = l_mod + l2_mod + gp_lstick_left;
+	// diagonals
+	j["JOY_797"] = l2_mod + gp_up_left;
+	j["JOY_799"] = l2_mod + gp_up_right;
+	j["JOY_791"] = l2_mod + gp_down_left;
+	j["JOY_793"] = l2_mod + gp_down_right;
 
 	joy_out = j[joy_in];
 	if ( joy_out != "" ) {
