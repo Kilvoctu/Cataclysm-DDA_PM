@@ -213,14 +213,18 @@
     "id": "SWITCH_AUTO_NOTE_OPTION",
     "category": "AUTO_NOTES",
     "name": "Toggle auto notes option",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
     "id": "DISABLE_MAPEXTRA_NOTE",
     "category": "AUTO_NOTES",
     "name": "Disable auto notes for map extras",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -305,7 +309,9 @@
     "id": "DISABLE_RULE",
     "category": "AUTO_PICKUP",
     "name": "Disable rule",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -333,7 +339,9 @@
     "id": "SWITCH_AUTO_PICKUP_OPTION",
     "category": "AUTO_PICKUP",
     "name": "Enable auto pickup option",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -391,7 +399,9 @@
     "id": "DISABLE_RULE",
     "category": "SAFEMODE",
     "name": "Disable rule",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -419,7 +429,9 @@
     "id": "SWITCH_SAFEMODE_OPTION",
     "category": "SAFEMODE",
     "name": "Enable safemode option",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -454,14 +466,18 @@
     "id": "TOGGLE_PANEL",
     "category": "PANEL_MGMT",
     "name": "Toggle panel off",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
     "id": "CHANGE_SIDE",
     "category": "SORT_ARMOR",
     "name": "Change side armor is worn on",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -518,7 +534,9 @@
     "id": "REMOVE_ARMOR",
     "category": "SORT_ARMOR",
     "name": "Unequip selected armor",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -601,7 +619,9 @@
     "id": "CYCLE_BATCH",
     "category": "CRAFTING",
     "name": "Batch crafting",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -622,7 +642,9 @@
     "id": "RELATED_RECIPES",
     "category": "CRAFTING",
     "name": "Related recipes",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -694,7 +716,9 @@
     "id": "FLAG",
     "category": "MINESWEEPER",
     "name": "Toggle flag",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -710,7 +734,9 @@
     "id": "TOGGLE_5",
     "category": "LIGHTSON",
     "name": "Toggle lights",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -823,7 +849,9 @@
     "id": "ADVANCED_SETTINGS",
     "category": "WORLDGEN_CONFIRM_DIALOG",
     "name": "View advanced world settings",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -881,7 +909,9 @@
     "id": "MARK_DANGER",
     "category": "OVERMAP_NOTES",
     "name": "Mark danger",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -908,14 +938,18 @@
     "id": "MARK_DANGER",
     "category": "OVERMAP",
     "name": "Mark danger",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
     "id": "LIST_NOTES",
     "category": "OVERMAP",
     "name": "List notes",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -1125,7 +1159,9 @@
     "id": "AIMED_SHOT",
     "category": "TARGET",
     "name": "Aimed shot",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -1146,7 +1182,9 @@
     "id": "SWITCH_AMMO",
     "category": "TARGET",
     "name": "Switch ammo",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -1287,7 +1325,9 @@
     "type": "keybinding",
     "id": "MEDICAL_MENU",
     "name": "Open medical menu",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -1331,7 +1371,9 @@
     "id": "RANDOMIZE_CHAR_NAME",
     "category": "NEW_CHAR_DESCRIPTION",
     "name": "Pick random character name",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -1352,7 +1394,9 @@
     "id": "CHANGE_START_OF_GAME",
     "category": "NEW_CHAR_DESCRIPTION",
     "name": "Change game start date",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -1396,21 +1440,27 @@
     "id": "RANDOMIZE",
     "category": "NEW_CHAR_PROFESSIONS",
     "name": "Randomize profession",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
     "id": "RANDOMIZE",
     "category": "NEW_CHAR_TRAITS",
     "name": "Randomize trait",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
     "id": "RANDOMIZE",
     "category": "NEW_CHAR_SCENARIOS",
     "name": "Randomize scenario",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -1431,7 +1481,9 @@
     "id": "CHANGE_START_OF_GAME",
     "category": "NEW_CHAR_SCENARIOS",
     "name": "Change game start date",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -1506,7 +1558,9 @@
     "id": "REMOVE",
     "category": "APP_INTERACT",
     "name": "Take down appliance",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -1534,7 +1588,9 @@
     "id": "REPAIR",
     "category": "VEH_INTERACT",
     "name": "Repair part",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -1564,7 +1620,9 @@
     "id": "REMOVE",
     "category": "VEH_INTERACT",
     "name": "Remove part",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -1668,7 +1726,9 @@
     "id": "TOGGLE_UNAVAILABLE_CONSTRUCTIONS",
     "category": "CONSTRUCTION",
     "name": "Toggle unavailable constructions",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -1836,7 +1896,9 @@
     "id": "WIELD",
     "category": "INVENTORY",
     "name": "Wield",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -1907,7 +1969,9 @@
     "id": "TOGGLE_SAFE_FUEL",
     "category": "BIONICS",
     "name": "Toggle safe fuel mod",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -2153,7 +2217,9 @@
     "name": "Open inventory",
     "category": "DEFAULTMODE",
     "id": "inventory",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -2180,7 +2246,9 @@
     "name": "Use wielded item",
     "category": "DEFAULTMODE",
     "id": "apply_wielded",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -2280,7 +2348,9 @@
     "name": "Blind throw wielded item",
     "category": "LOOK",
     "id": "throw_blind_wielded",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -2901,7 +2971,9 @@
     "id": "COMPARE",
     "category": "LIST_ITEMS",
     "name": "Compare",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -2945,7 +3017,9 @@
     "id": "SAFEMODE_BLACKLIST_REMOVE",
     "category": "LIST_MONSTERS",
     "name": "Remove from safe mode blacklist",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -3065,7 +3139,9 @@
     "id": "ADD_GLOBAL",
     "category": "HELP_KEYBINDINGS",
     "name": "Add global keybinding",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -3094,7 +3170,9 @@
     "id": "ADD_PERSONAL_ZONE",
     "category": "ZONES_MANAGER",
     "name": "Add personal zone",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -3145,7 +3223,9 @@
     "id": "DISABLE_ZONE",
     "category": "ZONES_MANAGER",
     "name": "Disable zone",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -3264,7 +3344,9 @@
     "id": "MOVE_VARIABLE_ITEM",
     "category": "ADVANCED_INVENTORY",
     "name": "Move some items",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -3320,7 +3402,9 @@
     "id": "BANK_BALANCE",
     "category": "INVENTORY",
     "name": "Auto balance trade using bank account",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -3348,7 +3432,9 @@
     "id": "TOGGLE_NON_FAVORITE",
     "category": "INVENTORY",
     "name": "Select/unselect non-favorite items in multidrop menu",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -3425,7 +3511,9 @@
     "id": "ITEMS_INVENTORY",
     "category": "ADVANCED_INVENTORY",
     "name": "Select items in inventory",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -3521,7 +3609,9 @@
     "id": "LOAD_TEMPLATE",
     "category": "COLORS",
     "name": "Load color template",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -3765,7 +3855,9 @@
     "id": "FURNITURE",
     "category": "EXTENDED_DESCRIPTION",
     "name": "Describe furniture",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -3779,7 +3871,9 @@
     "id": "VEHICLE",
     "category": "EXTENDED_DESCRIPTION",
     "name": "Describe vehicle/appliance",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -3793,7 +3887,9 @@
     "id": "FAV_PRIORITY",
     "category": "INVENTORY",
     "name": "Set priority",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -3814,7 +3910,9 @@
     "id": "FAV_ITEM",
     "category": "INVENTORY",
     "name": "Whitelist/blacklist item",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -3913,7 +4011,9 @@
     "category": "PLAYER_INFO",
     "id": "VIEW_BODYSTAT",
     "name": "View character's body status",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -4044,7 +4144,9 @@
     "category": "DIALOGUE_CHOOSE_RESPONSE",
     "id": "SIZE_UP_STATS",
     "name": "Size up stats",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -4058,7 +4160,9 @@
     "category": "DIALOGUE_CHOOSE_RESPONSE",
     "id": "YELL",
     "name": "Yell",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
@@ -4105,7 +4209,9 @@
     "id": "NEW_PAGE",
     "name": "Add new page",
     "category": "DIARY",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -4268,7 +4374,9 @@
     "id": "TOGGLE_BUFFS_GROUP",
     "category": "MA_DETAILS_UI",
     "name": "Toggle buffs group",
-    "bindings": [ { "input_method": "keyboard_char", "key": "d" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_3" },
+      { "input_method": "keyboard_char", "key": "d" } ]
   },
   {
     "type": "keybinding",
@@ -4282,7 +4390,9 @@
     "id": "TOGGLE_WEAPONS_GROUP",
     "category": "MA_DETAILS_UI",
     "name": "Toggle weapons group",
-    "bindings": [ { "input_method": "keyboard_char", "key": "g" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_30" },
+      { "input_method": "keyboard_char", "key": "g" } ]
   },
   {
     "type": "keybinding",
