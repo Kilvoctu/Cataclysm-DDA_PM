@@ -2424,7 +2424,9 @@
     "name": "Advanced Inventory Manager",
     "category": "DEFAULTMODE",
     "id": "advinv",
-    "bindings": [ { "input_method": "keyboard_char", "key": "CTRL+W" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_421" },
+      { "input_method": "keyboard_char", "key": "CTRL+W" } ]
   },
   {
     "type": "keybinding",
@@ -2462,14 +2464,18 @@
     "name": "Quick toggle hauling",
     "category": "DEFAULTMODE",
     "id": "haul_toggle",
-    "bindings": [ { "input_method": "keyboard_char", "key": "CTRL+R" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_408" },
+      { "input_method": "keyboard_char", "key": "CTRL+R" } ]
   },
   {
     "type": "keybinding",
     "name": "Zone activities",
     "category": "DEFAULTMODE",
     "id": "loot",
-    "bindings": [ { "input_method": "keyboard_char", "key": "CTRL+V" } ]
+    "bindings": [
+      { "input_method": "gamepad", "key": "JOY_658" },
+      { "input_method": "keyboard_char", "key": "CTRL+V" } ]
   },
   {
     "type": "keybinding",
