@@ -49,7 +49,6 @@ static std::array<task_t, max_tasks> all_tasks;
 
 static int repeat_delay = 400;
 static int repeat_interval = 200;
-static int diagonal_detect_delay = 0;
 
 // SDL related stuff
 static SDL_TimerID timer_id;
@@ -175,6 +174,26 @@ static void send_input( int ibtn, input_event_t itype = input_event_t::gamepad )
     last_input = input_event( ibtn, itype );
 }
 
+static void dpad_changes( const std::array<int, 16> &m, int old_state, int new_state, int inc_keystate )
+{
+    // get rid of unneeded bits
+    old_state &= 0b1111;
+    new_state &= 0b1111;
+
+    if( old_state == new_state ) {
+        return;
+    }
+
+    switch( new_state ) {
+        case SDL_HAT_UP:
+        case SDL_HAT_DOWN:
+        case SDL_HAT_RIGHT:
+        case SDL_HAT_LEFT:
+            send_input( m[new_state] + inc_keystate );
+            break;
+    }
+}
+
 void handle_axis_event( SDL_Event &event, int inc_keystate )
 {
     if( event.type != SDL_CONTROLLERAXISMOTION ) {
@@ -207,7 +226,6 @@ void handle_axis_event( SDL_Event &event, int inc_keystate )
     for( int i = 0; i < max_sticks; ++i ) {
         int idx = one_of_two( sticks_axis[i], axis );
         if( idx >= 0 ) {
-            int stick_state;
             int old_state = sticks_state[i];
             int new_state = old_state;
             task_t &task = all_tasks[sticks_task_index + i];
@@ -216,34 +234,27 @@ void handle_axis_event( SDL_Event &event, int inc_keystate )
             if( idx ) { // vertical stick movement
                 if( !( old_state & 0b0100 ) && value > sticks_threshold + error_margin ) {
                     new_state |= 0b0100;    // turn on bit _x__
-                    stick_state = ( ( i > 0 ) ? 23 : 259 ) + inc_keystate; // stick down R/L
-                    send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0100 ) && value < sticks_threshold - error_margin ) {
                     new_state &= 0b1011;    // turn off bit _x__
                 } else if( !( old_state & 0b0001 ) && value < -sticks_threshold - error_margin ) {
                     new_state |= 0b0001;    // turn on bit ___x
-                    stick_state = ( ( i > 0 ) ? 21 : 257 ) + inc_keystate; // stick up R/L
-                    send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0001 ) && value > -sticks_threshold + error_margin ) {
                     new_state &= 0b1110;    // turn off bit ___x
                 }
             } else { // horizontal stick movement
                 if( !( old_state & 0b0010 ) && value > sticks_threshold + error_margin ) {
                     new_state |= 0b0010;    // turn on bit __x_
-                    stick_state = ( ( i > 0 ) ? 22 : 258 ) + inc_keystate; // stick right R/L
-                    send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b0010 ) && value < sticks_threshold - error_margin ) {
                     new_state &= 0b1101;    // turn off bit __x_
                 } else if( !( old_state & 0b1000 ) && value < -sticks_threshold - error_margin ) {
                     new_state |= 0b1000;    // turn on bit x___
-                    stick_state = ( ( i > 0 ) ? 24 : 260 ) + inc_keystate; // stick left R/L
-                    send_input( stick_state, input_event_t::gamepad );
                 } else if( ( old_state & 0b1000 ) && value > -sticks_threshold + error_margin ) {
                     new_state &= 0b0111;    // turn off bit x___
                 }
             }
 
             sticks_state[i] = new_state;
+            dpad_changes( sticks_map[i], old_state, new_state, inc_keystate );
         }
     }
 }
