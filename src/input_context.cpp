@@ -301,14 +301,15 @@ std::string input_context::get_desc( const std::string &action_descriptor,
 
     // filter display to show only or hide joystick prompts if it's enabled
     for( size_t i = 0; i < inputs_to_show.size(); ++i ) {
-        std::string input_name = inputs_to_show[i].long_description();
+        std::string inp_name = inputs_to_show[i].long_description();
         if( get_option<bool>( "ENABLE_JOYSTICK" ) ) {
-            if( ( input_name.rfind( "JOY_", 0 ) == 0 ) || input_name == "RETURN" || input_name == "ESC" ) {
+            if( ( inp_name.rfind( "JOY_", 0 ) == 0 ) || inp_name == "RETURN" || inp_name == "ESC" ||
+                  inp_name == "UP" || inp_name == "DOWN" || inp_name == "LEFT" || inp_name == "RIGHT" ) {
             } else {
                 inputs_to_show.erase( inputs_to_show.begin() + i);
             }
         } else {
-            if( input_name.rfind( "JOY_", 0 ) == 0 ) {
+            if( inp_name.rfind( "JOY_", 0 ) == 0 ) {
                 inputs_to_show.erase( inputs_to_show.begin() + i );
             }
         }
@@ -378,13 +379,11 @@ std::string input_context::get_desc(
     const translation &inline_fmt,
     const translation &separate_fmt ) const
 {
-	
     if( action_descriptor == "ANY_INPUT" ) {
         //~ keybinding description for anykey
         return string_format( separate_fmt, pgettext( "keybinding", "any" ), text );
     }
-	
-	if( action_descriptor == "NO_INPUT" ) {
+    if( action_descriptor == "NO_INPUT" ) {
         return string_format( inline_fmt, pgettext( "keybinding", "any" ), text );
     }
 
@@ -401,7 +400,7 @@ std::string input_context::get_desc(
                     const std::string key = utf32_to_utf8( ch );
                     const int pos = ci_find_substr( text, key );
                     if( pos >= 0 ) {
-				        return string_format( separate_fmt, get_desc( action_descriptor, 1, evt_filter ), text );
+                        return string_format( separate_fmt, get_desc( action_descriptor, 1, evt_filter ), text );
                     }
                 }
             }
