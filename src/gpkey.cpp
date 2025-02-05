@@ -10,6 +10,7 @@
 
 #include "string_formatter.h"
 
+bool is_joy = false;
 // define unicode
 // PS prompts
 /*std::string gp_cross = "\u00D7";
@@ -82,13 +83,16 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
 
     // intercept and return gamepad prompts if found
     if( ( keybind_in_pre.rfind( "JOY_", 0 ) == 0 ) ) {
+        is_joy = true;
         return convert_joy_string( keybind_in_pre );
     }
 
     std::string keybind_in = keybind_in_pre;
     if( ( keybind_in_pre.rfind( "CTRL+", 0 ) == 0 ) || ( keybind_in_pre.rfind("Ctrl+", 0 ) == 0 ) ) {
-        keybind_in.erase( 0, 5 );
-        l_mod = "LT+";
+        if ( !is_joy ) {
+            keybind_in.erase( 0, 5 );
+            l_mod = "LT+";
+        }
     }
 
     if( keybind_in == "d" ) {
@@ -205,8 +209,7 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
     } else {
         keybind_out = keybind_in;
     }
-    // return keybind_out;
-    return keybind_in_pre; // temporarily stop converting keys during testing
+    return keybind_out;
 }
 
 std::string convert_joy_string( const std::string joy_in )
