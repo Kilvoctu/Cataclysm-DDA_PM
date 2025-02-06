@@ -2483,7 +2483,7 @@
     "category": "DEFAULTMODE",
     "id": "butcher",
     "bindings": [
-      { "input_method": "gamepad", "key": "JOY_500" },
+      { "input_method": "gamepad", "key": "JOY_300" },
       { "input_method": "keyboard_char", "key": "&" } ]
   },
   {
@@ -2615,7 +2615,7 @@
     "category": "DEFAULTMODE",
     "id": "read",
     "bindings": [
-      { "input_method": "gamepad", "key": "JOY_530" },
+      { "input_method": "gamepad", "key": "JOY_657" },
       { "input_method": "keyboard_char", "key": "+" } ]
   },
   {
@@ -2868,7 +2868,7 @@
     "category": "DEFAULTMODE",
     "id": "ignore_enemy",
     "bindings": [
-      { "input_method": "gamepad", "key": "JOY_501" },
+      { "input_method": "gamepad", "key": "JOY_22" },
       { "input_method": "keyboard_char", "key": "\\" } ]
   },
   {
@@ -2933,7 +2933,7 @@
     "name": "View factions",
     "category": "DEFAULTMODE",
     "id": "factions",
-    "bindings": [ { "input_method": "gamepad", "key": "JOY_510" }]
+    "bindings": [ { "input_method": "gamepad", "key": "JOY_301" }]
   },
   {
     "type": "keybinding",
@@ -3225,7 +3225,7 @@
     "category": "DEFAULTMODE",
     "id": "autoattack",
     "bindings": [
-      { "input_method": "gamepad", "key": "JOY_22" },
+      { "input_method": "gamepad", "key": "JOY_400" },
       { "input_method": "keyboard_char", "key": "z" } ]
   },
   {
@@ -3336,7 +3336,7 @@
     "id": "recast_spell",
     "name": "Repeat last supernatural ability",
     "category": "DEFAULTMODE",
-    "bindings": [ { "input_method": "gamepad", "key": "JOY_657" } ]
+    "bindings": [ { "input_method": "gamepad", "key": "JOY_401" } ]
   },
   {
     "type": "keybinding",
