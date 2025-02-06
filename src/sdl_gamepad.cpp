@@ -41,8 +41,6 @@ struct task_t {
 };
 
 static constexpr int max_tasks           = max_buttons + max_sticks + max_triggers + 1;
-//constexpr int buttons_task_index  = 0;
-static constexpr int sticks_task_index   = max_buttons;
 static constexpr int triggers_task_index = max_buttons + max_sticks;
 
 static std::array<task_t, max_tasks> all_tasks;
