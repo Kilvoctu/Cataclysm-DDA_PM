@@ -2202,14 +2202,14 @@ void options_manager::add_options_interface()
     add_option_group( "interface", Group( "mouse_cont_opts", to_translation( "Control options" ),
                                           to_translation( "Options regarding controls." ) ),
     [&]( const std::string & page_id ) {
-        add( "ENABLE_JOYSTICK", page_id, to_translation( "Enable joystick" ),
-             to_translation( "If true, enable input from joystick." ),
+        add( "ENABLE_JOYSTICK", page_id, to_translation( "Enable gamepad" ),
+             to_translation( "If true, enable input from gamepad." ),
              true, COPT_CURSES_HIDE
            );
         
         add( "JOYSTICK_PROMPT_STYLE", page_id,
              to_translation( "Prompt style" ),
-             to_translation( "The visual style of button prompts when enabling joystick." ), {
+             to_translation( "The visual style of button prompts when enabling gamepad." ), {
                  { "playstation", to_translation( "PlayStation" ) },
                  { "xbox", to_translation( "Xbox" ) },
                  { "nintendo", to_translation( "Nintendo" ) }
@@ -2984,7 +2984,7 @@ void options_manager::add_options_debug()
 #if defined(EMSCRIPTEN)
          true
 #else
-         false
+         true
 #endif
        );
 }
