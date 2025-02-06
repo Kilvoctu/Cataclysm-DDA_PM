@@ -1,4 +1,5 @@
 #include "gpkey.h"
+#include "options.h"
 
 #include <map>
 #include <string>
@@ -11,47 +12,20 @@
 #include "string_formatter.h"
 
 bool is_joy = false;
+
 // define unicode
-// PS prompts
-/*std::string gp_cross = "\u00D7";
-std::string gp_square = "\u25A1";
-std::string gp_triangle = "\u25B3";
-std::string gp_circle = "\u25CB";
-std::string gp_l1 = "L1";
-std::string gp_l2 = "L2";
-std::string gp_r1 = "R1";
-std::string gp_r2 = "R2";
-std::string l_mod = "L1+";
-std::string l2_mod = "L2+";*/
-
-// Big N prompts
-/*std::string gp_cross = "\u0392";
-std::string gp_circle = "\u0391";
-std::string gp_square = "\u03A5";
-std::string gp_triangle = "\u03A7";
-std::string gp_l1 = "L";
-std::string gp_l2 = "ZL";
-std::string gp_r1 = "R";
-std::string gp_r2 = "ZR";
-std::string gp_lstick = "LS";
-std::string gp_rstick = "RS";
-std::string l_mod = "L+";
-std::string l2_mod = "ZL+";*/
-
-// Eckbok prompts
-std::string gp_cross = "\u0391";    // A
-std::string gp_circle = "\u0392";   // B
-std::string gp_square = "\u03A7";   // X
-std::string gp_triangle = "\u03A5"; // Y
-std::string gp_l1 = "LB";
-std::string gp_l2 = "LT";
-std::string gp_r1 = "RB";
-std::string gp_r2 = "RT";
-std::string gp_lstick = "LS";
-std::string gp_rstick = "RS";
-std::string l_mod = "LB+";
-std::string l2_mod = "LT+";
-
+std::string gp_cross;
+std::string gp_circle;
+std::string gp_square;
+std::string gp_triangle;
+std::string gp_l1;
+std::string gp_l2;
+std::string gp_r1;
+std::string gp_r2;
+std::string gp_lstick;
+std::string gp_rstick;
+std::string l_mod;
+std::string l2_mod;
 // shared prompts
 std::string gp_select = "\u23F8";
 std::string gp_start = "\u23F5";
@@ -76,9 +50,52 @@ std::string gp_rstick_down = "R\u2B8B";
 std::string gp_rstick_left = "R\u2B88";
 std::string gp_rstick_right = "R\u2B8A";
 
-
 std::string convert_to_gamepad( const std::string keybind_in_pre )
-{ // legacy keyboard replacements
+{
+    if( get_option<std::string>( "JOYSTICK_PROMPT_STYLE" ) == "playstation" ) {
+        // PS prompts
+        gp_cross = "\u2715";
+        gp_square = "\u25A1";
+        gp_triangle = "\u2206";
+        gp_circle = "\u25CB";
+        gp_l1 = "L1";
+        gp_l2 = "L2";
+        gp_r1 = "R1";
+        gp_r2 = "R2";
+        gp_lstick = "L3";
+        gp_rstick = "R3";
+        l_mod = "L1+";
+        l2_mod = "L2+";
+    } else if( get_option<std::string>( "JOYSTICK_PROMPT_STYLE" ) == "xbox" ) {
+        // Eckbok prompts
+        gp_cross = "\u0391";    // A
+        gp_circle = "\u0392";   // B
+        gp_square = "\u03A7";   // X
+        gp_triangle = "\u03A5"; // Y
+        gp_l1 = "LB";
+        gp_l2 = "LT";
+        gp_r1 = "RB";
+        gp_r2 = "RT";
+        gp_lstick = "LS";
+        gp_rstick = "RS";
+        l_mod = "LB+";
+        l2_mod = "LT+";
+    } else {
+        // Big N prompts
+        gp_cross = "\u0392";    // B
+        gp_circle = "\u0391";   // A
+        gp_square = "\u03A5";   // Y
+        gp_triangle = "\u03A7"; // X
+        gp_l1 = "L";
+        gp_l2 = "ZL";
+        gp_r1 = "R";
+        gp_r2 = "ZR";
+        gp_lstick = "LS";
+        gp_rstick = "RS";
+        l_mod = "L+";
+        l2_mod = "ZL+";
+    }
+
     std::string keybind_out;
 
     // intercept and return gamepad prompts if found
@@ -87,11 +104,18 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
         return convert_joy_string( keybind_in_pre );
     }
 
+    // legacy keyboard replacements
     std::string keybind_in = keybind_in_pre;
     if( ( keybind_in_pre.rfind( "CTRL+", 0 ) == 0 ) || ( keybind_in_pre.rfind("Ctrl+", 0 ) == 0 ) ) {
         if ( !is_joy ) {
             keybind_in.erase( 0, 5 );
-            l_mod = "LT+";
+            if( get_option<std::string>( "JOYSTICK_PROMPT_STYLE" ) == "playstation" ) {
+                l_mod = "L2+";
+            } else if( get_option<std::string>( "JOYSTICK_PROMPT_STYLE" ) == "xbox" ) {
+                l_mod = "LT+";
+            } else {
+                l_mod = "ZL+";
+            }
         }
     }
 
