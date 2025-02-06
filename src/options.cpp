@@ -2199,13 +2199,22 @@ void options_manager::add_options_interface()
     } );
 
     add_empty_line();
-    add_option_group( "interface", Group( "mouse_cont_opts", to_translation( "Mouse control options" ),
-                                          to_translation( "Options regarding mouse control." ) ),
+    add_option_group( "interface", Group( "mouse_cont_opts", to_translation( "Control options" ),
+                                          to_translation( "Options regarding controls." ) ),
     [&]( const std::string & page_id ) {
         add( "ENABLE_JOYSTICK", page_id, to_translation( "Enable joystick" ),
              to_translation( "If true, enable input from joystick." ),
-             false, COPT_CURSES_HIDE
+             true, COPT_CURSES_HIDE
            );
+        
+        add( "JOYSTICK_PROMPT_STYLE", page_id,
+             to_translation( "Prompt style" ),
+             to_translation( "The visual style of button prompts when enabling joystick." ), {
+                 { "playstation", to_translation( "PlayStation" ) },
+                 { "xbox", to_translation( "Xbox" ) },
+                 { "nintendo", to_translation( "Nintendo" ) }
+             },
+             "xbox", COPT_CURSES_HIDE );
 
         add( "HIDE_CURSOR", page_id, to_translation( "Hide mouse cursor" ),
              to_translation( "Show: cursor is always shown.  Hide: cursor is hidden.  HideKB: cursor is hidden on keyboard input and unhidden on mouse movement." ),
@@ -2216,7 +2225,7 @@ void options_manager::add_options_interface()
             //~ hide mouse cursor when keyboard is used
             { "hidekb", to_translation( "HideKB" ) }
         },
-        "show", COPT_CURSES_HIDE );
+        "hidekb", COPT_CURSES_HIDE );
 
         add( "EDGE_SCROLL", page_id, to_translation( "Edge scrolling" ),
         to_translation( "Edge scrolling with the mouse." ), {
@@ -2225,7 +2234,7 @@ void options_manager::add_options_interface()
             { 30, to_translation( "Normal" ) },
             { 10, to_translation( "Fast" ) },
         },
-        30, 30, COPT_CURSES_HIDE );
+        -1, 30, COPT_CURSES_HIDE );
     } );
 
 }
@@ -2339,52 +2348,52 @@ void options_manager::add_options_graphics()
     [&]( const std::string & page_id ) {
         add( "FONT_BLENDING", page_id, to_translation( "Font blending" ),
              to_translation( "If true, vector fonts may look better." ),
-             false, COPT_CURSES_HIDE
+             true, COPT_CURSES_HIDE
            );
 
         add( "FONT_WIDTH", page_id, to_translation( "Font width" ),
              to_translation( "Set the font width.  Requires restart." ),
-             6, 100, 8, COPT_CURSES_HIDE
+             6, 100, 12, COPT_CURSES_HIDE
            );
 
         add( "FONT_HEIGHT", page_id, to_translation( "Font height" ),
              to_translation( "Set the font height.  Requires restart." ),
-             8, 100, 16, COPT_CURSES_HIDE
+             8, 100, 21, COPT_CURSES_HIDE
            );
 
         add( "FONT_SIZE", page_id, to_translation( "Font size" ),
              to_translation( "Set the font size.  Requires restart." ),
-             8, 100, 16, COPT_CURSES_HIDE
+             8, 100, 21, COPT_CURSES_HIDE
            );
 
         add( "MAP_FONT_WIDTH", page_id, to_translation( "Map font width" ),
              to_translation( "Set the map font width.  Requires restart." ),
-             6, 100, 16, COPT_CURSES_HIDE
+             6, 100, 21, COPT_CURSES_HIDE
            );
 
         add( "MAP_FONT_HEIGHT", page_id, to_translation( "Map font height" ),
              to_translation( "Set the map font height.  Requires restart." ),
-             8, 100, 16, COPT_CURSES_HIDE
+             8, 100, 21, COPT_CURSES_HIDE
            );
 
         add( "MAP_FONT_SIZE", page_id, to_translation( "Map font size" ),
              to_translation( "Set the map font size.  Requires restart." ),
-             8, 100, 16, COPT_CURSES_HIDE
+             8, 100, 21, COPT_CURSES_HIDE
            );
 
         add( "OVERMAP_FONT_WIDTH", page_id, to_translation( "Overmap font width" ),
              to_translation( "Set the overmap font width.  Requires restart." ),
-             6, 100, 16, COPT_CURSES_HIDE
+             6, 100, 21, COPT_CURSES_HIDE
            );
 
         add( "OVERMAP_FONT_HEIGHT", page_id, to_translation( "Overmap font height" ),
              to_translation( "Set the overmap font height.  Requires restart." ),
-             8, 100, 16, COPT_CURSES_HIDE
+             8, 100, 21, COPT_CURSES_HIDE
            );
 
         add( "OVERMAP_FONT_SIZE", page_id, to_translation( "Overmap font size" ),
              to_translation( "Set the overmap font size.  Requires restart." ),
-             8, 100, 16, COPT_CURSES_HIDE
+             8, 100, 21, COPT_CURSES_HIDE
            );
 
         add( "USE_DRAW_ASCII_LINES_ROUTINE", page_id, to_translation( "SDL ASCII lines" ),
@@ -2553,7 +2562,7 @@ void options_manager::add_options_graphics()
             { "solid", to_translation( "Solid" ) },
             { "squares", to_translation( "Squares" ) },
             { "dots", to_translation( "Dots" ) }
-        }, "dots", COPT_CURSES_HIDE
+        }, "squares", COPT_CURSES_HIDE
            );
 
         get_option( "PIXEL_MINIMAP_MODE" ).setPrerequisite( "PIXEL_MINIMAP" );
