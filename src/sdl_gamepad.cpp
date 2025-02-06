@@ -283,6 +283,7 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
             } else {
                 cancel_task( task );
             }
+            [[fallthrough]];
         case SDL_CONTROLLERBUTTONUP: {
             if( state ) {
                 switch( button ) {
