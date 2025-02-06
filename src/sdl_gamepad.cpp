@@ -228,7 +228,6 @@ void handle_axis_event( SDL_Event &event, int inc_keystate )
         if( idx >= 0 ) {
             int old_state = sticks_state[i];
             int new_state = old_state;
-            task_t &task = all_tasks[sticks_task_index + i];
 
             // calculate dpad state for the analog sticks, simulating joystick hat state (4 bits)
             if( idx ) { // vertical stick movement
@@ -279,6 +278,7 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
                             send_input( button );
                             schedule_task( task, now + repeat_delay, buttons_map[button], state );
                         }
+                        break;
                 }
             } else {
                 cancel_task( task );
