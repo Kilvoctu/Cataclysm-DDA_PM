@@ -14,6 +14,6 @@
 
 const char *getVersionString()
 {
-    return "Custom-Experimental";
+    return "for gamepad";
     //return VERSION;
 }
