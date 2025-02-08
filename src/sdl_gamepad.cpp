@@ -322,6 +322,12 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
                             send_input( KEY_RIGHT, input_event_t::keyboard_char );
                         }
                         break;
+                    case SDL_CONTROLLER_BUTTON_LEFTSTICK:
+                        if ( inc_keystate == 500 ) {
+                            break;
+                        } else {
+                            send_input( button + inc_keystate );
+                        }
                     default:
                         send_input( button + inc_keystate );
                 }
