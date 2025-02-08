@@ -159,6 +159,7 @@ bool gp_hold_up;
 bool gp_hold_down;
 bool gp_hold_left;
 bool gp_hold_right;
+bool gp_text_input = false;
 int gp_inc_keystate; // amount to increment gamepad key state
 
 using cata_cursesport::cursecell;
@@ -3002,6 +3003,9 @@ static void CheckMessages()
                     }
                 }
                 switch( ev.cbutton.button ) {
+                    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+                        gp_hold_lb = true;
+                        break;
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
                         if ( gp_hold_left == true ) {
                             last_input = input_event( 797, input_event_t::gamepad );
@@ -3038,6 +3042,24 @@ static void CheckMessages()
                 break;
             case SDL_CONTROLLERBUTTONUP:
                 switch( ev.cbutton.button ) {
+                    case SDL_CONTROLLER_BUTTON_LEFTSTICK:
+                        if( gp_hold_lb == true && gp_hold_lt == true ) {
+                            if ( gp_text_input == false ) {
+								SDL_StartTextInput();
+                                last_input = input_event( SDLK_a, input_event_t::keyboard_char );
+                                text_refresh = true;
+                                gp_text_input = true;
+                            } else {
+								SDL_StartTextInput();
+                                last_input.text = ev.text.text;
+                                text_refresh = true;
+                                gp_text_input = false;
+                            }
+                        }
+                        break;
+                    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+                        gp_hold_lb = false;
+                        break;
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
                         gp_hold_up = false;
                         break;
@@ -3294,17 +3316,17 @@ static void CheckMessages()
             }
 #endif
             case SDL_CONTROLLERBUTTONDOWN:
-                if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gp_hold_lb = true;
-                } else {
-                    gamepad::handle_button_event( ev, gp_inc_keystate );
+                if ( gp_text_input == false ) {
+                    if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
+                        gamepad::handle_button_event( ev, gp_inc_keystate );
+                    }
                 }
                 break;
             case SDL_CONTROLLERBUTTONUP:
-                if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gp_hold_lb = false;
-                } else {
-                    gamepad::handle_button_event( ev, gp_inc_keystate );
+                if ( gp_text_input == false ) {
+                    if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
+                        gamepad::handle_button_event( ev, gp_inc_keystate );
+                    }
                 }
                 break;
             case SDL_CONTROLLERAXISMOTION:
