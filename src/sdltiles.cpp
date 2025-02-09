@@ -3048,6 +3048,7 @@ static void CheckMessages()
                             if ( gp_text_input == false ) {
                                 gp_text_input = true;
                                 StartTextInput();
+                                gamepad::start_typing();
                             } else {
                                 gp_text_input = false;
                                 StopTextInput();
@@ -3155,7 +3156,13 @@ static void CheckMessages()
                         gamepad::handle_button_event( ev, gp_inc_keystate );
                     }
                 } else {
-                    if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_Y ) {
+                    if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_A ) {
+                        last_input = input_event( '\n', input_event_t::keyboard_char );
+                        gp_text_input = false;
+                    } else if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_B ) {
+                        last_input = input_event( '\033', input_event_t::keyboard_char );
+                        gp_text_input = false;
+                    } else {
                         gamepad::handle_button_typing_event( ev );
                     }
                 }
