@@ -18,7 +18,11 @@ void quit();
 void handle_axis_event( SDL_Event &event, int increment );
 void handle_button_event( SDL_Event &event, int increment );
 void handle_scheduler_event( SDL_Event &event );
+
+void start_typing();
+void input_typing( const std::string inp_command );
 void handle_button_typing_event( SDL_Event &event );
+
 SDL_GameController *get_controller();
 
 } // namespace gamepad
