@@ -1,4 +1,5 @@
 #if defined(TILES)
+#include "gpkey.h"
 #include "sdl_gamepad.h"
 #include "debug.h"
 
@@ -358,6 +359,18 @@ void handle_scheduler_event( SDL_Event &event )
             task.when = now + repeat_interval;
         }
     }
+}
+
+void handle_button_typing_event( SDL_Event &event )
+{
+    INPUT inp;
+    inp.type = INPUT_KEYBOARD;
+    inp.ki.wScan = 0;
+    inp.ki.time = 0;
+    inp.ki.dwExtraInfo = 0;
+    inp.ki.wVk = character_set( 0 ); // test with sending "a"
+    inp.ki.dwFlags = 0;
+    SendInput(1, &inp, sizeof(INPUT));
 }
 
 } // namespace gamepad
