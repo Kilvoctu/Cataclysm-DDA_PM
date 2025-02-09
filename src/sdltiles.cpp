@@ -3047,8 +3047,10 @@ static void CheckMessages()
                         if( gp_hold_lb == true && gp_hold_lt == true ) {
                             if ( gp_text_input == false ) {
                                 gp_text_input = true;
+                                StartTextInput();
                             } else {
                                 gp_text_input = false;
+                                StopTextInput();
                             }
                         }
                         break;
@@ -3153,15 +3155,9 @@ static void CheckMessages()
                         gamepad::handle_button_event( ev, gp_inc_keystate );
                     }
                 } else {
-                    SDL_StartTextInput();
-                    SDL_Event key_down;
-                    key_down.type = SDL_KEYDOWN;
-                    key_down.key.state = SDL_PRESSED;
-                    key_down.key.keysym.sym = SDLK_a;
-                    key_down.key.keysym.mod = 0;
-                    sdl_keysym_to_keycode_evt( key_down.key.keysym );
-                    SDL_StopTextInput();
-                    //key_down.key.keysym.scancode = 41;
+                    if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_Y ) {
+                        gamepad::handle_button_typing_event( ev );
+                    }
                 }
                 break;
             case SDL_CONTROLLERBUTTONUP:
