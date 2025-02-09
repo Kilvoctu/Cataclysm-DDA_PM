@@ -3046,14 +3046,8 @@ static void CheckMessages()
                     case SDL_CONTROLLER_BUTTON_LEFTSTICK:
                         if( gp_hold_lb == true && gp_hold_lt == true ) {
                             if ( gp_text_input == false ) {
-								SDL_StartTextInput();
-                                last_input = input_event( SDLK_a, input_event_t::keyboard_char );
-                                text_refresh = true;
                                 gp_text_input = true;
                             } else {
-								SDL_StartTextInput();
-                                last_input.text = ev.text.text;
-                                text_refresh = true;
                                 gp_text_input = false;
                             }
                         }
@@ -3152,6 +3146,88 @@ static void CheckMessages()
                 break;
             case SDL_RENDER_TARGETS_RESET:
                 render_target_reset = true;
+                break;
+            case SDL_CONTROLLERBUTTONDOWN:
+                if ( gp_text_input == false ) {
+                    if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
+                        gamepad::handle_button_event( ev, gp_inc_keystate );
+                    }
+                } else {
+                    SDL_StartTextInput();
+                    SDL_Event key_down;
+                    key_down.type = SDL_KEYDOWN;
+                    key_down.key.state = SDL_PRESSED;
+                    key_down.key.keysym.sym = SDLK_a;
+                    key_down.key.keysym.mod = 0;
+                    sdl_keysym_to_keycode_evt( key_down.key.keysym );
+                    SDL_StopTextInput();
+                    //key_down.key.keysym.scancode = 41;
+                }
+                break;
+            case SDL_CONTROLLERBUTTONUP:
+                if ( gp_text_input == false ) {
+                    if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
+                        gamepad::handle_button_event( ev, gp_inc_keystate );
+                    }
+                } else {
+                    break;
+				}
+                break;
+            case SDL_CONTROLLERAXISMOTION:
+                gamepad::handle_axis_event( ev, gp_inc_keystate );
+                break;
+            case SDL_GAMEPAD_SCHEDULER:
+                gamepad::handle_scheduler_event( ev );
+                break;
+            case SDL_MOUSEMOTION:
+                if( get_option<std::string>( "HIDE_CURSOR" ) == "show" ||
+                    get_option<std::string>( "HIDE_CURSOR" ) == "hidekb" ) {
+                    if( !SDL_ShowCursor( -1 ) ) {
+                        SDL_ShowCursor( SDL_ENABLE );
+                    }
+
+                    // Only monitor motion when cursor is visible
+                    last_input = input_event( MouseInput::Move, input_event_t::mouse );
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                switch( ev.button.button ) {
+                    case SDL_BUTTON_LEFT:
+                        last_input = input_event( MouseInput::LeftButtonPressed, input_event_t::mouse );
+                        break;
+                    case SDL_BUTTON_RIGHT:
+                        last_input = input_event( MouseInput::RightButtonPressed, input_event_t::mouse );
+                        break;
+                    case SDL_BUTTON_X1:
+                        last_input = input_event( MouseInput::X1ButtonPressed, input_event_t::mouse );
+                        break;
+                    case SDL_BUTTON_X2:
+                        last_input = input_event( MouseInput::X2ButtonPressed, input_event_t::mouse );
+                        break;
+                }
+                break;
+            case SDL_MOUSEBUTTONUP:
+                switch( ev.button.button ) {
+                    case SDL_BUTTON_LEFT:
+                        last_input = input_event( MouseInput::LeftButtonReleased, input_event_t::mouse );
+                        break;
+                    case SDL_BUTTON_RIGHT:
+                        last_input = input_event( MouseInput::RightButtonReleased, input_event_t::mouse );
+                        break;
+                    case SDL_BUTTON_X1:
+                        last_input = input_event( MouseInput::X1ButtonReleased, input_event_t::mouse );
+                        break;
+                    case SDL_BUTTON_X2:
+                        last_input = input_event( MouseInput::X2ButtonReleased, input_event_t::mouse );
+                        break;
+                }
+                break;
+            case SDL_MOUSEWHEEL:
+                if( ev.wheel.y > 0 ) {
+                    last_input = input_event( MouseInput::ScrollWheelUp, input_event_t::mouse );
+                } else if( ev.wheel.y < 0 ) {
+                    last_input = input_event( MouseInput::ScrollWheelDown, input_event_t::mouse );
+                }
                 break;
             case SDL_KEYDOWN: {
 #if defined(__ANDROID__)
@@ -3316,80 +3392,6 @@ static void CheckMessages()
                 break;
             }
 #endif
-            case SDL_CONTROLLERBUTTONDOWN:
-                if ( gp_text_input == false ) {
-                    if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gamepad::handle_button_event( ev, gp_inc_keystate );
-                    }
-                }
-                break;
-            case SDL_CONTROLLERBUTTONUP:
-                if ( gp_text_input == false ) {
-                    if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gamepad::handle_button_event( ev, gp_inc_keystate );
-                    }
-                }
-                break;
-            case SDL_CONTROLLERAXISMOTION:
-                gamepad::handle_axis_event( ev, gp_inc_keystate );
-                break;
-            case SDL_GAMEPAD_SCHEDULER:
-                gamepad::handle_scheduler_event( ev );
-                break;
-            case SDL_MOUSEMOTION:
-                if( get_option<std::string>( "HIDE_CURSOR" ) == "show" ||
-                    get_option<std::string>( "HIDE_CURSOR" ) == "hidekb" ) {
-                    if( !SDL_ShowCursor( -1 ) ) {
-                        SDL_ShowCursor( SDL_ENABLE );
-                    }
-
-                    // Only monitor motion when cursor is visible
-                    last_input = input_event( MouseInput::Move, input_event_t::mouse );
-                }
-                break;
-
-            case SDL_MOUSEBUTTONDOWN:
-                switch( ev.button.button ) {
-                    case SDL_BUTTON_LEFT:
-                        last_input = input_event( MouseInput::LeftButtonPressed, input_event_t::mouse );
-                        break;
-                    case SDL_BUTTON_RIGHT:
-                        last_input = input_event( MouseInput::RightButtonPressed, input_event_t::mouse );
-                        break;
-                    case SDL_BUTTON_X1:
-                        last_input = input_event( MouseInput::X1ButtonPressed, input_event_t::mouse );
-                        break;
-                    case SDL_BUTTON_X2:
-                        last_input = input_event( MouseInput::X2ButtonPressed, input_event_t::mouse );
-                        break;
-                }
-                break;
-
-            case SDL_MOUSEBUTTONUP:
-                switch( ev.button.button ) {
-                    case SDL_BUTTON_LEFT:
-                        last_input = input_event( MouseInput::LeftButtonReleased, input_event_t::mouse );
-                        break;
-                    case SDL_BUTTON_RIGHT:
-                        last_input = input_event( MouseInput::RightButtonReleased, input_event_t::mouse );
-                        break;
-                    case SDL_BUTTON_X1:
-                        last_input = input_event( MouseInput::X1ButtonReleased, input_event_t::mouse );
-                        break;
-                    case SDL_BUTTON_X2:
-                        last_input = input_event( MouseInput::X2ButtonReleased, input_event_t::mouse );
-                        break;
-                }
-                break;
-
-            case SDL_MOUSEWHEEL:
-                if( ev.wheel.y > 0 ) {
-                    last_input = input_event( MouseInput::ScrollWheelUp, input_event_t::mouse );
-                } else if( ev.wheel.y < 0 ) {
-                    last_input = input_event( MouseInput::ScrollWheelDown, input_event_t::mouse );
-                }
-                break;
-
 #if defined(__ANDROID__)
             case SDL_FINGERMOTION:
                 if( ev.tfinger.fingerId == 0 ) {
