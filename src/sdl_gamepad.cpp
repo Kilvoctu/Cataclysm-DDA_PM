@@ -49,15 +49,6 @@ static std::array<task_t, max_tasks> all_tasks;
 static int repeat_delay = 400;
 static int repeat_interval = 200;
 
-// typing
-static int kb_backspace = 0x08;
-static int kb_clear = 0x0C;
-static int kb_enter = 0x0D;
-static int kb_shift = 0x10;
-static int kb_caps = 0x14;
-static int kb_left = 0x25;
-static int kb_right = 0x26;
-
 // SDL related stuff
 static SDL_TimerID timer_id;
 static SDL_GameController *controller = nullptr;
@@ -370,6 +361,7 @@ void handle_scheduler_event( SDL_Event &event )
     }
 }
 
+#if defined(WIN32)
 void start_typing()
 {
     INPUT inp;
@@ -389,6 +381,15 @@ void start_typing()
 
 void input_typing( const std::string inp_command )
 {
+    // typing
+    static int kb_backspace = 0x08;
+    static int kb_clear = 0x0C;
+    static int kb_enter = 0x0D;
+    static int kb_shift = 0x10;
+    static int kb_caps = 0x14;
+    static int kb_left = 0x25;
+    static int kb_right = 0x26;
+
     INPUT inp;
     inp.type = INPUT_KEYBOARD;
     inp.ki.wScan = 0;
@@ -428,6 +429,7 @@ void handle_button_typing_event( SDL_Event &event )
             }
     }
 }
+#endif
 
 } // namespace gamepad
 
