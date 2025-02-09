@@ -3048,7 +3048,9 @@ static void CheckMessages()
                             if ( gp_text_input == false ) {
                                 gp_text_input = true;
                                 StartTextInput();
+#if defined(WIN32)
                                 gamepad::start_typing();
+#endif
                             } else {
                                 gp_text_input = false;
                                 StopTextInput();
@@ -3163,7 +3165,9 @@ static void CheckMessages()
                         last_input = input_event( '\033', input_event_t::keyboard_char );
                         gp_text_input = false;
                     } else {
+#if defined(WIN32)
                         gamepad::handle_button_typing_event( ev );
+#endif
                     }
                 }
                 break;
