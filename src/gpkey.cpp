@@ -377,15 +377,6 @@ int character_set( const int int_in )
     c[38]=0xBC; //","
     c[39]=0xBD; //"-"
     c[40]=0xBA; //":" not sure about this one
-    
-    // extra keys that I may need
-    /*backspace 0x08
-    clear 0x0C
-    enter 0x0D
-    shift 0x10
-    CAPS  0x14
-    left  0x25
-    right 0x26*/
 
     char_out = c[int_in];
     if ( char_out ) {

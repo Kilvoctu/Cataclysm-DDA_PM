@@ -49,6 +49,15 @@ static std::array<task_t, max_tasks> all_tasks;
 static int repeat_delay = 400;
 static int repeat_interval = 200;
 
+// typing
+static int kb_backspace = 0x08;
+static int kb_clear = 0x0C;
+static int kb_enter = 0x0D;
+static int kb_shift = 0x10;
+static int kb_caps = 0x14;
+static int kb_left = 0x25;
+static int kb_right = 0x26;
+
 // SDL related stuff
 static SDL_TimerID timer_id;
 static SDL_GameController *controller = nullptr;
@@ -361,16 +370,63 @@ void handle_scheduler_event( SDL_Event &event )
     }
 }
 
-void handle_button_typing_event( SDL_Event &event )
+void start_typing()
 {
     INPUT inp;
     inp.type = INPUT_KEYBOARD;
     inp.ki.wScan = 0;
     inp.ki.time = 0;
     inp.ki.dwExtraInfo = 0;
-    inp.ki.wVk = character_set( 0 ); // test with sending "a"
     inp.ki.dwFlags = 0;
+
+    inp.ki.wVk = character_set( 0 );
     SendInput(1, &inp, sizeof(INPUT));
+
+    inp.ki.dwFlags = KEYEVENTF_KEYUP;
+    inp.ki.wVk = character_set( 0 );
+    SendInput(1, &inp, sizeof(INPUT));
+}
+
+void input_typing( const std::string inp_command )
+{
+    INPUT inp;
+    inp.type = INPUT_KEYBOARD;
+    inp.ki.wScan = 0;
+    inp.ki.time = 0;
+    inp.ki.dwExtraInfo = 0;
+    inp.ki.dwFlags = 0;
+
+    inp.ki.wVk = kb_shift;
+    SendInput(1, &inp, sizeof(INPUT));
+    inp.ki.wVk = character_set( 40 );
+    SendInput(1, &inp, sizeof(INPUT));
+
+    inp.ki.dwFlags = KEYEVENTF_KEYUP;
+    inp.ki.wVk = character_set( 40 );
+    SendInput(1, &inp, sizeof(INPUT));
+    inp.ki.dwFlags = KEYEVENTF_KEYUP;
+    inp.ki.wVk = kb_shift;
+    SendInput(1, &inp, sizeof(INPUT));
+}
+
+void handle_button_typing_event( SDL_Event &event )
+{
+    int button = event.cbutton.button;
+    int state = event.cbutton.state;
+    task_t &task = all_tasks[button];
+
+    switch( event.type ) {
+        case SDL_CONTROLLERBUTTONDOWN:
+            if ( state ) {
+                switch( button ) {
+                    case SDL_CONTROLLER_BUTTON_X:
+                        input_typing( "test" );
+                        break;
+                }
+            } else {
+                cancel_task( task );
+            }
+    }
 }
 
 } // namespace gamepad
