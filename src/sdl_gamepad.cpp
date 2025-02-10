@@ -329,6 +329,7 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
                         } else {
                             send_input( button + inc_keystate );
                         }
+                        break;
                     default:
                         send_input( button + inc_keystate );
                 }
