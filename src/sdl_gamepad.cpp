@@ -365,7 +365,8 @@ void handle_scheduler_event( SDL_Event &event )
 #if defined(WIN32)
 void start_typing()
 {
-    INPUT inp;
+
+    /*INPUT inp;
     inp.type = INPUT_KEYBOARD;
     inp.ki.wScan = 0;
     inp.ki.time = 0;
@@ -377,7 +378,7 @@ void start_typing()
 
     inp.ki.dwFlags = KEYEVENTF_KEYUP;
     inp.ki.wVk = character_set( 0 );
-    SendInput(1, &inp, sizeof(INPUT));
+    SendInput(1, &inp, sizeof(INPUT));*/
 }
 
 void input_typing( const std::string inp_command )
@@ -422,7 +423,13 @@ void handle_button_typing_event( SDL_Event &event )
             if ( state ) {
                 switch( button ) {
                     case SDL_CONTROLLER_BUTTON_X:
-                        input_typing( "test" );
+                        SDL_StartTextInput();
+                        //send_input( 'a', input_event_t::keyboard_char );
+						SDL_Event key_down;
+						key_down.type = SDL_KEYDOWN;
+						key_down.key.keysym.sym = SDLK_a;
+                        //input_typing( "test" );
+                        SDL_StopTextInput();
                         break;
                 }
             } else {
