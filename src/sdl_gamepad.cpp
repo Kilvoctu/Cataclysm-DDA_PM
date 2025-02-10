@@ -1,4 +1,5 @@
 #if defined(TILES)
+#include "catacharset.h"
 #include "gpkey.h"
 #include "sdl_gamepad.h"
 #include "debug.h"
@@ -383,8 +384,9 @@ void start_typing()
 
 void input_typing( const std::string inp_command )
 {
+    uint32_t lc;
     // typing
-    static int kb_backspace = 0x08;
+    /*static int kb_backspace = 0x08;
     static int kb_clear = 0x0C;
     static int kb_enter = 0x0D;
     static int kb_shift = 0x10;
@@ -409,7 +411,12 @@ void input_typing( const std::string inp_command )
     SendInput(1, &inp, sizeof(INPUT));
     inp.ki.dwFlags = KEYEVENTF_KEYUP;
     inp.ki.wVk = kb_shift;
-    SendInput(1, &inp, sizeof(INPUT));
+    SendInput(1, &inp, sizeof(INPUT));*/
+	if ( inp_command == "test" ) {
+		lc = UTF8_getch( "x" );
+		last_input = input_event( lc, input_event_t::keyboard_char );
+		last_input.text = "x";
+	}
 }
 
 void handle_button_typing_event( SDL_Event &event )
@@ -424,11 +431,7 @@ void handle_button_typing_event( SDL_Event &event )
                 switch( button ) {
                     case SDL_CONTROLLER_BUTTON_X:
                         SDL_StartTextInput();
-                        //send_input( 'a', input_event_t::keyboard_char );
-						SDL_Event key_down;
-						key_down.type = SDL_KEYDOWN;
-						key_down.key.keysym.sym = SDLK_a;
-                        //input_typing( "test" );
+                        input_typing( "test" );
                         SDL_StopTextInput();
                         break;
                 }
