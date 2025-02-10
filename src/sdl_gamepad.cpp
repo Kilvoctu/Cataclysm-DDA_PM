@@ -363,60 +363,25 @@ void handle_scheduler_event( SDL_Event &event )
     }
 }
 
-#if defined(WIN32)
 void start_typing()
 {
-
-    /*INPUT inp;
-    inp.type = INPUT_KEYBOARD;
-    inp.ki.wScan = 0;
-    inp.ki.time = 0;
-    inp.ki.dwExtraInfo = 0;
-    inp.ki.dwFlags = 0;
-
-    inp.ki.wVk = character_set( 0 );
-    SendInput(1, &inp, sizeof(INPUT));
-
-    inp.ki.dwFlags = KEYEVENTF_KEYUP;
-    inp.ki.wVk = character_set( 0 );
-    SendInput(1, &inp, sizeof(INPUT));*/
+    last_input = input_event( UTF8_getch( "a" ), input_event_t::keyboard_char );
+    last_input.text = "a";
 }
 
 void input_typing( const std::string inp_command )
 {
     uint32_t lc;
-    // typing
-    /*static int kb_backspace = 0x08;
-    static int kb_clear = 0x0C;
-    static int kb_enter = 0x0D;
-    static int kb_shift = 0x10;
-    static int kb_caps = 0x14;
-    static int kb_left = 0x25;
-    static int kb_right = 0x26;
-
-    INPUT inp;
-    inp.type = INPUT_KEYBOARD;
-    inp.ki.wScan = 0;
-    inp.ki.time = 0;
-    inp.ki.dwExtraInfo = 0;
-    inp.ki.dwFlags = 0;
-
-    inp.ki.wVk = kb_shift;
-    SendInput(1, &inp, sizeof(INPUT));
-    inp.ki.wVk = character_set( 40 );
-    SendInput(1, &inp, sizeof(INPUT));
-
-    inp.ki.dwFlags = KEYEVENTF_KEYUP;
-    inp.ki.wVk = character_set( 40 );
-    SendInput(1, &inp, sizeof(INPUT));
-    inp.ki.dwFlags = KEYEVENTF_KEYUP;
-    inp.ki.wVk = kb_shift;
-    SendInput(1, &inp, sizeof(INPUT));*/
-	if ( inp_command == "test" ) {
-		lc = UTF8_getch( "x" );
-		last_input = input_event( lc, input_event_t::keyboard_char );
-		last_input.text = "x";
-	}
+    if ( inp_command == "test" ) {
+        lc = UTF8_getch( "x" );
+        last_input = input_event( lc, input_event_t::keyboard_char );
+        last_input.text = "x";
+    }
+    if ( inp_command == "space" ) {
+        lc = UTF8_getch( " " );
+        last_input = input_event( lc, input_event_t::keyboard_char );
+        last_input.text = " ";
+    }
 }
 
 void handle_button_typing_event( SDL_Event &event )
@@ -424,15 +389,26 @@ void handle_button_typing_event( SDL_Event &event )
     int button = event.cbutton.button;
     int state = event.cbutton.state;
     task_t &task = all_tasks[button];
+    SDL_StartTextInput();
 
     switch( event.type ) {
         case SDL_CONTROLLERBUTTONDOWN:
             if ( state ) {
                 switch( button ) {
+                    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+                        send_input( KEY_LEFT, input_event_t::keyboard_char );
+                        break;
+                    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+                        send_input( KEY_RIGHT, input_event_t::keyboard_char );
+                        break;
+                    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+                        input_typing( "space" );
+                        break;
                     case SDL_CONTROLLER_BUTTON_X:
-                        SDL_StartTextInput();
                         input_typing( "test" );
-                        SDL_StopTextInput();
+                        break;
+                    case SDL_CONTROLLER_BUTTON_Y:
+                        send_input( KEY_BACKSPACE, input_event_t::keyboard_char );
                         break;
                 }
             } else {
@@ -440,7 +416,6 @@ void handle_button_typing_event( SDL_Event &event )
             }
     }
 }
-#endif
 
 } // namespace gamepad
 
