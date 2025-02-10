@@ -3048,9 +3048,8 @@ static void CheckMessages()
                             if ( gp_text_input == false ) {
                                 gp_text_input = true;
                                 StartTextInput();
-#if defined(WIN32)
                                 gamepad::start_typing();
-#endif
+                                text_refresh = true;
                             } else {
                                 gp_text_input = false;
                                 StopTextInput();
@@ -3168,10 +3167,8 @@ static void CheckMessages()
                         gp_text_input = false;
                         StopTextInput();
                     } else {
-#if defined(WIN32)
                         gamepad::handle_button_typing_event( ev );
                         text_refresh = true;
-#endif
                     }
                 }
                 break;
