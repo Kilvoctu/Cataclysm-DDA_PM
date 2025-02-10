@@ -3076,7 +3076,7 @@ static void CheckMessages()
         }
         switch( ev.type ) {
             case SDL_WINDOWEVENT:
-                uint32_t lc;
+                //uint32_t lc;
                 switch( ev.window.event ) {
 #if defined(__ANDROID__)
                     // SDL will send a focus lost event whenever the app loses focus (eg. lock screen, switch app focus etc.)
@@ -3170,22 +3170,19 @@ static void CheckMessages()
                     } else {
 #if defined(WIN32)
                         gamepad::handle_button_typing_event( ev );
+                        text_refresh = true;
 #endif
                     }
                 }
                 break;
             case SDL_CONTROLLERBUTTONUP:
-                lc = UTF8_getch( "x" );
-                last_input = input_event( lc, input_event_t::keyboard_char );
-                last_input.text = "x";
-                text_refresh = true;
                 if ( gp_text_input == false ) {
                     if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
                         gamepad::handle_button_event( ev, gp_inc_keystate );
                     }
                 } else {
                     break;
-                }
+     }
                 break;
             case SDL_CONTROLLERAXISMOTION:
                 gamepad::handle_axis_event( ev, gp_inc_keystate );
