@@ -54,6 +54,10 @@ static int repeat_interval = 200;
 static SDL_TimerID timer_id;
 static SDL_GameController *controller = nullptr;
 
+// text input
+int current_character = 0;
+int max_character = 40;
+
 static Uint32 timer_func( Uint32 interval, void * )
 {
     SDL_Event event;
@@ -264,6 +268,7 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
     int button = event.cbutton.button;
     int state = event.cbutton.state;
     Uint32 now = event.cbutton.timestamp;
+    repeat_interval = 200;
     task_t &task = all_tasks[button];
 
     switch( event.type ) {
@@ -369,43 +374,80 @@ void start_typing()
     last_input.text = "a";
 }
 
-void input_typing( const std::string inp_command )
+void dec_character( SDL_Event &event, int inc_keystate )
 {
     uint32_t lc;
-    if ( inp_command == "test" ) {
-        lc = UTF8_getch( "x" );
-        last_input = input_event( lc, input_event_t::keyboard_char );
-        last_input.text = "x";
+    std::string send_char;
+
+    current_character--;
+    if ( current_character < 0 ) {
+        current_character = max_character;
     }
-    if ( inp_command == "space" ) {
-        lc = UTF8_getch( " " );
-        last_input = input_event( lc, input_event_t::keyboard_char );
-        last_input.text = " ";
+    send_char = character_set( current_character );
+    if ( inc_keystate != 0 && ( -1 < current_character && current_character < 26 ) ) {
+        send_char = std::toupper( send_char[0] );
     }
+    lc = UTF8_getch( send_char );
+    last_input = input_event( lc, input_event_t::keyboard_char );
+    last_input.text = send_char;
 }
 
-void handle_button_typing_event( SDL_Event &event )
+void inc_character( SDL_Event &event, int inc_keystate )
+{
+    uint32_t lc;
+    /*int button = event.cbutton.button;
+    int state = event.cbutton.state;
+    Uint32 now = event.cbutton.timestamp;
+    task_t &task = all_tasks[button];*/
+    std::string send_char;
+
+    current_character++;
+    if ( current_character > max_character ) {
+        current_character = 0;
+    }
+    send_char = character_set( current_character );
+    if ( inc_keystate != 0 && ( -1 < current_character && current_character < 26 ) ) {
+        send_char = std::toupper( send_char[0] );
+    }
+    lc = UTF8_getch( send_char );
+    last_input = input_event( lc, input_event_t::keyboard_char );
+    last_input.text = send_char;
+    //schedule_task( task, now + 10, buttons_map[13], state );
+}
+
+void handle_button_typing_event( SDL_Event &event, int inc_keystate )
 {
     int button = event.cbutton.button;
     int state = event.cbutton.state;
+    Uint32 now = event.cbutton.timestamp;
     task_t &task = all_tasks[button];
+    int text_repeat_delay = 200;
+    repeat_interval = 10;
     SDL_StartTextInput();
+
+    std::string send_char;
 
     switch( event.type ) {
         case SDL_CONTROLLERBUTTONDOWN:
             if ( state ) {
                 switch( button ) {
+                    case SDL_CONTROLLER_BUTTON_DPAD_UP:
+                        inc_character( event, inc_keystate );
+                        break;
+                    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+                        dec_character( event, inc_keystate );
+                        break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
                         send_input( KEY_LEFT, input_event_t::keyboard_char );
+                        schedule_task( task, now + text_repeat_delay, buttons_map[button], state );
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
                         send_input( KEY_RIGHT, input_event_t::keyboard_char );
-                        break;
-                    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-                        input_typing( "space" );
+                        schedule_task( task, now + text_repeat_delay, buttons_map[button], state );
                         break;
                     case SDL_CONTROLLER_BUTTON_X:
-                        input_typing( "test" );
+                        last_input = input_event( UTF8_getch( " " ), input_event_t::keyboard_char );
+                        last_input.text = " ";
                         break;
                     case SDL_CONTROLLER_BUTTON_Y:
                         send_input( KEY_BACKSPACE, input_event_t::keyboard_char );
@@ -414,6 +456,13 @@ void handle_button_typing_event( SDL_Event &event )
             } else {
                 cancel_task( task );
             }
+        case SDL_CONTROLLERBUTTONUP: {
+            if( state ) {
+                break;
+            } else {
+                cancel_task( task );
+            }
+        }
     }
 }
 

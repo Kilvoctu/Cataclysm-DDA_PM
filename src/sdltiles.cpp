@@ -3329,7 +3329,7 @@ static void CheckMessages()
                         gp_text_input = false;
                         StopTextInput();
                     } else {
-                        gamepad::handle_button_typing_event( ev );
+                        gamepad::handle_button_typing_event( ev, gp_inc_keystate );
                         text_refresh = true;
                     }
                 }
@@ -3340,7 +3340,8 @@ static void CheckMessages()
                         gamepad::handle_button_event( ev, gp_inc_keystate );
                     }
                 } else {
-                    break;
+                    gamepad::handle_button_typing_event( ev, gp_inc_keystate );
+                    text_refresh = true;
                 }
                 break;
             case SDL_CONTROLLERAXISMOTION:
