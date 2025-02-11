@@ -17,9 +17,9 @@ void init();
 void quit();
 void handle_axis_event( SDL_Event &event, int increment );
 void handle_button_event( SDL_Event &event, int increment );
-void handle_scheduler_event( SDL_Event &event );
+void handle_scheduler_event( SDL_Event &event, int increment );
 
-void start_typing();
+void start_typing( SDL_Event &event );
 void dec_character( SDL_Event &event, int inc_keystate );
 void inc_character( SDL_Event &event, int inc_keystate );
 void handle_button_typing_event( SDL_Event &event, int inc_keystate );
