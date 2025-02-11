@@ -56,7 +56,7 @@ static SDL_GameController *controller = nullptr;
 
 // text input
 int current_character = 0;
-int max_character = 40;
+int max_character = 39;
 
 static Uint32 timer_func( Uint32 interval, void * )
 {
@@ -346,29 +346,7 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
     }
 }
 
-void handle_scheduler_event( SDL_Event &event )
-{
-    Uint32 now = event.user.timestamp;
-    for( gamepad::task_t &task : all_tasks ) {
-        if( task.counter && task.when <= now ) {
-            if ( task.button == 11 ) {
-                send_input( KEY_UP, input_event_t::keyboard_char );
-            } else if ( task.button == 12 ) {
-                send_input( KEY_DOWN, input_event_t::keyboard_char );
-            } else if ( task.button == 13 ) {
-                send_input( KEY_LEFT, input_event_t::keyboard_char );
-            } else if ( task.button == 14 ) {
-                send_input( KEY_RIGHT, input_event_t::keyboard_char );
-            } else {
-                send_input( task.button );
-            }
-            task.counter += 1;
-            task.when = now + repeat_interval;
-        }
-    }
-}
-
-void start_typing()
+void start_typing( SDL_Event &event )
 {
     last_input = input_event( UTF8_getch( "a" ), input_event_t::keyboard_char );
     last_input.text = "a";
@@ -395,10 +373,6 @@ void dec_character( SDL_Event &event, int inc_keystate )
 void inc_character( SDL_Event &event, int inc_keystate )
 {
     uint32_t lc;
-    /*int button = event.cbutton.button;
-    int state = event.cbutton.state;
-    Uint32 now = event.cbutton.timestamp;
-    task_t &task = all_tasks[button];*/
     std::string send_char;
 
     current_character++;
@@ -412,7 +386,6 @@ void inc_character( SDL_Event &event, int inc_keystate )
     lc = UTF8_getch( send_char );
     last_input = input_event( lc, input_event_t::keyboard_char );
     last_input.text = send_char;
-    //schedule_task( task, now + 10, buttons_map[13], state );
 }
 
 void handle_button_typing_event( SDL_Event &event, int inc_keystate )
@@ -433,9 +406,11 @@ void handle_button_typing_event( SDL_Event &event, int inc_keystate )
                 switch( button ) {
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
                         inc_character( event, inc_keystate );
+                        schedule_task( task, now + text_repeat_delay, 908, state );
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
                         dec_character( event, inc_keystate );
+                        schedule_task( task, now + text_repeat_delay, 902, state );
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
                         send_input( KEY_LEFT, input_event_t::keyboard_char );
@@ -446,11 +421,11 @@ void handle_button_typing_event( SDL_Event &event, int inc_keystate )
                         schedule_task( task, now + text_repeat_delay, buttons_map[button], state );
                         break;
                     case SDL_CONTROLLER_BUTTON_X:
-                        last_input = input_event( UTF8_getch( " " ), input_event_t::keyboard_char );
-                        last_input.text = " ";
+                        send_input( KEY_BACKSPACE, input_event_t::keyboard_char );
                         break;
                     case SDL_CONTROLLER_BUTTON_Y:
-                        send_input( KEY_BACKSPACE, input_event_t::keyboard_char );
+                        last_input = input_event( UTF8_getch( " " ), input_event_t::keyboard_char );
+                        last_input.text = " ";
                         break;
                 }
             } else {
@@ -462,6 +437,32 @@ void handle_button_typing_event( SDL_Event &event, int inc_keystate )
             } else {
                 cancel_task( task );
             }
+        }
+    }
+}
+
+void handle_scheduler_event( SDL_Event &event, int inc_keystate )
+{
+    Uint32 now = event.user.timestamp;
+    for( gamepad::task_t &task : all_tasks ) {
+        if( task.counter && task.when <= now ) {
+            if ( task.button == 11 ) {
+                send_input( KEY_UP, input_event_t::keyboard_char );
+            } else if ( task.button == 12 ) {
+                send_input( KEY_DOWN, input_event_t::keyboard_char );
+            } else if ( task.button == 13 ) {
+                send_input( KEY_LEFT, input_event_t::keyboard_char );
+            } else if ( task.button == 14 ) {
+                send_input( KEY_RIGHT, input_event_t::keyboard_char );
+            } else if ( task.button == 908 ) {
+                inc_character( event, inc_keystate );
+            } else if ( task.button == 902 ) {
+                dec_character( event, inc_keystate );
+            } else {
+                send_input( task.button );
+            }
+            task.counter += 1;
+            task.when = now + repeat_interval;
         }
     }
 }
