@@ -3048,7 +3048,7 @@ static void CheckMessages()
                             if ( gp_text_input == false ) {
                                 gp_text_input = true;
                                 StartTextInput();
-                                gamepad::start_typing();
+                                gamepad::start_typing( ev );
                                 text_refresh = true;
                             } else {
                                 gp_text_input = false;
@@ -3348,7 +3348,7 @@ static void CheckMessages()
                 gamepad::handle_axis_event( ev, gp_inc_keystate );
                 break;
             case SDL_GAMEPAD_SCHEDULER:
-                gamepad::handle_scheduler_event( ev );
+                gamepad::handle_scheduler_event( ev, gp_inc_keystate );
                 break;
             case SDL_MOUSEMOTION:
                 if( get_option<std::string>( "HIDE_CURSOR" ) == "show" ||
