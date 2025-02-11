@@ -352,17 +352,13 @@ void start_typing( SDL_Event &event )
     last_input.text = "a";
 }
 
-void dec_character( SDL_Event &event, int inc_keystate )
+void send_character( int current_char, int inc )
 {
     uint32_t lc;
     std::string send_char;
 
-    current_character--;
-    if ( current_character < 0 ) {
-        current_character = max_character;
-    }
-    send_char = character_set( current_character );
-    if ( inc_keystate != 0 && ( -1 < current_character && current_character < 26 ) ) {
+    send_char = character_set( current_char );
+    if ( inc != 0 && ( -1 < current_char && current_char < 26 ) ) {
         send_char = std::toupper( send_char[0] );
     }
     lc = UTF8_getch( send_char );
@@ -370,22 +366,22 @@ void dec_character( SDL_Event &event, int inc_keystate )
     last_input.text = send_char;
 }
 
+void dec_character( SDL_Event &event, int inc_keystate )
+{
+    current_character--;
+    if ( current_character < 0 ) {
+        current_character = max_character;
+    }
+    send_character ( current_character, inc_keystate );
+}
+
 void inc_character( SDL_Event &event, int inc_keystate )
 {
-    uint32_t lc;
-    std::string send_char;
-
     current_character++;
     if ( current_character > max_character ) {
         current_character = 0;
     }
-    send_char = character_set( current_character );
-    if ( inc_keystate != 0 && ( -1 < current_character && current_character < 26 ) ) {
-        send_char = std::toupper( send_char[0] );
-    }
-    lc = UTF8_getch( send_char );
-    last_input = input_event( lc, input_event_t::keyboard_char );
-    last_input.text = send_char;
+    send_character ( current_character, inc_keystate );
 }
 
 void handle_button_typing_event( SDL_Event &event, int inc_keystate )
