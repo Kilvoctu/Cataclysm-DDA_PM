@@ -330,58 +330,56 @@ std::string convert_joy_string( const std::string joy_in )
     }
 }
 
-int character_set( const int int_in )
+std::string character_set( const int int_in )
 {
-    int char_out;
-
-    std::unordered_map< int, int > c;
+    std::unordered_map< int, std::string > c;
     
-    c[0]=0x41;  //"a" letters
-    c[1]=0x42;  //"b"
-    c[2]=0x43;  //"c"
-    c[3]=0x44;  //"d"
-    c[4]=0x45;  //"e"
-    c[5]=0x46;  //"f"
-    c[6]=0x47;  //"g"
-    c[7]=0x48;  //"h"
-    c[8]=0x49;  //"i"
-    c[9]=0x4A;  //"j"
-    c[10]=0x4B; //"k"
-    c[11]=0x4C; //"l"
-    c[12]=0x4D; //"m"
-    c[13]=0x4E; //"n"
-    c[14]=0x4F; //"o"
-    c[15]=0x50; //"p"
-    c[16]=0x51; //"q"
-    c[17]=0x52; //"r"
-    c[18]=0x53; //"s"
-    c[19]=0x54; //"t"
-    c[20]=0x55; //"u"
-    c[21]=0x56; //"v"
-    c[22]=0x57; //"w"
-    c[23]=0x58; //"x"
-    c[24]=0x59; //"y"
-    c[25]=0x5A; //"z"
-    c[26]=0x30; //"0"
-    c[27]=0x31; //"1" numbers
-    c[28]=0x32; //"2"
-    c[29]=0x33; //"3"
-    c[30]=0x34; //"4"
-    c[31]=0x35; //"5"
-    c[32]=0x36; //"6"
-    c[33]=0x37; //"7"
-    c[34]=0x38; //"8"
-    c[35]=0x39; //"9"
-    c[36]=0x20; //"space" others
-    c[37]=0xBE; //"."
-    c[38]=0xBC; //","
-    c[39]=0xBD; //"-"
-    c[40]=0xBA; //":" not sure about this one
+    c[0]="a";
+    c[1]="b";
+    c[2]="c";
+    c[3]="d";
+    c[4]="e";
+    c[5]="f";
+    c[6]="g";
+    c[7]="h";
+    c[8]="i";
+    c[9]="j";
+    c[10]="k";
+    c[11]="l";
+    c[12]="m";
+    c[13]="n";
+    c[14]="o";
+    c[15]="p";
+    c[16]="q";
+    c[17]="r";
+    c[18]="s";
+    c[19]="t";
+    c[20]="u";
+    c[21]="v";
+    c[22]="w";
+    c[23]="x";
+    c[24]="y";
+    c[25]="z";
+    c[26]=" ";
+    c[27]=".";
+    c[28]=",";
+    c[29]="-";
+    c[30]=":";
+    c[31]="0";
+    c[32]="1";
+    c[33]="2";
+    c[34]="3";
+    c[35]="4";
+    c[36]="5";
+    c[37]="6";
+    c[38]="7";
+    c[39]="8";
+    c[40]="9";
 
-    char_out = c[int_in];
-    if ( char_out ) {
-        return char_out;
+    auto char_out = c.find( int_in );
+    if ( char_out != c.end() ) {
+        return char_out->second;
     } else {
-        return c[0];
+        return "";
     }
 }
