@@ -54,7 +54,7 @@ static constexpr int triggers_task_index = max_buttons + max_sticks;
 static std::array<task_t, max_tasks> all_tasks;
 
 static int repeat_delay = 400;
-static int repeat_interval = 200;
+static int repeat_interval = 50;
 
 // SDL related stuff
 static SDL_TimerID timer_id;
@@ -274,7 +274,7 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
     int button = event.cbutton.button;
     int state = event.cbutton.state;
     Uint32 now = event.cbutton.timestamp;
-    repeat_interval = 200;
+    repeat_interval = 50;
     task_t &task = all_tasks[button];
 
     switch( event.type ) {
@@ -352,12 +352,6 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
     }
 }
 
-void start_typing( SDL_Event &event )
-{
-    last_input = input_event( UTF8_getch( "a" ), input_event_t::keyboard_char );
-    last_input.text = "a";
-}
-
 void send_character( int current_char, int inc )
 {
     uint32_t lc;
@@ -370,6 +364,11 @@ void send_character( int current_char, int inc )
     lc = UTF8_getch( send_char );
     last_input = input_event( lc, input_event_t::keyboard_char );
     last_input.text = send_char;
+}
+
+void start_typing( SDL_Event &event )
+{
+    send_character ( current_character, 0 );
 }
 
 void dec_character( SDL_Event &event, int inc_keystate )
@@ -424,6 +423,7 @@ void handle_button_typing_event( SDL_Event &event, int inc_keystate )
                         break;
                     case SDL_CONTROLLER_BUTTON_X:
                         send_input( KEY_BACKSPACE, input_event_t::keyboard_char );
+                        schedule_task( task, now + text_repeat_delay, 900, state );
                         break;
                     case SDL_CONTROLLER_BUTTON_Y:
                         last_input = input_event( UTF8_getch( " " ), input_event_t::keyboard_char );
@@ -456,6 +456,8 @@ void handle_scheduler_event( SDL_Event &event, int inc_keystate )
                 send_input( KEY_LEFT, input_event_t::keyboard_char );
             } else if ( task.button == 14 ) {
                 send_input( KEY_RIGHT, input_event_t::keyboard_char );
+            } else if ( task.button == 900 ) {
+                send_input( KEY_BACKSPACE, input_event_t::keyboard_char );
             } else if ( task.button == 908 ) {
                 inc_character( event, inc_keystate );
             } else if ( task.button == 902 ) {

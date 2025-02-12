@@ -142,7 +142,7 @@
     "id": "PAGE_DOWN",
     "name": "Page down",
     "bindings": [
-      { "input_method": "gamepad", "key": "JOY_258" },
+      { "input_method": "gamepad", "key": "JOY_259" },
       { "input_method": "keyboard_char", "key": "]" } ]
   },
   {

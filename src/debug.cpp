@@ -361,11 +361,8 @@ static void debug_error_prompt(
 #if defined(BACKTRACE)
                                     backtrace_instructions,
 #endif
-                                    _( "Press <color_white>X</color> to continue the game." ),
-                                    _( "Press <color_white>Y</color> to also ignore this particular message in the future." )
-#if defined(TILES)
-                                    , _( "Press <color_white>R1</color> to copy this message to the clipboard." )
-#endif // TILES
+                                    _( "Press <color_white>A</color> to continue the game." ),
+                                    _( "Press <color_white>B</color> to also ignore this particular message in the future." )
                                 );
     ui.on_redraw( [&]( const ui_adaptor & ) {
         catacurses::erase();
@@ -383,18 +380,14 @@ static void debug_error_prompt(
     for( bool stop = false; !stop; ) {
         ui_manager::redraw();
         switch( inp_mngr.get_input_event().get_first_input() ) {
-#if defined(TILES)
-            case 'f':
-            case 'F':
-                SDL_SetClipboardText( formatted_report.c_str() );
-                break;
-#endif // TILES
-            case 'd':
-            case 'D':
+            case 'b':
+            case 'B':
+            case '\033':
                 ignored_messages.insert( msg_key );
                 [[fallthrough]];
-            case 'e':
-            case 'E':
+            case 'a':
+            case 'A':
+            case '\n':
                 stop = true;
                 break;
         }
