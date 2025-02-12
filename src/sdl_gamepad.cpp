@@ -366,12 +366,12 @@ void send_character( int current_char, int inc )
     last_input.text = send_char;
 }
 
-void start_typing( SDL_Event &event )
+void start_typing()
 {
     send_character ( current_character, 0 );
 }
 
-void dec_character( SDL_Event &event, int inc_keystate )
+void dec_character( int inc_keystate )
 {
     current_character--;
     if ( current_character < 0 ) {
@@ -380,7 +380,7 @@ void dec_character( SDL_Event &event, int inc_keystate )
     send_character ( current_character, inc_keystate );
 }
 
-void inc_character( SDL_Event &event, int inc_keystate )
+void inc_character( int inc_keystate )
 {
     current_character++;
     if ( current_character > max_character ) {
@@ -406,11 +406,11 @@ void handle_button_typing_event( SDL_Event &event, int inc_keystate )
             if ( state ) {
                 switch( button ) {
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        inc_character( event, inc_keystate );
+                        inc_character( inc_keystate );
                         schedule_task( task, now + text_repeat_delay, 908, state );
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        dec_character( event, inc_keystate );
+                        dec_character( inc_keystate );
                         schedule_task( task, now + text_repeat_delay, 902, state );
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
@@ -433,6 +433,7 @@ void handle_button_typing_event( SDL_Event &event, int inc_keystate )
             } else {
                 cancel_task( task );
             }
+            [[fallthrough]];
         case SDL_CONTROLLERBUTTONUP: {
             if( state ) {
                 break;
@@ -459,9 +460,9 @@ void handle_scheduler_event( SDL_Event &event, int inc_keystate )
             } else if ( task.button == 900 ) {
                 send_input( KEY_BACKSPACE, input_event_t::keyboard_char );
             } else if ( task.button == 908 ) {
-                inc_character( event, inc_keystate );
+                inc_character( inc_keystate );
             } else if ( task.button == 902 ) {
-                dec_character( event, inc_keystate );
+                dec_character( inc_keystate );
             } else {
                 send_input( task.button );
             }
