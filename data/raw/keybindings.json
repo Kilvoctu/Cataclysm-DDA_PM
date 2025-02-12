@@ -2,7 +2,7 @@
   {
     "type": "keybinding",
     "id": "UILIST.UP",
-    "name": "Pan up",
+    "name": "Pain up",
     "bindings": [
       { "input_method": "keyboard_any", "key": "UP" },
       { "input_method": "keyboard_any", "key": "8" },
