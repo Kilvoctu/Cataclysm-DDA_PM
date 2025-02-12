@@ -6,6 +6,7 @@
 #include "catacharset.h"
 #include "input.h"
 #include "input_context.h"
+#include "options.h"
 #include "output.h"
 #include "point.h"
 #include "translations.h"
@@ -569,8 +570,13 @@ const std::string &string_input_popup::query_string( const bool loop, const bool
                             }
                         }
                     }
-                    ret.insert( _position, insertion );
-                    _position += insertion.length();
+                    if( get_option<bool>( "ENABLE_JOYSTICK" ) ) {
+                        ret.erase( _position, 1 );
+                        ret.insert( _position, insertion );
+                    } else {
+                        ret.insert( _position, insertion );
+                        _position += insertion.length();
+                    }
                     edit = utf8_wrapper();
                     ctxt->set_edittext( std::string() );
                 }
