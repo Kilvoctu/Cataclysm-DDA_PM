@@ -1,7 +1,16 @@
 name: cmake-format linting
 
 on:
+  push:
+    branches:
+    - master
+    paths:
+    - '**/CMakeLists.txt'
+    - '**.cmake'
+    - '**.cmake.in'
   pull_request:
+    branches:
+    - master
     paths:
     - '**/CMakeLists.txt'
     - '**.cmake'

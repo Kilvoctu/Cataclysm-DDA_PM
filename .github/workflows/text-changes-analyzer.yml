@@ -3,6 +3,8 @@ name: Text Changes Analyzer
 
 on:
   pull_request:
+    branches:
+      - master
     paths:
       - '.github/workflows/text-changes-analyzer.yml'
       - 'tools/pot_diff.py'
@@ -11,6 +13,7 @@ on:
       - 'src/*.h'
       - 'src/*.cpp'
       - '**.json'
+
 
 permissions:
   contents: read
