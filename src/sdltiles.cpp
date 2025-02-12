@@ -3048,7 +3048,7 @@ static void CheckMessages()
                             if ( gp_text_input == false ) {
                                 gp_text_input = true;
                                 StartTextInput();
-                                gamepad::start_typing( ev );
+                                gamepad::start_typing();
                                 text_refresh = true;
                             } else {
                                 gp_text_input = false;
