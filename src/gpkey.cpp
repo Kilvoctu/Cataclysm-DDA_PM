@@ -1,12 +1,8 @@
 #include "gpkey.h"
 #include "options.h"
 
-#include <map>
 #include <string>
 #include <utility>
-#include <vector>
-#include <initializer_list>
-#include <iostream>
 #include <unordered_map>
 
 #include "string_formatter.h"

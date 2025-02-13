@@ -23,7 +23,6 @@
 #include "npc.h"
 #include "pimpl.h"
 #include "string_formatter.h"
-#include "translation.h"
 #include "ui_manager.h"
 
 static std::map<cbm_recharge_rule, std::string> recharge_map = {
