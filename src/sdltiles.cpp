@@ -3343,6 +3343,7 @@ static void CheckMessages()
                     gamepad::handle_button_typing_event( ev, gp_inc_keystate );
                     text_refresh = true;
                 }
+                ui_manager::redraw_invalidated();
                 break;
             case SDL_CONTROLLERAXISMOTION:
                 gamepad::handle_axis_event( ev, gp_inc_keystate );
