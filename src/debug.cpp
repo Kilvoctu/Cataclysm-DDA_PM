@@ -353,9 +353,6 @@ static void debug_error_prompt(
 #endif
                                     " %s\n" // translated user string: space to continue
                                     " %s\n" // translated user string: ignore key
-#if defined(TILES)
-                                    " %s\n" // translated user string: copy
-#endif // TILES
                                     , _( "An error has occurred!  Written below is the error report:" ),
                                     formatted_report,
 #if defined(BACKTRACE)
@@ -375,7 +372,6 @@ static void debug_error_prompt(
     input_context ctxt( "DEBUG_MSG", keyboard_mode::keycode );
     ctxt.register_manual_key( 'C' );
     ctxt.register_manual_key( 'I' );
-    ctxt.register_manual_key( ' ' );
 #endif
     for( bool stop = false; !stop; ) {
         ui_manager::redraw();

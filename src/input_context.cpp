@@ -1298,6 +1298,21 @@ std::string input_context::press_x( const std::string &action_id,
     events.erase( std::remove_if( events.begin(), events.end(), [this]( const input_event & evt ) {
         return !is_event_type_enabled( evt.type );
     } ), events.end() );
+    // filter display to show only or hide joystick prompts if it's enabled
+    for( size_t i = 0; i < events.size(); ++i ) {
+        std::string inp_name = events[i].long_description();
+        if( get_option<bool>( "ENABLE_JOYSTICK" ) ) {
+            if( ( inp_name.rfind( "JOY_", 0 ) == 0 ) || inp_name == "RETURN" || inp_name == "ESC" ||
+                  inp_name == "UP" || inp_name == "DOWN" || inp_name == "LEFT" || inp_name == "RIGHT" ) {
+            } else {
+                events.erase( events.begin() + i);
+            }
+        } else {
+            if( inp_name.rfind( "JOY_", 0 ) == 0 ) {
+                events.erase( events.begin() + i );
+            }
+        }
+    }
     if( events.empty() ) {
         return key_unbound;
     }
