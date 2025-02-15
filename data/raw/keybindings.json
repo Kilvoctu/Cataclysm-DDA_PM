@@ -1976,7 +1976,7 @@
     "name": "Close door",
     "category": "DEFAULTMODE",
     "id": "close",
-    "bindings": [ { "input_method": "gamepad", "key": "JOY_260" }, { "input_method": "keyboard_char", "key": "u" } ]
+    "bindings": [ { "input_method": "gamepad", "key": "JOY_301" }, { "input_method": "keyboard_char", "key": "u" } ]
   },
   {
     "type": "keybinding",
@@ -2085,7 +2085,7 @@
     "name": "List all items around the player",
     "category": "DEFAULTMODE",
     "id": "listitems",
-    "bindings": [ { "input_method": "gamepad", "key": "JOY_502" }, { "input_method": "keyboard_char", "key": "/" } ]
+    "bindings": [ { "input_method": "gamepad", "key": "JOY_22" }, { "input_method": "keyboard_char", "key": "/" } ]
   },
   {
     "type": "keybinding",
@@ -2373,7 +2373,7 @@
     "name": "Ignore nearby enemy",
     "category": "DEFAULTMODE",
     "id": "ignore_enemy",
-    "bindings": [ { "input_method": "gamepad", "key": "JOY_22" }, { "input_method": "keyboard_char", "key": "\\" } ]
+    "bindings": [ { "input_method": "gamepad", "key": "JOY_260" }, { "input_method": "keyboard_char", "key": "\\" } ]
   },
   {
     "type": "keybinding",
@@ -2431,7 +2431,7 @@
     "name": "View factions",
     "category": "DEFAULTMODE",
     "id": "factions",
-    "bindings": [ { "input_method": "gamepad", "key": "JOY_301" } ]
+    "bindings": [ { "input_method": "gamepad", "key": "JOY_502" } ]
   },
   {
     "type": "keybinding",
@@ -2909,7 +2909,7 @@
     "id": "LIST_ITEMS",
     "category": "LOOK",
     "name": "List items and monsters",
-    "bindings": [ { "input_method": "gamepad", "key": "JOY_502" }, { "input_method": "keyboard_char", "key": "/" } ]
+    "bindings": [ { "input_method": "gamepad", "key": "JOY_22" }, { "input_method": "keyboard_char", "key": "/" } ]
   },
   {
     "type": "keybinding",
