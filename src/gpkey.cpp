@@ -46,7 +46,7 @@ std::string gp_rstick_down = "R\u2B8B";
 std::string gp_rstick_left = "R\u2B88";
 std::string gp_rstick_right = "R\u2B8A";
 
-std::string convert_to_gamepad( const std::string keybind_in_pre )
+std::string convert_to_gamepad( std::string keybind_in_pre )
 {
     if( get_option<std::string>( "JOYSTICK_PROMPT_STYLE" ) == "playstation" ) {
         // PS prompts
@@ -232,7 +232,7 @@ std::string convert_to_gamepad( const std::string keybind_in_pre )
     return keybind_out;
 }
 
-std::string convert_joy_string( const std::string joy_in )
+std::string convert_joy_string( std::string joy_in )
 { // gamepad "JOY_" replacements
     std::string joy_out;
 
@@ -326,7 +326,7 @@ std::string convert_joy_string( const std::string joy_in )
     }
 }
 
-std::string character_set( const int int_in )
+std::string character_set( int int_in )
 {
     std::unordered_map< int, std::string > c;
     
