@@ -10,41 +10,41 @@
 bool is_joy = false;
 
 // define unicode
-std::string gp_cross;
-std::string gp_circle;
-std::string gp_square;
-std::string gp_triangle;
-std::string gp_l1;
-std::string gp_l2;
-std::string gp_r1;
-std::string gp_r2;
-std::string gp_lstick;
-std::string gp_rstick;
-std::string l_mod;
-std::string l2_mod;
+static std::string gp_cross;
+static std::string gp_circle;
+static std::string gp_square;
+static std::string gp_triangle;
+static std::string gp_l1;
+static std::string gp_l2;
+static std::string gp_r1;
+static std::string gp_r2;
+static std::string gp_lstick;
+static std::string gp_rstick;
+static std::string l_mod;
+static std::string l2_mod;
 // shared prompts
-std::string gp_select = "\u23F8";
-std::string gp_start = "\u23F5";
-std::string gp_hotkey = "\u25CD";
-std::string gp_hotkey_mod = "\u23F8+";
+static std::string gp_select = "\u23F8";
+static std::string gp_start = "\u23F5";
+static std::string gp_hotkey = "\u25CD";
+static std::string gp_hotkey_mod = "\u23F8+";
 
-std::string gp_up = "\u2191";
-std::string gp_down = "\u2193";
-std::string gp_left = "\u2190";
-std::string gp_right = "\u2192";
-std::string gp_up_left = "\u2196";
-std::string gp_up_right = "\u2197";
-std::string gp_down_left = "\u2199";
-std::string gp_down_right = "\u2198";
+static std::string gp_up = "\u2191";
+static std::string gp_down = "\u2193";
+static std::string gp_left = "\u2190";
+static std::string gp_right = "\u2192";
+static std::string gp_up_left = "\u2196";
+static std::string gp_up_right = "\u2197";
+static std::string gp_down_left = "\u2199";
+static std::string gp_down_right = "\u2198";
 
-std::string gp_lstick_up = "L\u2B89";
-std::string gp_lstick_down = "L\u2B8B";
-std::string gp_lstick_left = "L\u2B88";
-std::string gp_lstick_right = "L\u2B8A";
-std::string gp_rstick_up = "R\u2B89";
-std::string gp_rstick_down = "R\u2B8B";
-std::string gp_rstick_left = "R\u2B88";
-std::string gp_rstick_right = "R\u2B8A";
+static std::string gp_lstick_up = "L\u2B89";
+static std::string gp_lstick_down = "L\u2B8B";
+static std::string gp_lstick_left = "L\u2B88";
+static std::string gp_lstick_right = "L\u2B8A";
+static std::string gp_rstick_up = "R\u2B89";
+static std::string gp_rstick_down = "R\u2B8B";
+static std::string gp_rstick_left = "R\u2B88";
+static std::string gp_rstick_right = "R\u2B8A";
 
 std::string convert_to_gamepad( std::string keybind_in_pre )
 {
@@ -95,7 +95,7 @@ std::string convert_to_gamepad( std::string keybind_in_pre )
     std::string keybind_out;
 
     // intercept and return gamepad prompts if found
-    if( ( keybind_in_pre.rfind( "JOY_", 0 ) == 0 ) ) {
+    if( keybind_in_pre.rfind( "JOY_", 0 ) == 0 ) {
         is_joy = true;
         return convert_joy_string( keybind_in_pre );
     }
@@ -117,9 +117,7 @@ std::string convert_to_gamepad( std::string keybind_in_pre )
 
     if( keybind_in == "d" ) {
         keybind_out = gp_triangle;
-    } else if( keybind_in == "e" ) {
-        keybind_out = gp_square;
-    } else if( keybind_in == "c" ) { //replace references of examine terrain/furnish to examine all
+    } else if( keybind_in == "e" || keybind_in == "c" ) {
         keybind_out = gp_square;
     } else if( keybind_in == "f" ) {
         keybind_out = gp_r1;
@@ -145,13 +143,9 @@ std::string convert_to_gamepad( std::string keybind_in_pre )
         keybind_out = string_format( "%s", gp_rstick_left );
     } else if( keybind_in == "z" ) {
         keybind_out = string_format( "%s", gp_rstick_right );
-    } else if( keybind_in == "D" ) {
+    } else if( keybind_in == "D" || keybind_in == "B" ) {
         keybind_out = string_format( "%s%s", l_mod, gp_triangle );
-    } else if( keybind_in == "B" ) { //replace references of drop to multidrop
-        keybind_out = string_format( "%s%s", l_mod, gp_triangle );
-    } else if( keybind_in == "E" ) {
-        keybind_out = string_format( "%s%s", l_mod, gp_square );
-    } else if( keybind_in == "N" ) { //replace references of pickup adjacent to pickup nearby
+    } else if( keybind_in == "E" || keybind_in == "N" ) {
         keybind_out = string_format( "%s%s", l_mod, gp_square );
     } else if( keybind_in == "F" ) {
         keybind_out = string_format( "%s%s", l_mod, gp_r1 );
@@ -187,7 +181,7 @@ std::string convert_to_gamepad( std::string keybind_in_pre )
         keybind_out = string_format( "%s%s", gp_hotkey_mod, gp_circle );
     } else if( keybind_in == "/" ) {
         keybind_out = string_format( "%s%s", gp_hotkey_mod, gp_square );
-    } else if( keybind_in == "?" ) {
+    } else if( keybind_in == "?" || keybind_in == "=" ) {
         keybind_out = string_format( "%s%s", gp_hotkey_mod, gp_l1 );
     } else if( keybind_in == "[" ) {
         keybind_out = string_format( "%s", gp_lstick_up );
@@ -201,8 +195,6 @@ std::string convert_to_gamepad( std::string keybind_in_pre )
         keybind_out = string_format( "%s%s", gp_hotkey_mod, gp_r1 );
     } else if( keybind_in == "+" ) {
         keybind_out = string_format( "%s%s", gp_hotkey_mod, gp_r2 );
-    } else if( keybind_in == "=" ) {
-        keybind_out = string_format( "%s%s", gp_hotkey_mod, gp_l1 );
     } else if( keybind_in == "UP" ) {
         keybind_out = gp_up;
     } else if( keybind_in == "DOWN" ) {
@@ -220,9 +212,7 @@ std::string convert_to_gamepad( std::string keybind_in_pre )
         keybind_out = string_format( "%s%s", l_mod, gp_down_left );
     } else if( keybind_in == "NPAGE" ) { //SE
         keybind_out = string_format( "%s%s", l_mod, gp_down_right );
-    } else if( keybind_in == "ESC" ) {
-        keybind_out = gp_circle;
-    } else if( keybind_in == "S" ) { //replace references of save to main menu (where save exists)
+    } else if( keybind_in == "ESC" || keybind_in == "S" ) { //S for save to main menu
         keybind_out = gp_circle;
     } else if( keybind_in == "RETURN" ) {
         keybind_out = gp_cross;

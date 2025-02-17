@@ -777,7 +777,7 @@ class comestible_inventory_preset : public inventory_selector_preset
                 const time_duration spoils = loc->is_comestible() ? loc->get_comestible()->spoils :
                                              calendar::INDEFINITELY_LONG_DURATION;
                 // Merge in FRESHNESS status
-                std::string sealed = "";
+                std::string sealed;
                 item_location temp = loc;
                 // check if at least one parent container is sealed
                 while( temp.has_parent() ) {
@@ -797,7 +797,7 @@ class comestible_inventory_preset : public inventory_selector_preset
                 }
 
                 if( spoils > 0_turns ) {
-                    return string_format( ( "%s" ), sealed );
+                    return string_format( "%s", sealed );
                 }
                 //~ Used for permafood shelf life in the Eat menu
                 return std::string( _( "-----" ) );
@@ -819,7 +819,7 @@ class comestible_inventory_preset : public inventory_selector_preset
                             return std::string( _( "never" ) );
                         }
                     }
-                    return string_format( ( "%s" ), shelf_life );
+                    return string_format( "%s", shelf_life );
                 }
                 //~ Used for permafood shelf life in the Eat menu
                 return std::string( _( "-----" ) );

@@ -15,9 +15,9 @@ namespace gamepad
 
 void init();
 void quit();
-void handle_axis_event( SDL_Event &event, int increment );
-void handle_button_event( SDL_Event &event, int increment );
-void handle_scheduler_event( SDL_Event &event, int increment );
+void handle_axis_event( SDL_Event &event, int inc_keystate );
+void handle_button_event( SDL_Event &event, int inc_keystate );
+void handle_scheduler_event( SDL_Event &event, int inc_keystate );
 
 void start_typing();
 void send_character( int current_character, int inc_keystate );
