@@ -1111,9 +1111,7 @@ action_id input_context::display_menu( bool permit_execute_action )
         } else if( !kb_menu.filtered_registered_actions.empty() &&
                    kb_menu.status != kb_menu_status::show ) {
             size_t action_index = SIZE_MAX;
-            if( action == "SELECT" && kb_menu.highlight_row_index != -1 ) {
-                action_index = kb_menu.highlight_row_index;
-            } else if( action == "KEYBIND_CONFIRM" && kb_menu.highlight_row_index != -1 ) {
+            if( ( action == "SELECT" || action == "KEYBIND_CONFIRM") && kb_menu.highlight_row_index != -1 ) {
                 action_index = kb_menu.highlight_row_index;
             } else {
                 size_t hotkey_index = kb_menu.hotkeys.find_first_of( raw_input_char );

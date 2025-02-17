@@ -55,8 +55,8 @@ static SDL_TimerID timer_id;
 static SDL_GameController *controller = nullptr;
 
 // text input
-int current_character = 0;
-int max_character = 39;
+static int current_character = 0;
+static int max_character = 39;
 
 static Uint32 timer_func( Uint32 interval, void * )
 {
@@ -276,11 +276,43 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
             if ( state ) {
                 switch( button ) {
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
+                        if ( inc_keystate == 0 ) {
+                            schedule_task( task, now + repeat_delay, buttons_map[button], state );
+                        } else {
+                            int key = hold_l ? 797 : hold_r ? 799 : -1;
+                            if ( key != -1 ) {
+                                schedule_task(task, now + repeat_delay, key, state);
+                            }
+                        }
+                        break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+                        if ( inc_keystate == 0 ) {
+                            schedule_task( task, now + repeat_delay, buttons_map[button], state );
+                        } else {
+                            int key = hold_l ? 791 : hold_r ? 793 : -1;
+                            if ( key != -1 ) {
+                                schedule_task(task, now + repeat_delay, key, state);
+                            }
+                        }
+                        break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+                        if ( inc_keystate == 0 ) {
+                            schedule_task( task, now + repeat_delay, buttons_map[button], state );
+                        } else {
+                            int key = hold_u ? 797 : hold_d ? 791 : -1;
+                            if ( key != -1 ) {
+                                schedule_task(task, now + repeat_delay, key, state);
+                            }
+                        }
+                        break;
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
                         if ( inc_keystate == 0 ) {
                             schedule_task( task, now + repeat_delay, buttons_map[button], state );
+                        } else {
+                            int key = hold_u ? 799 : hold_d ? 793 : -1;
+                            if ( key != -1 ) {
+                                schedule_task(task, now + repeat_delay, key, state);
+                            }
                         }
                         break;
                 }
@@ -311,21 +343,41 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
                         if ( inc_keystate == 0 ) {
                             send_input( KEY_UP, input_event_t::keyboard_char );
+                        } else {
+                            int key = hold_l ? 797 : hold_r ? 799 : -1;
+                            if ( key != -1 ) {
+                                send_input( key, input_event_t::gamepad );
+                            }
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
                         if ( inc_keystate == 0 ) {
                             send_input( KEY_DOWN, input_event_t::keyboard_char );
+                        } else {
+                            int key = hold_l ? 791 : hold_r ? 793 : -1;
+                            if ( key != -1 ) {
+                                send_input( key, input_event_t::gamepad );
+                            }
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
                         if ( inc_keystate == 0 ) {
                             send_input( KEY_LEFT, input_event_t::keyboard_char );
+                        } else {
+                            int key = hold_u ? 797 : hold_d ? 791 : -1;
+                            if ( key != -1 ) {
+                                send_input( key, input_event_t::gamepad );
+                            }
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
                         if ( inc_keystate == 0 ) {
                             send_input( KEY_RIGHT, input_event_t::keyboard_char );
+                        } else {
+                            int key = hold_u ? 799 : hold_d ? 793 : -1;
+                            if ( key != -1 ) {
+                                send_input( key, input_event_t::gamepad );
+                            }
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_LEFTSTICK:

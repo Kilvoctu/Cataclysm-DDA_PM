@@ -154,14 +154,14 @@ static int TERMINAL_HEIGHT;
 static bool fullscreen;
 static int scaling_factor;
 
-bool gp_hold_lb; // gamepad holding left shoulder
-bool gp_hold_lt; // gamepad holding left trigger
-bool gp_hold_up;
-bool gp_hold_down;
-bool gp_hold_left;
-bool gp_hold_right;
-bool gp_text_input = false;
-int gp_inc_keystate; // amount to increment gamepad key state
+static int gp_inc_keystate; // amount to increment gamepad key state
+static bool gp_text_input = false;
+static bool hold_lb; // gamepad holding left shoulder
+static bool hold_lt; // gamepad holding left trigger
+static bool hold_u;
+static bool hold_d;
+static bool hold_l;
+static bool hold_r;
 
 using cata_cursesport::cursecell;
 

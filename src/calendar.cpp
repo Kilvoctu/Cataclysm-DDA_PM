@@ -613,14 +613,12 @@ std::string to_string_approx( const time_duration &dur, const bool verbose )
             d += divider;
         } else if( remainder > vicinity ) {
             if( remainder < divider / 2 ) {
-                //~ %s - time (e.g. 2 hours).
                 if( TERMX == EVEN_MINIMUM_TERM_WIDTH ) {
                     return make_result( d, _( ">%s" ), ">%s" );
                 } else {
                     return make_result( d, _( "more than %s" ), ">%s" );
                 }
             } else {
-                //~ %s - time (e.g. 2 hours).
                 if( TERMX == EVEN_MINIMUM_TERM_WIDTH ) {
                     return make_result( d + divider, _( "<%s" ), "<%s" );
                 } else {
@@ -629,7 +627,6 @@ std::string to_string_approx( const time_duration &dur, const bool verbose )
             }
         }
     }
-    //~ %s - time (e.g. 2 hours).
     if( TERMX == EVEN_MINIMUM_TERM_WIDTH ) {
         return make_result( d, _( "~%s" ), "%s" );
     } else {
