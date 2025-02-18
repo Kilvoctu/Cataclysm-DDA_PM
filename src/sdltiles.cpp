@@ -2969,10 +2969,10 @@ static void CheckMessages()
     std::optional<point> resize_dims;
     bool render_target_reset = false;
 
-    if ( gp_hold_lt == true ) {
-        gp_inc_keystate = ( gp_hold_lb == true ) ? 500 : 400;
+    if ( hold_lt == true ) {
+        gp_inc_keystate = ( hold_lb == true ) ? 500 : 400;
     } else {
-        gp_inc_keystate = ( gp_hold_lb == true ) ? 300 : 0;
+        gp_inc_keystate = ( hold_lb == true ) ? 300 : 0;
     }
 
     while( SDL_PollEvent( &ev ) ) {
@@ -2981,70 +2981,38 @@ static void CheckMessages()
             case SDL_CONTROLLERAXISMOTION:
                 if( ev.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT ) {
                     if( ev.caxis.value >= 16000 ) {
-                        gp_hold_lt = true;
+                        hold_lt = true;
                     }
                     if( ev.caxis.value < 16000 ) {
-                        gp_hold_lt = false;
+                        hold_lt = false;
                     }
                 }
                 break;
             case SDL_CONTROLLERBUTTONDOWN: // DPAD diagonals
                 if ( gp_inc_keystate != 0 ) {
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP) {
-                        gp_hold_up = true;
+                        hold_u = true;
                     }
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN) {
-                        gp_hold_down = true;
+                        hold_d = true;
                     }
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT) {
-                        gp_hold_left = true;
+                        hold_l = true;
                     }
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
-                        gp_hold_right = true;
+                        hold_r = true;
                     }
                 }
                 switch( ev.cbutton.button ) {
                     case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-                        gp_hold_lb = true;
-                        break;
-                    case SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        if ( gp_hold_left == true ) {
-                            last_input = input_event( 797, input_event_t::gamepad );
-                        }
-                        if ( gp_hold_right == true ) {
-                            last_input = input_event( 799, input_event_t::gamepad );
-                        }
-                        break;
-                    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        if ( gp_hold_left == true ) {
-                            last_input = input_event( 791, input_event_t::gamepad );
-                        }
-                        if ( gp_hold_right == true ) {
-                            last_input = input_event( 793, input_event_t::gamepad );
-                        }
-                        break;
-                    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-                        if ( gp_hold_up == true ) {
-                            last_input = input_event( 797, input_event_t::gamepad );
-                        }
-                        if ( gp_hold_down == true ) {
-                            last_input = input_event( 791, input_event_t::gamepad );
-                        }
-                        break;
-                    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        if ( gp_hold_up == true ) {
-                            last_input = input_event( 799, input_event_t::gamepad );
-                        }
-                        if ( gp_hold_down == true ) {
-                            last_input = input_event( 793, input_event_t::gamepad );
-                        }
+                        hold_lb = true;
                         break;
                 }
                 break;
             case SDL_CONTROLLERBUTTONUP:
                 switch( ev.cbutton.button ) {
                     case SDL_CONTROLLER_BUTTON_LEFTSTICK:
-                        if( gp_hold_lb == true && gp_hold_lt == true ) {
+                        if( hold_lb == true && hold_lt == true ) {
                             if ( gp_text_input == false ) {
                                 gp_text_input = true;
                                 StartTextInput();
@@ -3057,19 +3025,19 @@ static void CheckMessages()
                         }
                         break;
                     case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-                        gp_hold_lb = false;
+                        hold_lb = false;
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        gp_hold_up = false;
+                        hold_u = false;
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        gp_hold_down = false;
+                        hold_d = false;
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-                        gp_hold_left = false;
+                        hold_l = false;
                         break;
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        gp_hold_right = false;
+                        hold_r = false;
                         break;
                 }
         }
@@ -3317,7 +3285,7 @@ static void CheckMessages()
             case SDL_CONTROLLERBUTTONDOWN:
                 if ( gp_text_input == false ) {
                     if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gamepad::handle_button_event( ev, gp_inc_keystate );
+                        gamepad::handle_button_event( ev, gp_inc_keystate, hold_u, hold_d, hold_l, hold_r );
                     }
                 } else {
                     if ( ev.cbutton.button == SDL_CONTROLLER_BUTTON_A ) {
@@ -3337,7 +3305,7 @@ static void CheckMessages()
             case SDL_CONTROLLERBUTTONUP:
                 if ( gp_text_input == false ) {
                     if ( ev.cbutton.button != SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
-                        gamepad::handle_button_event( ev, gp_inc_keystate );
+                        gamepad::handle_button_event( ev, gp_inc_keystate, hold_u, hold_d, hold_l, hold_r );
                     }
                 } else {
                     gamepad::handle_button_typing_event( ev, gp_inc_keystate );
