@@ -758,7 +758,7 @@ float Character::metabolic_rate_base() const
     static const std::string hunger_rate_string( "PLAYER_HUNGER_RATE" );
     float hunger_rate = get_option< float >( hunger_rate_string );
     const float final_hunger_rate = enchantment_cache->modify_value( enchant_vals::mod::METABOLISM,
-                                    hunger_rate );
+                                    ( hunger_rate * 0.9 ) );
     return std::clamp( final_hunger_rate, 0.0f, float_max );
 }
 
