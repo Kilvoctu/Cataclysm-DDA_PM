@@ -280,7 +280,6 @@ void handle_button_event( SDL_Event &event, int inc_keystate )
                     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
                     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
                         if ( inc_keystate == 0 ) {
-                            send_input( button );
                             schedule_task( task, now + repeat_delay, buttons_map[button], state );
                         }
                         break;
