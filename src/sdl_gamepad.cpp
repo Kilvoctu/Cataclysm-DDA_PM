@@ -262,9 +262,9 @@ void handle_axis_event( SDL_Event &event, int inc_keystate )
     }
 }
 
-void handle_button_event( SDL_Event &event, int inc_keystate )
+void handle_button_event( SDL_Event &event, int inc_keystate, bool hold_u,
+                          bool hold_d, bool hold_l, bool hold_r )
 {
-    
     int button = event.cbutton.button;
     int state = event.cbutton.state;
     Uint32 now = event.cbutton.timestamp;
