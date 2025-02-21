@@ -7,7 +7,7 @@
 
 #include "string_formatter.h"
 
-bool is_joy = false;
+static bool is_joy = false;
 
 // define unicode
 static std::string gp_cross;
@@ -46,7 +46,7 @@ static std::string gp_rstick_down = "R\u2B8B";
 static std::string gp_rstick_left = "R\u2B88";
 static std::string gp_rstick_right = "R\u2B8A";
 
-std::string convert_to_gamepad( std::string keybind_in_pre )
+std::string convert_to_gamepad( const std::string &keybind_in_pre )
 {
     if( get_option<std::string>( "JOYSTICK_PROMPT_STYLE" ) == "playstation" ) {
         // PS prompts
@@ -309,7 +309,7 @@ std::string convert_joy_string( std::string joy_in )
     j["JOY_793"] = l2_mod + gp_down_right;
 
     joy_out = j[joy_in];
-    if ( joy_out != "" ) {
+    if ( !joy_out.empty() ) {
         return joy_out;
     } else {
         return joy_in;

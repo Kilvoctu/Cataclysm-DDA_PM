@@ -1847,7 +1847,7 @@ static std::vector<aim_type_prediction> calculate_ranged_chances(
         aim_type_prediction prediction = {};
         prediction.name = aim_type.has_threshold ? aim_type.name : _( "Current" );
         prediction.is_default = aim_type.action.empty(); // default mode defaults to FIRE hotkey
-        prediction.hotkey = ( keys.empty() ? input_event() : keys.front(), 1 );
+        prediction.hotkey = ( keys.empty() ? input_event() : keys.front() ).short_description();
 
         if( mode == target_ui::TargetMode::Throw || mode == target_ui::TargetMode::ThrowBlind ) {
             prediction.moves = throw_moves;
